@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 4aaa12bbcb09848c7b7e74a3de8c9b22
+  productGUID: a64b329a91e544d8280b9d038068063e
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: DefensGame
+  productName: Defense_Game
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -695,7 +695,7 @@ PlayerSettings:
   ps4GarlicHeapSize: 2048
   ps4ProGarlicHeapSize: 2560
   playerPrefsMaxSize: 32768
-  ps4Passcode: lHC2nG7eK2rWUYtpxsViEsHMPwq4fTIs
+  ps4Passcode: 5hvJLEfS7iuSS0Zz2KnwQG923uTIcIKb
   ps4pnSessions: 1
   ps4pnPresence: 1
   ps4pnFriends: 1
@@ -784,14 +784,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: DefensGame
+  metroPackageName: Defense_Game
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: DefensGame
+  metroApplicationDescription: Defense_Game
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -862,10 +862,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: 2de9d283-2e61-4c61-8053-fb523839ed9c
+  cloudProjectId: 9897b029-0dee-41b4-90ff-6f29c8523459
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: DefensGame
+  projectName: Defense_Game
   organizationId: eenddl7541
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
