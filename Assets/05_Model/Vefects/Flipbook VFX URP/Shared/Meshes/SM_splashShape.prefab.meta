@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ca940df53970dc64e85cea28d65be4c6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 239875
+  packageName: Flipbook VFX - URP
+  packageVersion: 1.0.20231
+  assetPath: Assets/Vefects/Flipbook VFX URP/Shared/Meshes/SM_splashShape.prefab
+  uploadId: 756871

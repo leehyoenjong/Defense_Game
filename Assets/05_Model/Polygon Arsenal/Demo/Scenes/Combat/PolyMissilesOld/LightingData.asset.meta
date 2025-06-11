@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 31becbc5a1a35c54c9161f64aa6005df
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 112000000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 109286
+  packageName: Polygon Arsenal
+  packageVersion: 2.07
+  assetPath: Assets/Polygon Arsenal/Demo/Scenes/Combat/PolyMissilesOld/LightingData.asset
+  uploadId: 757035
