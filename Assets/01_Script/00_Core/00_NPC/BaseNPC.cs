@@ -6,6 +6,7 @@ public abstract class BaseNPC : MonoBehaviour
     //NPC 별 데이터 
     [SerializeField] SO_NPC _so_npc;
     [SerializeField] AnimationController _animationController;
+    [SerializeField] HpbarController _hpbarController;
 
     //기본 맴버변수 
     protected int _current_hp;
@@ -19,9 +20,14 @@ public abstract class BaseNPC : MonoBehaviour
     protected virtual void Start()
     {
         ReSetting();
+
+        //애니메이션 관련
         _die_event += () => PlayAnimation(EANIMATION.DEATH);
         _hit_event += () => PlayAnimation(EANIMATION.HIT);
         _attack_event += () => PlayAnimation(EANIMATION.ATTACK);
+
+        //hp바 업데이트
+        _hit_event += () => _hpbarController.Hpbar_Update(_so_npc._Hp, _current_hp);
     }
 
     protected virtual void ReSetting()
