@@ -5,8 +5,8 @@ public abstract class BaseNPC : MonoBehaviour
 {
     //NPC 별 데이터 
     [SerializeField] SO_NPC _so_npc;
-    [SerializeField] AnimationController _animationController;
-    [SerializeField] HpbarController _hpbarController;
+    [SerializeField] protected AnimationController _animationController;
+    [SerializeField] protected HpbarController _hpbarController;
 
     //기본 맴버변수 
     protected int _current_hp;
@@ -61,5 +61,10 @@ public abstract class BaseNPC : MonoBehaviour
     protected virtual void PlayAnimation(EANIMATION eanimation)
     {
         _animationController.PlayAnimation(eanimation);
+    }
+
+    protected virtual void PlayAnimation(EANIMATION eanimation, bool isaction)
+    {
+        _animationController.PlayAnimation(eanimation, isaction);
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 public class MoveController : MonoBehaviour
 {
     public event Action _move_event;
+    public event Action _move_end_check;
+    public event Func<bool> _move_check;
     [SerializeField] float _speed;
 
     Vector2? _targetPosition = null;
@@ -14,15 +16,20 @@ public class MoveController : MonoBehaviour
         {
             return;
         }
+        if (_move_check == null ? true : _move_check.Invoke())
+        {
+            return;
+        }
+
         MoveToUpdate();
     }
 
-    public virtual void MoveToTarget(Vector2 target)
+    public void MoveToTarget(Vector2 target)
     {
         _targetPosition = target;
         _move_event?.Invoke();
     }
-    
+
     public void ReSetting()
     {
         _targetPosition = null;
@@ -41,6 +48,7 @@ public class MoveController : MonoBehaviour
         {
             transform.position = new Vector3(target.x, target.y, transform.position.z);
             _targetPosition = null;
+            _move_end_check?.Invoke();
         }
     }
 }

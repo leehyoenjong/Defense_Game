@@ -8,7 +8,9 @@ public class Monster_Base : BaseNPC
     protected override void Start()
     {
         PlayAnimation(EANIMATION.IDLE);
-        _moveController._move_event += () => PlayAnimation(EANIMATION.MOVE);
+        _moveController._move_event += () => PlayAnimation(EANIMATION.MOVE, true);
+        _moveController._move_end_check += () => PlayAnimation(EANIMATION.MOVE, false);
+        _moveController._move_check += () => _animationController.CheckRunAnimation();
     }
 
     public void OnRelease()
@@ -17,8 +19,9 @@ public class Monster_Base : BaseNPC
         _moveController.ReSetting();
     }
 
-    public void OnSpawn()
+    public void OnSpawn(Vector2 target)
     {
         this.gameObject.SetActive(true);
+        _moveController.MoveToTarget(target);
     }
 }
