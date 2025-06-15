@@ -131,6 +131,7 @@ MonoBehaviour:
   _so_npc: {fileID: 11400000, guid: 91e024946edb64f488c4fb8037796e94, type: 2}
   _animationController: {fileID: 3749936268734424093}
   _hpbarController: {fileID: 3433437495800972696}
+  _hpbarController_text: {fileID: 0}
   _moveController: {fileID: 6258837614005081487}
 --- !u!114 &6258837614005081487
 MonoBehaviour:
@@ -464,8 +465,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3198324320792991994}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -510,12 +511,12 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -826580015
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -6869589605592600110, guid: 4c92fdf190c298f43a958ea64410319e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.64, y: 0.64}

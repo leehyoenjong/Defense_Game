@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class BaseNPC : MonoBehaviour
 {
     //NPC 별 데이터 
-    [SerializeField] SO_NPC _so_npc;
+    [SerializeField] protected SO_NPC _so_npc;
     [SerializeField] protected AnimationController _animationController;
     [SerializeField] protected HpbarController _hpbarController;
 
@@ -22,12 +22,18 @@ public abstract class BaseNPC : MonoBehaviour
         ReSetting();
 
         //애니메이션 관련
-        _die_event += () => PlayAnimation(EANIMATION.DEATH);
-        _hit_event += () => PlayAnimation(EANIMATION.HIT);
-        _attack_event += () => PlayAnimation(EANIMATION.ATTACK);
+        if (_animationController)
+        {
+            _die_event += () => PlayAnimation(EANIMATION.DEATH);
+            _hit_event += () => PlayAnimation(EANIMATION.HIT);
+            _attack_event += () => PlayAnimation(EANIMATION.ATTACK);
+        }
 
         //hp바 업데이트
-        _hit_event += () => _hpbarController.Hpbar_Update(_so_npc._Hp, _current_hp);
+        if (_hpbarController)
+        {
+            _hit_event += () => _hpbarController.Hpbar_Update(_so_npc._Hp, _current_hp);
+        }
     }
 
     protected virtual void ReSetting()

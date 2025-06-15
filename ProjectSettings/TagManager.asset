@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - Monster
-  - 
+  - Load
   - 
   - 
   - 
@@ -40,6 +40,15 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 433898297
+    locked: 0
+  - name: PortectObject
+    uniqueID: 2318674161
+    locked: 0
+  - name: NPC
+    uniqueID: 3468387281
     locked: 0
   m_RenderingLayers:
   - Default
