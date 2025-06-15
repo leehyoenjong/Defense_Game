@@ -32,6 +32,7 @@ public class AnimationController : MonoBehaviour
 
 public enum EANIMATION
 {
+    NONE,
     IDLE,
     MOVE,
     DEATH,

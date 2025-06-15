@@ -41,7 +41,7 @@ public abstract class BaseNPC : MonoBehaviour
         _current_hp = _so_npc._Hp;
     }
 
-    protected virtual void Target_To_Attack(BaseNPC target_npc)
+    public virtual void Target_To_Attack(BaseNPC target_npc)
     {
         var my_damage = _so_npc.TotalDamage();
         target_npc.Hp_Update(my_damage);
