@@ -1,24 +1,22 @@
+using System;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SO_NPC", menuName = "SO_NPC", order = 0)]
 public class SO_NPC : ScriptableObject
 {
-    public int _Hp;
-    public int _Damge;
-    public int _Armor;
-    public float _Critical;// 0~1
-    public float _Critical_damage; // 0~1
+    public St_Status _status;
+    public SO_Skill_Attack[] _skill_Attack;
+    public SO_Skill_Buff[] _skill_buff;
+}
 
-    public int TotalDamage()
-    {
-        float damage = _Damge;
 
-        var critical_random_value = UnityEngine.Random.Range(0f, 1f);
-        if (critical_random_value <= _Critical)
-        {
-            damage = damage * (_Critical_damage + 1);
-        }
-
-        return Mathf.FloorToInt(damage);
-    }
+[Serializable]
+public struct St_Status
+{
+    public int _hp;
+    public int _damge;
+    public int _armor;
+    public float _critical;// 0~1
+    public float _critical_damage; // 0~1
 }

@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24aab73d63be043819766f7b6b42da92, type: 3}
   m_Name: SO_ProtectObject
   m_EditorClassIdentifier: 
-  _Hp: 100
-  _Damge: 0
-  _Armor: 1
-  _Critical: 0
-  _Critical_damage: 0
+  _status:
+    _hp: 100
+    _damge: 0
+    _armor: 10
+    _critical: 0
+    _critical_damage: 0
+  _skill_Attack: []
+  _skill_buff: []

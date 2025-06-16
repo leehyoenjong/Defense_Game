@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80b3628114e2142809daa957ab461f61, type: 3}
   m_Name: SO_Skill_BasicAttack
   m_EditorClassIdentifier: 
-  _mid: 0
-  _cooltime: 0
+  _mid: 1
+  _cooltime: 1
   _duration: 0
   _next_skilldelaytime: 0
-  _eanimation: 0
+  _eanimation: 4
   _active_skillEffect: []
   _target_attackeffect: []

@@ -9,8 +9,8 @@ public class ProtectObject : BaseNPC
     protected override void Start()
     {
         base.Start();
-        _hpbarController_text.Hpbar_Update(_so_npc._Hp, _current_hp);
-        _hit_event += () => _hpbarController_text.Hpbar_Update(_so_npc._Hp, _current_hp);
+        _hpbarController_text.Hpbar_Update(_status._hp, _current_hp);
+        _hit_event += () => _hpbarController_text.Hpbar_Update(_status._hp, _current_hp);
     }
 
     protected override void PlayAnimation(EANIMATION eanimation)

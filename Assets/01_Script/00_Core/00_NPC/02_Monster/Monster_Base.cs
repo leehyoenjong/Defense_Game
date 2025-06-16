@@ -19,9 +19,10 @@ public class Monster_Base : BaseNPC
         _moveController.ReSetting();
     }
 
-    public void OnSpawn(Vector2 target)
+    public virtual void OnSpawn(Vector2 target)
     {
         this.gameObject.SetActive(true);
         _moveController.MoveToTarget(target);
+        base.OnSpawn();
     }
 }
