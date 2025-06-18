@@ -6,20 +6,28 @@ using UnityEngine;
 
 public class SkillController : MonoBehaviour
 {
+    [SerializeField] BaseNPC _me;
+    [SerializeField] AttackAreaController _attackAreaController;
+
+    //일반 변수
     float _attackskillnextdelaytime;
     float _buffskillnextdelaytime;
     int _current_attack_skill_index = 0;
     int _current_buff_skill_index = 0;
 
-    [SerializeField]
-    BaseNPC _me;
-
+    //쿨타임 및 지속시간 관련 변수
     Dictionary<int, bool> _skillcoolTime = new Dictionary<int, bool>();
     Dictionary<int, CancellationTokenSource> _skillcooltimetoken = new Dictionary<int, CancellationTokenSource>();
     Dictionary<int, CancellationTokenSource> _skilldurationtoken = new Dictionary<int, CancellationTokenSource>();
 
+    //개별 이벤트
     public event Action _skill_attack_event;
     public event Action _skill_buff_event;
+
+    private void Start()
+    {
+        _attackAreaController._enter_active_skill_event += ActiveAttackSkill;
+    }
 
     private void Update()
     {
@@ -27,7 +35,7 @@ public class SkillController : MonoBehaviour
         _buffskillnextdelaytime -= Time.deltaTime;
     }
 
-    public void ActiveAttackSkill(BaseNPC target)
+    void ActiveAttackSkill(BaseNPC target, ESKILLTRIGGER eskilltrigger)
     {
         //다음 스킬 발동 딜레이 중일 경우 return, 이때는 index를 올릴 필요 없음 
         if (_attackskillnextdelaytime > 0)
@@ -35,10 +43,24 @@ public class SkillController : MonoBehaviour
             return;
         }
 
+        //SO에 스킬이 없다면 그냥 return
+        var myattackskilllist = _me._so_npc._skill_Attack;
+        if (myattackskilllist.Length <= 0)
+        {
+            return;
+        }
 
-        var skillinfo = _me._so_npc._skill_Attack[_current_attack_skill_index]._skillInfo;
+        //해당 인덱스의 스킬이 trigger와 맞지 않다면 return 후 index값 높이기
+        var soskillinfo = myattackskilllist[_current_attack_skill_index];
+        if (soskillinfo._eskilltrigger != eskilltrigger)
+        {
+            AddAttackSkillIndex();
+            return;
+        }
+
+        var skillinfo = soskillinfo._skillInfo;
         //현재 스킬이 쿨타임 진행중인지 체크
-        if (_skillcoolTime[skillinfo._mid])
+        if (CheckCoolTime(skillinfo._mid))
         {
             AddAttackSkillIndex();
             return;
@@ -46,11 +68,12 @@ public class SkillController : MonoBehaviour
 
         //스킬 발동 
         _me._so_npc._skill_Attack[_current_attack_skill_index].ActiveSkill(_me, target);
+        SkillCoolTime(skillinfo).Forget();
         _skill_attack_event?.Invoke();
         AddAttackSkillIndex();
     }
 
-    public void ActiveBuffSkill(EBUFFSKILLTRIGGER ebuffskillactivetirrger)
+    public void ActiveBuffSkill(ESKILLTRIGGER ebuffskillactivetirrger)
     {
         //다음 스킬 발동 딜레이 중일 경우 return, 이때는 index를 올릴 필요 없음 
         if (_buffskillnextdelaytime > 0)
@@ -58,9 +81,16 @@ public class SkillController : MonoBehaviour
             return;
         }
 
-        var skillinfo = _me._so_npc._skill_buff[_current_attack_skill_index]._skillInfo;
+        var mybufflist = _me._so_npc._skill_buff;
+        if (mybufflist.Length <= 0)
+        {
+            return;
+        }
+
+        var skillinfo = mybufflist[_current_attack_skill_index]._skillInfo;
+
         //다음 스킬 발동 쿨타임인지 체크
-        if (_skillcoolTime[skillinfo._mid])
+        if (CheckCoolTime(skillinfo._mid))
         {
             //쿨타임 중인 스킬이라면 다음 index스킬 체크
             AddBuffSkillIndex();
@@ -71,7 +101,8 @@ public class SkillController : MonoBehaviour
         _me._so_npc._skill_buff[_current_attack_skill_index].ActiveSkill(_me, ebuffskillactivetirrger);
 
         //스킬 발동 후 지속시간 후 종료되도록 처리
-        _ = BuffSkillDisable(skillinfo, _current_attack_skill_index);
+        BuffSkillDisable(skillinfo, _current_attack_skill_index).Forget();
+        SkillCoolTime(skillinfo).Forget();
         _skill_buff_event?.Invoke();
         AddBuffSkillIndex();
     }
@@ -141,6 +172,17 @@ public class SkillController : MonoBehaviour
         _skillcoolTime[skillinfo._mid] = true;
         await UniTask.WaitForSeconds(skillinfo._cooltime, cancellationToken: _skillcooltimetoken[skillinfo._mid].Token);
         _skillcoolTime[skillinfo._mid] = false;
+    }
+
+    bool CheckCoolTime(int skillid)
+    {
+        if (_skillcoolTime.ContainsKey(skillid))
+        {
+            return _skillcoolTime[skillid];
+        }
+
+        _skillcoolTime.Add(skillid, false);
+        return false;
     }
 
 

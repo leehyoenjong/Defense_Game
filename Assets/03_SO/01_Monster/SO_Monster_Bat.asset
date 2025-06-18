@@ -18,5 +18,6 @@ MonoBehaviour:
     _armor: 10
     _critical: 0
     _critical_damage: 0
-  _skill_Attack: []
+  _skill_Attack:
+  - {fileID: 11400000, guid: 643284535e7c3435ebe0e175fa18c0b7, type: 2}
   _skill_buff: []

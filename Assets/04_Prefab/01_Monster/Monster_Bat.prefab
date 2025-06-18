@@ -91,7 +91,9 @@ GameObject:
   - component: {fileID: 3433437495800972696}
   - component: {fileID: 4957784323831432961}
   - component: {fileID: 4974129170603064295}
-  - component: {fileID: 414629157510641804}
+  - component: {fileID: 7857012949461795278}
+  - component: {fileID: 7204728744815406474}
+  - component: {fileID: 924051197403077993}
   m_Layer: 6
   m_Name: Monster_Bat
   m_TagString: Untagged
@@ -131,7 +133,7 @@ MonoBehaviour:
   _so_npc: {fileID: 11400000, guid: 91e024946edb64f488c4fb8037796e94, type: 2}
   _animationController: {fileID: 3749936268734424093}
   _hpbarController: {fileID: 3433437495800972696}
-  _hpbarController_text: {fileID: 0}
+  _skillController: {fileID: 7857012949461795278}
   _moveController: {fileID: 6258837614005081487}
 --- !u!114 &6258837614005081487
 MonoBehaviour:
@@ -214,8 +216,38 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &414629157510641804
-BoxCollider2D:
+--- !u!114 &7857012949461795278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213426367315815728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf1428839cf684e16abd65aeb573ecdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _me: {fileID: 1915146530710939600}
+  _attackAreaController: {fileID: 7204728744815406474}
+--- !u!114 &7204728744815406474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2213426367315815728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72690e63ada4c4631b8d98c31ca29877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackarea: {fileID: 924051197403077993}
+  _targetlayer:
+    serializedVersion: 2
+    m_Bits: 384
+--- !u!58 &924051197403077993
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -249,17 +281,7 @@ BoxCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Radius: 0.5
 --- !u!1 &2970485744430701496
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,11 +449,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 6341462402847879598, guid: 09006a67e612f4318a6e590fff0a78ac, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -512,7 +534,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -826580015
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -6869589605592600110, guid: 4c92fdf190c298f43a958ea64410319e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

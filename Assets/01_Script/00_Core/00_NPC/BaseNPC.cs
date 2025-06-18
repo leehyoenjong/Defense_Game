@@ -17,7 +17,6 @@ public abstract class BaseNPC : MonoBehaviour
     //이벤트 변수들
     public event Action _die_event;
     public event Action _hit_event;
-    public event Action _attack_event;
 
     //함수
     protected virtual void Start()
@@ -27,7 +26,6 @@ public abstract class BaseNPC : MonoBehaviour
         {
             _die_event += () => PlayAnimation(EANIMATION.DEATH);
             _hit_event += () => PlayAnimation(EANIMATION.HIT);
-            _attack_event += () => PlayAnimation(EANIMATION.ATTACK);
         }
 
         //hp바 업데이트
@@ -43,7 +41,7 @@ public abstract class BaseNPC : MonoBehaviour
         _status = _so_npc._status;
 
         //생성 버프 발동 내부에 스테이터스 변화하는 게 존재할 수 있음
-        _skillController.ActiveBuffSkill(EBUFFSKILLTRIGGER.SPAWN);
+        _skillController?.ActiveBuffSkill(ESKILLTRIGGER.SPAWN);
 
         //생성 버프 발동 후 hp셋팅하기
         _current_hp = _status._hp;
@@ -53,7 +51,6 @@ public abstract class BaseNPC : MonoBehaviour
     {
         var my_damage = TotalDamage();
         target_npc.Hp_Update(my_damage);
-        _attack_event?.Invoke();
     }
 
     public void AddStatus(St_Status addstatus)
@@ -103,12 +100,17 @@ public abstract class BaseNPC : MonoBehaviour
         _die_event?.Invoke();
     }
 
-    protected virtual void PlayAnimation(EANIMATION eanimation)
+    public bool CheckDie()
+    {
+        return _current_hp <= 0;
+    }
+
+    public virtual void PlayAnimation(EANIMATION eanimation)
     {
         _animationController.PlayAnimation(eanimation);
     }
 
-    protected virtual void PlayAnimation(EANIMATION eanimation, bool isaction)
+    public virtual void PlayAnimation(EANIMATION eanimation, bool isaction)
     {
         _animationController.PlayAnimation(eanimation, isaction);
     }

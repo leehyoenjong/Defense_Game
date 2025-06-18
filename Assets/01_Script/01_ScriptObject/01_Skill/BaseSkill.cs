@@ -3,11 +3,16 @@ using UnityEngine;
 
 public abstract class BaseSkill : ScriptableObject
 {
-    //발동할 애니메이션
-    public GameObject[] _active_skillEffect;
 
-    public EANIMATION _eanimation = EANIMATION.NONE;
+    [Header("스킬 정보")]
     public St_SkillInfo _skillInfo;
+    [Header("실행할 애니메이션")]
+    public EANIMATION _eanimation = EANIMATION.NONE;
+    [Header("발동시킬 트리거")]
+    public ESKILLTRIGGER _eskilltrigger;
+    //발동할 애니메이션
+    [Header("내 위치에 나타나는 이펙트 오브젝트")]
+    public GameObject[] _active_skillEffect;
 
     /// <summary>
     /// <summary>
@@ -23,6 +28,11 @@ public abstract class BaseSkill : ScriptableObject
         {
             var mypositioneffect = Instantiate<GameObject>(_active_skillEffect[i], myposition, default);
         }
+    }
+
+    public void ActiveSkillPlayAnimation(BaseNPC me)
+    {
+        me.PlayAnimation(_eanimation);
     }
 }
 

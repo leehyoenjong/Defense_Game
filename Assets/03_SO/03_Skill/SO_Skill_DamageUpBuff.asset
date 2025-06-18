@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bced6be521f2e40fb85cb33a8b8d78c7, type: 3}
   m_Name: SO_Skill_DamageUpBuff
   m_EditorClassIdentifier: 
-  _mid: 2
-  _cooltime: 0
-  _duration: 5
-  _next_skilldelaytime: 0
-  _eanimation: 5
   _active_skillEffect: []
+  _eanimation: 5
+  _skillInfo:
+    _cooltime: 10
+    _duration: 5
+    _mid: 1000
+    _next_skilldelaytime: 0
   _ebuffskilltrigger: 0
   _add_status:
     _hp: 0

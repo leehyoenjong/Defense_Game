@@ -3,6 +3,7 @@ using UnityEngine;
 public class SO_Skill_Attack : BaseSkill
 {
     //타겟에게 나타나는 이펙트 오브젝트
+    [Header("타겟 위치에 나타나는 이펙트 오브젝트")]
     [SerializeField] GameObject[] _target_attackeffect;
 
     /// <summary>
@@ -15,6 +16,9 @@ public class SO_Skill_Attack : BaseSkill
         //이펙트 생성
         ActiveSkillEffectToTarget(me.transform.position);
         TargetToEffect(target.transform.position);
+
+        //사용자 애니메이션 실행
+        ActiveSkillPlayAnimation(me);
 
         //데미지 주기
         me.Target_To_Attack(target);

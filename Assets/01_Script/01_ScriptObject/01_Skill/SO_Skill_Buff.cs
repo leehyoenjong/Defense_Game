@@ -1,6 +1,8 @@
+using UnityEngine;
+
 public class SO_Skill_Buff : BaseSkill
 {
-    public EBUFFSKILLTRIGGER _ebuffskilltrigger;
+    [Header("버프 줄 스테이터스")]
     public St_Status _add_status; //상승 시킬 스테이터스
 
     /// <summary>
@@ -8,15 +10,18 @@ public class SO_Skill_Buff : BaseSkill
     /// </summary>
     /// <param name="me"></param>
     /// <param name="target"></param>
-    public virtual void ActiveSkill(BaseNPC me, EBUFFSKILLTRIGGER buffskillactivetrigger)
+    public virtual void ActiveSkill(BaseNPC me, ESKILLTRIGGER buffskillactivetrigger)
     {
-        if (buffskillactivetrigger != _ebuffskilltrigger)
+        if (buffskillactivetrigger != _eskilltrigger)
         {
             return;
         }
 
         //나에게 스테이터스 값 적용
         me.AddStatus(_add_status);
+
+        //사용자 애니메이션 실행
+        ActiveSkillPlayAnimation(me);
 
         //내 위치에 이펙트 생성
         ActiveSkillEffectToTarget(me.transform.position);
@@ -33,8 +38,9 @@ public class SO_Skill_Buff : BaseSkill
     }
 }
 
-public enum EBUFFSKILLTRIGGER
+public enum ESKILLTRIGGER
 {
     SPAWN,
+    AreaEnter,
 }
 
