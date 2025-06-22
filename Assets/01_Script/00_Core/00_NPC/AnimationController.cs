@@ -1,9 +1,12 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimationController : MonoBehaviour
 {
     [SerializeField] Animator _animator;
     EANIMATION _eanimation;
+    public Dictionary<EANIMATION, Action> _animation_exit = new Dictionary<EANIMATION, Action>();
 
     public void PlayAnimation(EANIMATION eanimation)
     {
@@ -19,6 +22,33 @@ public class AnimationController : MonoBehaviour
     public bool CheckRunAnimation()
     {
         return _eanimation == EANIMATION.MOVE;
+    }
+
+    public void AddExitAnimationAction(EANIMATION eanimation, Action action)
+    {
+        if (!_animation_exit.ContainsKey(eanimation))
+        {
+            _animation_exit.Add(eanimation, null);
+        }
+        _animation_exit[eanimation] += action;
+    }
+
+    public void RemoveAnimaitionActive(EANIMATION eanimation, Action action)
+    {
+        if (!_animation_exit.ContainsKey(eanimation))
+        {
+            return;
+        }
+        _animation_exit[eanimation] += action;
+    }
+
+    public void ActiveExitAnimation(EANIMATION eanimation)
+    {
+        if (!_animation_exit.ContainsKey(eanimation))
+        {
+            return;
+        }
+        _animation_exit[eanimation]?.Invoke();
     }
 
     /// <summary>

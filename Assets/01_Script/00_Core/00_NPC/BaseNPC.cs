@@ -1,6 +1,9 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
+[RequireComponent(typeof(AnimationController), typeof(SkillController), typeof(AttackAreaController))]
+[RequireComponent(typeof(CircleCollider2D), typeof(Rigidbody2D))]
 public abstract class BaseNPC : MonoBehaviour
 {
     //NPC 별 데이터 
@@ -26,6 +29,7 @@ public abstract class BaseNPC : MonoBehaviour
         {
             _die_event += () => PlayAnimation(EANIMATION.DEATH);
             _hit_event += () => PlayAnimation(EANIMATION.HIT);
+            _animationController.AddExitAnimationAction(EANIMATION.DEATH, OnRelease);
         }
 
         //hp바 업데이트
@@ -45,6 +49,14 @@ public abstract class BaseNPC : MonoBehaviour
 
         //생성 버프 발동 후 hp셋팅하기
         _current_hp = _status._hp;
+
+        this.gameObject.SetActive(true);
+    }
+
+    public virtual void OnRelease()
+    {
+        //사망 애니메이션 끝나면 꺼버리기
+        this.gameObject.SetActive(false);
     }
 
     public virtual void Target_To_Attack(BaseNPC target_npc)

@@ -242,10 +242,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72690e63ada4c4631b8d98c31ca29877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackarea: {fileID: 924051197403077993}
   _targetlayer:
     serializedVersion: 2
-    m_Bits: 384
+    m_Bits: 128
+  _radius: 0.3
 --- !u!58 &924051197403077993
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -281,7 +281,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Radius: 0.2
 --- !u!1 &2970485744430701496
 GameObject:
   m_ObjectHideFlags: 0

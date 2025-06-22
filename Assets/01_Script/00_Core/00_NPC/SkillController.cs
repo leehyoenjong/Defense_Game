@@ -26,7 +26,10 @@ public class SkillController : MonoBehaviour
 
     private void Start()
     {
-        _attackAreaController._enter_active_skill_event += ActiveAttackSkill;
+        if (_attackAreaController)
+        {
+            _attackAreaController._enter_active_skill_event += ActiveAttackSkill;
+        }
     }
 
     private void Update()
