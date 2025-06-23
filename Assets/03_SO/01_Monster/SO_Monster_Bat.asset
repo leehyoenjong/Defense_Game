@@ -21,3 +21,4 @@ MonoBehaviour:
   _skill_Attack:
   - {fileID: 11400000, guid: 643284535e7c3435ebe0e175fa18c0b7, type: 2}
   _skill_buff: []
+  _diegold: 10

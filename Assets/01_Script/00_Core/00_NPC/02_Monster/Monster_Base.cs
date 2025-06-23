@@ -7,7 +7,6 @@ public class Monster_Base : BaseNPC
 
     protected override void Start()
     {
-        PlayAnimation(EANIMATION.IDLE);
         _moveController._move_event += () => PlayAnimation(EANIMATION.MOVE, true);
         _moveController._move_end_check += () => PlayAnimation(EANIMATION.MOVE, false);
         _moveController._move_check += () => _animationController.CheckRunAnimation();
@@ -19,6 +18,12 @@ public class Monster_Base : BaseNPC
         _moveController.ReSetting();
         _moveController.MoveToTarget(target);
         base.OnSpawn();
+    }
+
+    protected override void NPC_Die()
+    {
+        base.NPC_Die();
+        GoldManager._gold_add_event?.Invoke(_so_npc._diegold);
     }
 
     public override void OnRelease()

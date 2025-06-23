@@ -8,6 +8,7 @@ public class SO_NPC : ScriptableObject
     public St_Status _status;
     public SO_Skill_Attack[] _skill_Attack;
     public SO_Skill_Buff[] _skill_buff;
+    public int _diegold;
 }
 
 

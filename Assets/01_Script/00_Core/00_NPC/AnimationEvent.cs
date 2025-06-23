@@ -32,10 +32,6 @@ public class AnimationEvent : StateMachineBehaviour
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateExit(animator, stateInfo, layerIndex);
-        if (_eanimation == EANIMATION.DEATH)
-        {
-            Debug.Log("사망실행");
-        }
         GetController(animator.transform.parent.gameObject)?.ActiveExitAnimation(_eanimation);
     }
 }
