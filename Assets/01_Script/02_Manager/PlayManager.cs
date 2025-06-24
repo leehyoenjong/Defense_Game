@@ -10,6 +10,8 @@ public class PlayManager : MonoBehaviour
     public static Action _play_stageclear; //TODO: 스테이지 클리어 처리 필요 
     public static PlayManager instance;
 
+    [SerializeField] SO_ChapterData _chapterdata;
+    public St_ChapterData GetCurrentChapterData() => _chapterdata.GetChapterData(_current_chapter_id);
     //챕터 및 스테이지 아이디
     public int _current_chapter_id;
     public int _current_stage_id;

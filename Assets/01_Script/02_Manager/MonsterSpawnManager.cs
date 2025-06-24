@@ -5,12 +5,11 @@ using UnityEngine;
 
 public class MonsterSpawnManager : MonoBehaviour
 {
-    [SerializeField] SO_ChapterData _chapterdata;
     [SerializeField] Transform[] _protectpoint;
     [SerializeField] Transform[] _createpoint;
 
-    List<Monster_Base> _active_monsterlist = new List<Monster_Base>();
     public static Action<Monster_Base> _monster_die_animation_exit;
+    List<Monster_Base> _active_monsterlist = new List<Monster_Base>();
     const float NEXTSTAGETIME = 60f;//죽은 몬스터 수와 상관없이 60초마다 몬스터 생성
 
     Vector2 MAXDOWNPOINT = new Vector2(-4.6f, -1.2f);
@@ -31,10 +30,10 @@ public class MonsterSpawnManager : MonoBehaviour
 
     async UniTaskVoid CreateMonster()
     {
+
         while (true)
         {
-            var currentchapterid = PlayManager.instance._current_chapter_id;
-            var currentchapterdata = _chapterdata.GetChapterData(currentchapterid);
+            var currentchapterdata = PlayManager.instance.GetCurrentChapterData();
 
             //더이상 챕터 없을 경우 종료
             if (currentchapterdata._stagedata == null || currentchapterdata._stagedata.Count <= 0)
