@@ -14,6 +14,7 @@ public abstract class BaseNPC : MonoBehaviour
 
     //기본 맴버변수 
     protected int _current_hp;
+    protected bool _isdie;
     protected St_Status _status;
 
 
@@ -27,6 +28,7 @@ public abstract class BaseNPC : MonoBehaviour
         //애니메이션 관련
         if (_animationController)
         {
+            _die_event += () => _isdie = true;
             _die_event += () => PlayAnimation(EANIMATION.DEATH);
             _hit_event += () => PlayAnimation(EANIMATION.HIT);
             _animationController.AddExitAnimationAction(EANIMATION.DEATH, OnRelease);
@@ -101,7 +103,7 @@ public abstract class BaseNPC : MonoBehaviour
         _current_hp -= target_damage;
         _hit_event?.Invoke();
 
-        if (_current_hp <= 0)
+        if (_current_hp <= 0 && _isdie == false)
         {
             NPC_Die();
         }

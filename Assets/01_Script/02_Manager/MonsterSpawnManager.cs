@@ -30,15 +30,14 @@ public class MonsterSpawnManager : MonoBehaviour
 
     async UniTaskVoid CreateMonster()
     {
+        var currentchapterdata = PlayManager.instance.GetCurrentChapterData();
 
         while (true)
         {
-            var currentchapterdata = PlayManager.instance.GetCurrentChapterData();
-
-            //더이상 챕터 없을 경우 종료
+            //더 이상 진행할 챕터 없을 경우 종료
             if (currentchapterdata._stagedata == null || currentchapterdata._stagedata.Count <= 0)
             {
-                PlayManager._player_end?.Invoke();
+                PlayManager._play_stage_allclear?.Invoke();
                 return;
             }
 

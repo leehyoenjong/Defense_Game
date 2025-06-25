@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ProtectObject : BaseNPC
 {
-    public static event Action _protectobject_death;
     [SerializeField] HpBarController_Text _hpbarController_text;
 
     protected override void Start()
@@ -26,6 +25,6 @@ public class ProtectObject : BaseNPC
     protected override void NPC_Die()
     {
         base.NPC_Die();
-        _protectobject_death?.Invoke();
+        PlayManager._play_gameover?.Invoke();
     }
 }
