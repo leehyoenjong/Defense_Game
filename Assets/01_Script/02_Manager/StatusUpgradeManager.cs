@@ -5,7 +5,7 @@ public class StatusUpgradeManager : MonoBehaviour
 {
     public static StatusUpgradeManager instance;
 
-    Dictionary<ESTATUSUPGRADE, int> _statusupgrade = new Dictionary<ESTATUSUPGRADE, int>();
+    Dictionary<int, Dictionary<ESTATUSUPGRADE, int>> _statusupgrade = new Dictionary<int, Dictionary<ESTATUSUPGRADE, int>>();
 
     [SerializeField]
     List<float> _maxlevelvalue = new List<float>()
@@ -32,13 +32,18 @@ public class StatusUpgradeManager : MonoBehaviour
         UI_Btn_Status_Upgrade._statusupgrade_event += StatusUpgrade;
     }
 
-    public (int level, float values) GetStatusUpgrade(ESTATUSUPGRADE estatusupgrade)
+    public (int level, float values) GetStatusUpgrade(int herolistidx, ESTATUSUPGRADE estatusupgrade)
     {
-        if (_statusupgrade.ContainsKey(estatusupgrade) == false)
+        if (_statusupgrade.ContainsKey(herolistidx) == false)
         {
-            _statusupgrade.Add(estatusupgrade, 0);
+            _statusupgrade.Add(herolistidx, new Dictionary<ESTATUSUPGRADE, int>());
         }
-        var curlevel = _statusupgrade[estatusupgrade];
+        if (_statusupgrade[herolistidx].ContainsKey(estatusupgrade) == false)
+        {
+            _statusupgrade[herolistidx].Add(estatusupgrade, 0);
+        }
+
+        var curlevel = _statusupgrade[herolistidx][estatusupgrade];
 
         if (curlevel <= 0)
         {
@@ -50,20 +55,24 @@ public class StatusUpgradeManager : MonoBehaviour
         return (curlevel, percentPerLevel * (curlevel - 1));
     }
 
-    void StatusUpgrade(ESTATUSUPGRADE estatusupgrade)
+    void StatusUpgrade(int herolistidx, ESTATUSUPGRADE estatusupgrade)
     {
-        if (_statusupgrade.ContainsKey(estatusupgrade) == false)
+        if (_statusupgrade.ContainsKey(herolistidx) == false)
         {
-            _statusupgrade.Add(estatusupgrade, 0);
+            _statusupgrade.Add(herolistidx, new Dictionary<ESTATUSUPGRADE, int>());
+        }
+        if (_statusupgrade[herolistidx].ContainsKey(estatusupgrade) == false)
+        {
+            _statusupgrade[herolistidx].Add(estatusupgrade, 0);
         }
 
-        var nextlevel = _statusupgrade[estatusupgrade] + 1;
+        var nextlevel = _statusupgrade[herolistidx][estatusupgrade] + 1;
         if (UpgradeCointSetting(nextlevel) == false)
         {
             //TODO: 돈 없다는 팝업 띄우기
             return;
         }
-        _statusupgrade[estatusupgrade]++;
+        _statusupgrade[herolistidx][estatusupgrade]++;
     }
 
     //TODO: 추후 데이터 테이블을 이용해서 비용 할 수 있도록 개선 필요

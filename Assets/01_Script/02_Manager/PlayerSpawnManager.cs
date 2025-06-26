@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class PlayerSpawnManager : MonoBehaviour
 {
+    public static PlayerSpawnManager instance;
     [SerializeField] Transform[] _playerpoint;
+    List<Player_Base> _herolist = new List<Player_Base>();
+    public List<Player_Base> GetHeroList() => _herolist;
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void OnEnable()
     {
@@ -30,7 +38,11 @@ public class PlayerSpawnManager : MonoBehaviour
 
             var createpoint = _playerpoint[userherodata[i]._heropoint];
             var createhero = Instantiate<GameObject>(player._playerobject);
-            createhero.GetComponent<Player_Base>().OnSpawn(createpoint.position);
+
+            var hero = createhero.GetComponent<Player_Base>();
+            hero.OnSpawn(createpoint.position);
+            hero.IDSetting(userherodata[i]._heroid);
+            _herolist.Add(hero);
         }
     }
 }

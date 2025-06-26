@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerlist:
   - _player_id: 1
+    _name: "\uC774\uB984\uC5C6\uC74C"
+    _icon: {fileID: 1572034964, guid: f36a3328d5d99de4096650ac8dfe60cf, type: 3}
     _playerobject: {fileID: 8119325562826731349, guid: 52ce9d63c030e4abbb82182945a22e15, type: 3}

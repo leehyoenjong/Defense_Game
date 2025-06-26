@@ -16,6 +16,7 @@ public abstract class BaseNPC : MonoBehaviour
     protected int _current_hp;
     protected bool _isdie;
     protected St_Status _status;
+    public St_Status GetStatus() => _status;
 
 
     //이벤트 변수들
