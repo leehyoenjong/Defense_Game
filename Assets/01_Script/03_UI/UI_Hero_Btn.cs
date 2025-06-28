@@ -14,6 +14,16 @@ public class UI_Hero_Btn : MonoBehaviour
     Player_Base _heroclass;
     public static event Action<int> _hero_click_event;
 
+    void OnDisable()
+    {
+        StatusUpgradeManager._statusupgrade_event -= Init;
+    }
+
+    void OnEnable()
+    {
+        StatusUpgradeManager._statusupgrade_event += Init;
+    }
+
     public void Init(int heroid)
     {
         //현재 필드에 있는 영웅들 리스트를 가져와 아이디 매칭 
@@ -32,7 +42,10 @@ public class UI_Hero_Btn : MonoBehaviour
         var hero_origindata = PlayManager.instance.GetHeroData(_heroclass.GetID());
         _name.text = hero_origindata._name;
         _icon.sprite = hero_origindata._icon;
-        _status.text = string.Format(STATUSDATA, _heroclass.GetStatus()._damge, _heroclass.GetStatus()._critical, _heroclass.GetStatus()._critical_damage);
+
+        var criticalper = _heroclass.GetStatus()._critical * 100;
+        var criticaldamageper = _heroclass.GetStatus()._critical_damage * 100;
+        _status.text = string.Format(STATUSDATA, _heroclass.GetStatus()._damge, criticalper.ToString("F1"), criticaldamageper.ToString("F1"));
     }
 
     public void Btn_Click()

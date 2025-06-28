@@ -26,9 +26,13 @@ public class Player_Base : BaseNPC
             return;
         }
 
-        // 업그레이드 차이값을 가져와서 적용
-        var upgradeDifference = StatusUpgradeManager.instance.GetStatusUpgradeDifference(_id);
-        base.AddStatus(upgradeDifference);
+        // 1. 이전 업그레이드 값 제거
+        var beforeUpgradeStatus = StatusUpgradeManager.instance.GetStatusBeforeUpgradeAsStatus(_id);
+        base.RemoveStatus(beforeUpgradeStatus);
+
+        // 2. 새로운 업그레이드 값 적용
+        var newUpgradeStatus = StatusUpgradeManager.instance.GetStatusUpgradeAsStatus(_id);
+        base.AddStatus(newUpgradeStatus);
     }
 
     void AttackAreaView(int heroid)

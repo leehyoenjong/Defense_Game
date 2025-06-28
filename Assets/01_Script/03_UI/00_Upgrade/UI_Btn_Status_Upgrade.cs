@@ -43,9 +43,39 @@ public class UI_Btn_Status_Upgrade : MonoBehaviour
 
     void LevelAndValueSetting()
     {
-        var statusresult = StatusUpgradeManager.instance.GetStatusUpgrade(_heroclass.GetID(), _estatusupgradekind);
-        _statusvalue.text = _estatusupgradekind + ": " + statusresult.values.ToString("F1");
-        _level.text = "Lv. " + statusresult.level.ToString();
+        var heroStatus = _heroclass.GetStatus();
+        var upgradeLevel = StatusUpgradeManager.instance.GetStatusUpgrade(_heroclass.GetID(), _estatusupgradekind);
+
+        float statusValue = 0f;
+        string statusText = "";
+
+        // _estatusupgradekind에 따라 해당하는 status 값 가져오기
+        switch (_estatusupgradekind)
+        {
+            case ESTATUSUPGRADE.ATTACKPER:
+                statusValue = heroStatus._damge;
+                statusText = _estatusupgradekind + ": " + statusValue.ToString("F1");
+                break;
+            case ESTATUSUPGRADE.CRITICALPER:
+                statusValue = heroStatus._critical * 100; // 퍼센트로 표시
+                statusText = _estatusupgradekind + ": " + statusValue.ToString("F1") + "%";
+                break;
+            case ESTATUSUPGRADE.CRITICALDAMAGE:
+                statusValue = heroStatus._critical_damage * 100; // 퍼센트로 표시
+                statusText = _estatusupgradekind + ": " + statusValue.ToString("F1") + "%";
+                break;
+            case ESTATUSUPGRADE.PROTECTMAXHPPER:
+                statusValue = heroStatus._hp;
+                statusText = _estatusupgradekind + ": " + statusValue.ToString("F1");
+                break;
+            case ESTATUSUPGRADE.PROTECTARMOR:
+                statusValue = heroStatus._armor;
+                statusText = _estatusupgradekind + ": " + statusValue.ToString("F1");
+                break;
+        }
+
+        _statusvalue.text = statusText;
+        _level.text = "Lv. " + upgradeLevel.level.ToString();
     }
 
     public void Btn_EvetnTrigger_PointDown()

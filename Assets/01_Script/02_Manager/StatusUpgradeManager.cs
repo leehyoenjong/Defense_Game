@@ -32,8 +32,18 @@ public class StatusUpgradeManager : MonoBehaviour
     void Start()
     {
         _statusupgrade.Clear();
+    }
+
+    void OnEnable()
+    {
         UI_Btn_Status_Upgrade._statusupgrade_event += StatusLvUpgrade;
     }
+
+    void OnDisable()
+    {
+        UI_Btn_Status_Upgrade._statusupgrade_event -= StatusLvUpgrade;
+    }
+
 
     public (int level, float values) GetStatusUpgrade(int heroid, ESTATUSUPGRADE estatusupgrade)
     {
@@ -126,11 +136,8 @@ public class StatusUpgradeManager : MonoBehaviour
     /// </summary>
     public St_Status GetStatusUpgradeDifference(int heroid)
     {
-        // PlayManager에서 기본 헤로 데이터 가져오기
-        var heroData = PlayManager.instance.GetHeroData(heroid);
-        var heroObject = heroData._playerobject;
-        var baseNPC = heroObject.GetComponent<BaseNPC>();
-        var baseStatus = baseNPC._so_npc._status;
+        var heroobejct = PlayerSpawnManager.instance.GetHeroList().Find(x => x.GetID() == heroid);
+        var baseStatus = heroobejct._so_npc._status;
 
         var differenceStatus = new St_Status();
 
@@ -162,6 +169,81 @@ public class StatusUpgradeManager : MonoBehaviour
         differenceStatus._critical_damage = currentCriticalDamageValue - beforeCriticalDamageValue;
 
         return differenceStatus;
+    }
+
+    /// <summary>
+    /// 현재 업그레이드 값을 St_Status로 반환
+    /// </summary>
+    public St_Status GetStatusUpgradeAsStatus(int heroid)
+    {
+        var heroobejct = PlayerSpawnManager.instance.GetHeroList().Find(x => x.GetID() == heroid);
+        var baseStatus = heroobejct._so_npc._status;
+
+        var upgradeStatus = new St_Status();
+
+        // 각 업그레이드 타입별로 처리
+        var attackUpgrade = GetStatusUpgrade(heroid, ESTATUSUPGRADE.ATTACKPER);
+        var criticalUpgrade = GetStatusUpgrade(heroid, ESTATUSUPGRADE.CRITICALPER);
+        var criticalDamageUpgrade = GetStatusUpgrade(heroid, ESTATUSUPGRADE.CRITICALDAMAGE);
+
+        // 공격력: 기본값에 퍼센트 적용
+        if (attackUpgrade.values > 0)
+        {
+            upgradeStatus._damge = Mathf.FloorToInt(baseStatus._damge * (attackUpgrade.values / 100f));
+        }
+
+        // 크리티컬 확률: 퍼센트 값 그대로 적용
+        if (criticalUpgrade.values > 0)
+        {
+            upgradeStatus._critical = criticalUpgrade.values / 100f;
+        }
+
+        // 크리티컬 데미지: 퍼센트 값 그대로 적용
+        if (criticalDamageUpgrade.values > 0)
+        {
+            upgradeStatus._critical_damage = criticalDamageUpgrade.values / 100f;
+        }
+
+        return upgradeStatus;
+    }
+
+    /// <summary>
+    /// 이전 업그레이드 값을 St_Status로 반환
+    /// </summary>
+    public St_Status GetStatusBeforeUpgradeAsStatus(int heroid)
+    {
+        // PlayManager에서 기본 헤로 데이터 가져오기
+        var heroData = PlayManager.instance.GetHeroData(heroid);
+        var heroObject = heroData._playerobject;
+        var baseNPC = heroObject.GetComponent<BaseNPC>();
+        var baseStatus = baseNPC._so_npc._status;
+
+        var beforeUpgradeStatus = new St_Status();
+
+        // 각 업그레이드 타입별로 처리
+        var beforeAttack = GetStatusBeforeUpgrade(heroid, ESTATUSUPGRADE.ATTACKPER);
+        var beforeCritical = GetStatusBeforeUpgrade(heroid, ESTATUSUPGRADE.CRITICALPER);
+        var beforeCriticalDamage = GetStatusBeforeUpgrade(heroid, ESTATUSUPGRADE.CRITICALDAMAGE);
+
+        // 공격력: 기본값에 퍼센트 적용
+        if (beforeAttack.values > 0)
+        {
+            beforeUpgradeStatus._damge = Mathf.FloorToInt(baseStatus._damge * (beforeAttack.values / 100f));
+        }
+
+        // 크리티컬 확률: 퍼센트 값 그대로 적용
+        if (beforeCritical.values > 0)
+        {
+            beforeUpgradeStatus._critical = beforeCritical.values / 100f;
+        }
+
+        // 크리티컬 데미지: 퍼센트 값 그대로 적용
+        if (beforeCriticalDamage.values > 0)
+        {
+            beforeUpgradeStatus._critical_damage = beforeCriticalDamage.values / 100f;
+        }
+
+        return beforeUpgradeStatus;
     }
 }
 public enum ESTATUSUPGRADE

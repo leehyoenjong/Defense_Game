@@ -243,7 +243,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "ATTACK             \nCRITICALPER      \nCRITICALDAMAGE  "
+  m_text: 'ATTACK
+
+    CRT_PER
+
+    CRT_DM_PER'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ff8b00cdba497443c8c0559324dfc60c, type: 2}
   m_sharedMaterial: {fileID: 616189005384500337, guid: ff8b00cdba497443c8c0559324dfc60c, type: 2}
@@ -423,8 +427,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 34.258484, y: -34.649002}
-  m_SizeDelta: {x: -128.5738, y: -69.298}
+  m_AnchoredPosition: {x: 30.9864, y: -34.649002}
+  m_SizeDelta: {x: -135.118, y: -69.298}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7771893163651493941
 CanvasRenderer:
@@ -454,7 +458,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "- {0}% \n- {0}%\n- {0}%"
+  m_text: "- {0} \n- {0}%\n- {0}%"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ff8b00cdba497443c8c0559324dfc60c, type: 2}
   m_sharedMaterial: {fileID: 616189005384500337, guid: ff8b00cdba497443c8c0559324dfc60c, type: 2}
