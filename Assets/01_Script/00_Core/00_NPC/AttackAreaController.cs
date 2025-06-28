@@ -6,8 +6,21 @@ public class AttackAreaController : MonoBehaviour
 {
     [SerializeField] LayerMask _targetlayer;
     [SerializeField] float _radius;
+    [SerializeField] LineRenderer _lineRenderer;
+    [SerializeField] bool _showAttackArea = false;
+    [SerializeField] Color _attackAreaColor = Color.red;
+    [SerializeField] int _segments = 36;
+
     public event Action<BaseNPC, ESKILLTRIGGER> _enter_active_skill_event;
     BaseNPC _targetnpc;
+
+    private void Start()
+    {
+        SetupLineRenderer();
+        AttackAreaView();
+        SetAttackAreaVisibility_Disable();
+        UI_Status._status_disable_event += SetAttackAreaVisibility_Disable;
+    }
 
     private void Update()
     {
@@ -40,6 +53,68 @@ public class AttackAreaController : MonoBehaviour
             _enter_active_skill_event?.Invoke(_targetnpc, ESKILLTRIGGER.AreaEnter);
             return;
         }
+    }
+
+    void SetupLineRenderer()
+    {
+        if (_lineRenderer == null)
+        {
+            _lineRenderer = GetComponent<LineRenderer>();
+            if (_lineRenderer == null)
+            {
+                _lineRenderer = gameObject.AddComponent<LineRenderer>();
+            }
+        }
+
+        _lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        _lineRenderer.startColor = _attackAreaColor;
+        _lineRenderer.endColor = _attackAreaColor;
+        _lineRenderer.startWidth = 0.05f;
+        _lineRenderer.endWidth = 0.05f;
+        _lineRenderer.positionCount = _segments + 1;
+        _lineRenderer.useWorldSpace = false;
+        _lineRenderer.sortingOrder = 10;
+    }
+
+    void AttackAreaView()
+    {
+        //게임 뷰에서 공격범위가 보이도록 추가 
+        if (_lineRenderer == null)
+            return;
+
+        if (!_showAttackArea)
+        {
+            _lineRenderer.enabled = false;
+            return;
+        }
+
+        _lineRenderer.enabled = true;
+
+        // 원형 공격 범위를 LineRenderer로 그리기
+        float angleStep = 360f / _segments;
+
+        for (int i = 0; i <= _segments; i++)
+        {
+            float angle = i * angleStep * Mathf.Deg2Rad;
+            Vector3 point = new Vector3(
+                Mathf.Cos(angle) * _radius,
+                Mathf.Sin(angle) * _radius,
+                0f
+            );
+            _lineRenderer.SetPosition(i, point);
+        }
+    }
+
+    void SetAttackAreaVisibility_Disable()
+    {
+        _showAttackArea = false;
+        AttackAreaView();
+    }
+
+    public void SetAttackAreaVisibility_Active()
+    {
+        _showAttackArea = true;
+        AttackAreaView();
     }
 
     private void OnDrawGizmos()

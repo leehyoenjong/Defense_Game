@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: SO_ProtectObject
   m_EditorClassIdentifier: 
   _status:
-    _hp: 100
+    _hp: 1000000
     _damge: 0
     _armor: 10
     _critical: 0
     _critical_damage: 0
   _skill_Attack: []
   _skill_buff: []
+  _diegold: 0

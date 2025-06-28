@@ -50,5 +50,8 @@ TagManager:
   - name: NPC
     uniqueID: 3468387281
     locked: 0
+  - name: AttackArea
+    uniqueID: 3486558233
+    locked: 0
   m_RenderingLayers:
   - Default

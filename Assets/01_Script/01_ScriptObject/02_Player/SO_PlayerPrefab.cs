@@ -7,9 +7,9 @@ public class SO_PlayerPrefab : ScriptableObject
 {
     [SerializeField] List<St_PlayerList> _playerlist;
 
-    public St_PlayerList GetHeroList(int playerid)
+    public St_PlayerList GetHeroList(int heroid)
     {
-        var playerdata = _playerlist.Find(x => x._player_id == playerid);
+        var playerdata = _playerlist.Find(x => x._player_id == heroid);
         return playerdata;
     }
 }

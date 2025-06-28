@@ -68,7 +68,7 @@ public abstract class BaseNPC : MonoBehaviour
         target_npc.Hp_Update(my_damage);
     }
 
-    public void AddStatus(St_Status addstatus)
+    public virtual void AddStatus(St_Status addstatus)
     {
         _status._armor += addstatus._armor;
         _status._damge += addstatus._damge;
@@ -77,7 +77,7 @@ public abstract class BaseNPC : MonoBehaviour
         _status._hp += addstatus._hp;
     }
 
-    public void RemoveStatus(St_Status removestatus)
+    public virtual void RemoveStatus(St_Status removestatus)
     {
         _status._armor -= removestatus._armor;
         _status._damge -= removestatus._damge;

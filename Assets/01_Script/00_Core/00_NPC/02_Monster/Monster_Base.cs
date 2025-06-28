@@ -23,6 +23,7 @@ public class Monster_Base : BaseNPC
     protected override void NPC_Die()
     {
         base.NPC_Die();
+        _moveController.ReSetting();
         GoldManager._gold_add_event?.Invoke(_so_npc._diegold);
     }
 

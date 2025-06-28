@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,7 @@ public class StatusUpgradeManager : MonoBehaviour
     public static StatusUpgradeManager instance;
 
     Dictionary<int, Dictionary<ESTATUSUPGRADE, int>> _statusupgrade = new Dictionary<int, Dictionary<ESTATUSUPGRADE, int>>();
+    public static event Action<int> _statusupgrade_event;
 
     [SerializeField]
     List<float> _maxlevelvalue = new List<float>()
@@ -29,21 +31,22 @@ public class StatusUpgradeManager : MonoBehaviour
 
     void Start()
     {
-        UI_Btn_Status_Upgrade._statusupgrade_event += StatusUpgrade;
+        _statusupgrade.Clear();
+        UI_Btn_Status_Upgrade._statusupgrade_event += StatusLvUpgrade;
     }
 
-    public (int level, float values) GetStatusUpgrade(int herolistidx, ESTATUSUPGRADE estatusupgrade)
+    public (int level, float values) GetStatusUpgrade(int heroid, ESTATUSUPGRADE estatusupgrade)
     {
-        if (_statusupgrade.ContainsKey(herolistidx) == false)
+        if (_statusupgrade.ContainsKey(heroid) == false)
         {
-            _statusupgrade.Add(herolistidx, new Dictionary<ESTATUSUPGRADE, int>());
+            _statusupgrade.Add(heroid, new Dictionary<ESTATUSUPGRADE, int>());
         }
-        if (_statusupgrade[herolistidx].ContainsKey(estatusupgrade) == false)
+        if (_statusupgrade[heroid].ContainsKey(estatusupgrade) == false)
         {
-            _statusupgrade[herolistidx].Add(estatusupgrade, 0);
+            _statusupgrade[heroid].Add(estatusupgrade, 0);
         }
 
-        var curlevel = _statusupgrade[herolistidx][estatusupgrade];
+        var curlevel = _statusupgrade[heroid][estatusupgrade];
 
         if (curlevel <= 0)
         {
@@ -55,29 +58,55 @@ public class StatusUpgradeManager : MonoBehaviour
         return (curlevel, percentPerLevel * (curlevel - 1));
     }
 
-    void StatusUpgrade(int herolistidx, ESTATUSUPGRADE estatusupgrade)
+    public (int level, float values) GetStatusBeforeUpgrade(int heroid, ESTATUSUPGRADE estatusupgrade)
     {
-        if (_statusupgrade.ContainsKey(herolistidx) == false)
+        if (_statusupgrade.ContainsKey(heroid) == false)
         {
-            _statusupgrade.Add(herolistidx, new Dictionary<ESTATUSUPGRADE, int>());
+            _statusupgrade.Add(heroid, new Dictionary<ESTATUSUPGRADE, int>());
         }
-        if (_statusupgrade[herolistidx].ContainsKey(estatusupgrade) == false)
+        if (_statusupgrade[heroid].ContainsKey(estatusupgrade) == false)
         {
-            _statusupgrade[herolistidx].Add(estatusupgrade, 0);
+            _statusupgrade[heroid].Add(estatusupgrade, 0);
         }
 
-        var nextlevel = _statusupgrade[herolistidx][estatusupgrade] + 1;
+        var curlevel = _statusupgrade[heroid][estatusupgrade];
+        curlevel--;
+
+        if (curlevel <= 0)
+        {
+            return (0, 0);
+        }
+
+        //최대와 현재 레벨과 최대 상승값을 이용해 일정한 값이 오르도록 수식작성
+        float percentPerLevel = _maxlevelvalue[(int)estatusupgrade] / (MAXLEVEL - 1);
+        return (curlevel, percentPerLevel * (curlevel - 1));
+    }
+
+    void StatusLvUpgrade(int heroid, ESTATUSUPGRADE estatusupgrade)
+    {
+        if (_statusupgrade.ContainsKey(heroid) == false)
+        {
+            _statusupgrade.Add(heroid, new Dictionary<ESTATUSUPGRADE, int>());
+        }
+        if (_statusupgrade[heroid].ContainsKey(estatusupgrade) == false)
+        {
+            _statusupgrade[heroid].Add(estatusupgrade, 0);
+        }
+
+        var nextlevel = _statusupgrade[heroid][estatusupgrade] + 1;
         if (UpgradeCointSetting(nextlevel) == false)
         {
             //TODO: 돈 없다는 팝업 띄우기
             return;
         }
-        _statusupgrade[herolistidx][estatusupgrade]++;
+        _statusupgrade[heroid][estatusupgrade]++;
+        _statusupgrade_event?.Invoke(heroid);
     }
 
     //TODO: 추후 데이터 테이블을 이용해서 비용 할 수 있도록 개선 필요
     bool UpgradeCointSetting(int nextlevel)
     {
+        return true;
         var nextlevelcoinvalue = MAXCOINVALUE / MAXLEVEL;
         var currentupgradecoinvalue = nextlevelcoinvalue * nextlevel;
 
@@ -91,14 +120,56 @@ public class StatusUpgradeManager : MonoBehaviour
         usercoin -= currentupgradecoinvalue;
         return true;
     }
-}
 
+    /// <summary>
+    /// 업그레이드 차이값을 계산하여 반환 (새로운 값 - 이전 값)
+    /// </summary>
+    public St_Status GetStatusUpgradeDifference(int heroid)
+    {
+        // PlayManager에서 기본 헤로 데이터 가져오기
+        var heroData = PlayManager.instance.GetHeroData(heroid);
+        var heroObject = heroData._playerobject;
+        var baseNPC = heroObject.GetComponent<BaseNPC>();
+        var baseStatus = baseNPC._so_npc._status;
+
+        var differenceStatus = new St_Status();
+
+        // 이전과 현재 업그레이드 값 가져오기
+        var beforeAttack = GetStatusBeforeUpgrade(heroid, ESTATUSUPGRADE.ATTACKPER);
+        var currentAttack = GetStatusUpgrade(heroid, ESTATUSUPGRADE.ATTACKPER);
+
+        var beforeCritical = GetStatusBeforeUpgrade(heroid, ESTATUSUPGRADE.CRITICALPER);
+        var currentCritical = GetStatusUpgrade(heroid, ESTATUSUPGRADE.CRITICALPER);
+
+        var beforeCriticalDamage = GetStatusBeforeUpgrade(heroid, ESTATUSUPGRADE.CRITICALDAMAGE);
+        var currentCriticalDamage = GetStatusUpgrade(heroid, ESTATUSUPGRADE.CRITICALDAMAGE);
+
+        // 공격력 차이 계산
+        int beforeAttackValue = beforeAttack.values > 0 ?
+            Mathf.FloorToInt(baseStatus._damge * (beforeAttack.values / 100f)) : 0;
+        int currentAttackValue = currentAttack.values > 0 ?
+            Mathf.FloorToInt(baseStatus._damge * (currentAttack.values / 100f)) : 0;
+        differenceStatus._damge = currentAttackValue - beforeAttackValue;
+
+        // 크리티컬 확률 차이 계산
+        float beforeCriticalValue = beforeCritical.values > 0 ? (beforeCritical.values / 100f) : 0;
+        float currentCriticalValue = currentCritical.values > 0 ? (currentCritical.values / 100f) : 0;
+        differenceStatus._critical = currentCriticalValue - beforeCriticalValue;
+
+        // 크리티컬 데미지 차이 계산
+        float beforeCriticalDamageValue = beforeCriticalDamage.values > 0 ? (beforeCriticalDamage.values / 100f) : 0;
+        float currentCriticalDamageValue = currentCriticalDamage.values > 0 ? (currentCriticalDamage.values / 100f) : 0;
+        differenceStatus._critical_damage = currentCriticalDamageValue - beforeCriticalDamageValue;
+
+        return differenceStatus;
+    }
+}
 public enum ESTATUSUPGRADE
 {
     NONE,
     ATTACKPER,
-    CIRITICALPER,
-    CIRITICALDAMAGE,
+    CRITICALPER,
+    CRITICALDAMAGE,
     PROTECTMAXHPPER,
     PROTECTARMOR
 }

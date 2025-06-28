@@ -1,3 +1,5 @@
+using System;
+using Mono.Cecil.Cil;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,34 +11,33 @@ public class UI_Hero_Btn : MonoBehaviour
     [SerializeField] Image _icon;
 
     const string STATUSDATA = "- {0}\n- {1}%\n- {2}%";
-    int HeroIDX;
+    Player_Base _heroclass;
+    public static event Action<int> _hero_click_event;
 
-    public void Init(int idx)
+    public void Init(int heroid)
     {
+        //현재 필드에 있는 영웅들 리스트를 가져와 아이디 매칭 
         var herolist = PlayerSpawnManager.instance.GetHeroList();
-        if (idx >= herolist.Count)
+        var heroclass = herolist.Find(x => x.GetID() == heroid);
+        if (heroclass == null)
         {
             this.gameObject.SetActive(false);
             return;
         }
-        HeroIDX = idx;
-        var userherodata = herolist[idx];
-        var heroid = userherodata.GetID();
-        if (heroid == 0)
-        {
-            this.gameObject.SetActive(false);
-            return;
-        }
+
+        _heroclass = heroclass;
         this.gameObject.SetActive(true);
 
-        var heroorigindata = PlayManager.instance.GetHeroData(heroid);
-        _name.text = heroorigindata._name;
-        _status.text = string.Format(STATUSDATA, userherodata.GetStatus()._damge, userherodata.GetStatus()._critical, userherodata.GetStatus()._critical_damage);
-        _icon.sprite = heroorigindata._icon;
+        //영웅의 기본 데이터를 가져와 이름, 아이콘을 매칭하고 스테이터스는 필드에 있는 거에서 매칭하기
+        var hero_origindata = PlayManager.instance.GetHeroData(_heroclass.GetID());
+        _name.text = hero_origindata._name;
+        _icon.sprite = hero_origindata._icon;
+        _status.text = string.Format(STATUSDATA, _heroclass.GetStatus()._damge, _heroclass.GetStatus()._critical, _heroclass.GetStatus()._critical_damage);
     }
 
     public void Btn_Click()
     {
-        UI_Status._heroidx = () => HeroIDX;
+        UI_Status._heroclass = () => _heroclass;
+        _hero_click_event?.Invoke(_heroclass.GetID());
     }
 }

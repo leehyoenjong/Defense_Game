@@ -53,6 +53,7 @@ public class PlayManager : MonoBehaviour
 
     async UniTaskVoid PlayGame()
     {
+        await UniTask.WaitForEndOfFrame();
         _play_ready_event?.Invoke();
         await UniTask.WaitForSeconds(1f, cancellationToken: this.GetCancellationTokenOnDestroy());
         _play_event?.Invoke();
