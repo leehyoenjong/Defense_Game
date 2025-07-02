@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -17,6 +18,13 @@ public abstract class BaseNPC : MonoBehaviour
     protected bool _isdie;
     protected St_Status _status;
     public St_Status GetStatus() => _status;
+
+    //스킬
+    protected List<SO_Skill_Attack> _active_attackskill = new List<SO_Skill_Attack>();
+    public List<SO_Skill_Attack> GetActiveAttackSkill() => _active_attackskill;
+
+    protected List<SO_Skill_Buff> _active_buffkskill = new List<SO_Skill_Buff>();
+    public List<SO_Skill_Buff> GetActiveBuffSkill() => _active_buffkskill;
 
 
     //이벤트 변수들
@@ -128,5 +136,27 @@ public abstract class BaseNPC : MonoBehaviour
     public virtual void PlayAnimation(EANIMATION eanimation, bool isaction)
     {
         _animationController.PlayAnimation(eanimation, isaction);
+    }
+
+    public void AddActiveSkill(BaseSkill choseskill)
+    {
+        if (choseskill._skillkind == ESKILLKIND.ATTACK)
+        {
+            var idx = _active_attackskill.FindIndex(x => x._skillInfo._mid == choseskill._skillInfo._mid);
+            if (idx != -1)
+            {
+                _active_attackskill.RemoveAt(idx);
+            }
+            _active_attackskill.Add(choseskill as SO_Skill_Attack);
+        }
+        else
+        {
+            var idx = _active_buffkskill.FindIndex(x => x._skillInfo._mid == choseskill._skillInfo._mid);
+            if (idx != -1)
+            {
+                _active_buffkskill.RemoveAt(idx);
+            }
+            _active_buffkskill.Add(choseskill as SO_Skill_Buff);
+        }
     }
 }

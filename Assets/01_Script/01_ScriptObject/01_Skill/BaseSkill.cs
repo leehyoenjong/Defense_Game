@@ -5,7 +5,10 @@ public abstract class BaseSkill : ScriptableObject
 {
 
     [Header("스킬 정보")]
+    public int _level;
     public St_SkillInfo _skillInfo;
+    public ESKILLKIND _skillkind;
+
     [Header("실행할 애니메이션")]
     public EANIMATION _eanimation = EANIMATION.NONE;
     [Header("발동시킬 트리거")]
@@ -13,6 +16,8 @@ public abstract class BaseSkill : ScriptableObject
     //발동할 애니메이션
     [Header("내 위치에 나타나는 이펙트 오브젝트")]
     public GameObject[] _active_skillEffect;
+
+    public const int MAXLEVEL = 3;
 
     /// <summary>
     /// <summary>
@@ -45,4 +50,11 @@ public struct St_SkillInfo
 
     //이 스킬 사용 후 다음 스킬 사용까지 딜레이 시간
     public float _next_skilldelaytime;
+}
+
+public enum ESKILLKIND
+{
+    NONE,
+    ATTACK,
+    BUFF
 }

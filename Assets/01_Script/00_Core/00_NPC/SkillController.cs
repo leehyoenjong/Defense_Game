@@ -70,7 +70,7 @@ public class SkillController : MonoBehaviour
         }
 
         //스킬 발동 
-        _me._so_npc._skill_Attack[_current_attack_skill_index].ActiveSkill(_me, target);
+        _me.GetActiveAttackSkill()[_current_attack_skill_index].ActiveSkill(_me, target);
         SkillCoolTime(skillinfo).Forget();
         _skill_attack_event?.Invoke();
         AddAttackSkillIndex();
