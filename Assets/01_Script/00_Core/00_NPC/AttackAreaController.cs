@@ -26,7 +26,7 @@ public class AttackAreaController : MonoBehaviour
     {
         if (_targetnpc != null && _targetnpc.CheckDie() == false)
         {
-            _enter_active_skill_event?.Invoke(_targetnpc, ESKILLTRIGGER.AreaEnter);
+            _enter_active_skill_event?.Invoke(_targetnpc, ESKILLTRIGGER.AREAENTER);
             return;
         }
 
@@ -50,7 +50,7 @@ public class AttackAreaController : MonoBehaviour
             }
 
             _targetnpc = targetnpc;
-            _enter_active_skill_event?.Invoke(_targetnpc, ESKILLTRIGGER.AreaEnter);
+            _enter_active_skill_event?.Invoke(_targetnpc, ESKILLTRIGGER.AREAENTER);
             return;
         }
     }

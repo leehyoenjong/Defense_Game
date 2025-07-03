@@ -191,7 +191,7 @@ MonoBehaviour:
   _targetlayer:
     serializedVersion: 2
     m_Bits: 64
-  _radius: 3
+  _radius: 7
   _lineRenderer: {fileID: 1562766766549833141}
   _showAttackArea: 0
   _attackAreaColor: {r: 1, g: 0, b: 0, a: 1}

@@ -10,17 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80b3628114e2142809daa957ab461f61, type: 3}
-  m_Name: SO_Skill_BasicAttack
+  m_Name: SO_Skill_BasicAttack_Level3
   m_EditorClassIdentifier: 
-  _level: 0
   _skillInfo:
-    _cooltime: 0.3
+    _name: Lv.3 Basic Attack!
+    _explain: 100% Damage Up!
+    _cooltime: 1
     _duration: 0
     _mid: 1
+    _level: 3
+    _skillicon: {fileID: 21300000, guid: d2925a2baa9cf6a4bb23b70ab4be5407, type: 3}
     _next_skilldelaytime: 0
   _skillkind: 1
   _eanimation: 4
   _eskilltrigger: 1
   _active_skillEffect: []
   _target_attackeffect: []
-  _skilldamagepercent: 1
+  _skilldamagepercent: 2

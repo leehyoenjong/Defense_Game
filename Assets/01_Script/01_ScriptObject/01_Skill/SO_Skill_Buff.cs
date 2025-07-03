@@ -41,6 +41,6 @@ public class SO_Skill_Buff : BaseSkill
 public enum ESKILLTRIGGER
 {
     SPAWN,
-    AreaEnter,
+    AREAENTER,
 }
 

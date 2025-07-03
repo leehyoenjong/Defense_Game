@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ public class MonsterSpawnManager : MonoBehaviour
 
     public static Action<Monster_Base> _monster_die_animation_exit;
     List<Monster_Base> _active_monsterlist = new List<Monster_Base>();
-    const float NEXTSTAGETIME = 60f;//죽은 몬스터 수와 상관없이 60초마다 몬스터 생성
+    const float NEXTSTAGETIME = 5f;//죽은 몬스터 수와 상관없이 60초마다 몬스터 생성
 
     Vector2 MAXDOWNPOINT = new Vector2(-4.6f, -1.2f);
     Vector2 MAXUPPOINT = new Vector2(1.8f, 2.5f);
@@ -30,10 +31,11 @@ public class MonsterSpawnManager : MonoBehaviour
 
     async UniTaskVoid CreateMonster()
     {
-        var currentchapterdata = PlayManager.instance.GetCurrentChapterData();
-
         while (true)
         {
+            //현재 챕터 데이터 가져오기 
+            var currentchapterdata = PlayManager.instance.GetCurrentChapterData();
+
             //더 이상 진행할 챕터 없을 경우 종료
             if (currentchapterdata._stagedata == null || currentchapterdata._stagedata.Count <= 0)
             {
@@ -41,15 +43,15 @@ public class MonsterSpawnManager : MonoBehaviour
                 return;
             }
 
-            var stageid = PlayManager.instance._current_stage_id;
-            var stagedata = currentchapterdata._stagedata.Find(x => x._stageid == stageid);
+            //스테이지 생성
+            var stagedata = PlayManager.instance.GetCurrentStageData();
 
             //더 이상 진행할 스테이지가 없을 경우
-            if (stagedata._monsterlist == null || stagedata._monsterlist.Count <= 0)
+            if (stagedata == null || stagedata._monsterlist == null || stagedata._monsterlist.Count <= 0)
             {
                 //모든 스테이지를 다 생성한 후 몬스터가 전부 처치 되었을때 클리어 처리
                 await UniTask.WaitUntil(() => _active_monsterlist.Count <= 0, cancellationToken: this.GetCancellationTokenOnDestroy());
-                PlayManager._play_stageclear?.Invoke();
+                PlayManager._play_chapter_next?.Invoke();
                 continue;
             }
 
@@ -60,9 +62,9 @@ public class MonsterSpawnManager : MonoBehaviour
                 var monstercountlist = stagedata._monsterlist[i]._count;
                 for (int j = 0; j < monstercountlist; j++)
                 {
-                    if (stagedata._monsterlist[i]._delaytime <= 0)
+                    if (stagedata._monsterlist[i]._delaytime > 0)
                     {
-                        //60초마다 몬스터 생성
+                        //딜레이 후 몬스터 생성
                         await UniTask.WaitForSeconds(stagedata._monsterlist[i]._delaytime, cancellationToken: this.GetCancellationTokenOnDestroy());
                     }
                     var mon = Instantiate<GameObject>(stagedata._monsterlist[i]._monsterobject);
@@ -75,6 +77,7 @@ public class MonsterSpawnManager : MonoBehaviour
 
             //60초마다 몬스터 생성
             await UniTask.WaitForSeconds(NEXTSTAGETIME, cancellationToken: this.GetCancellationTokenOnDestroy());
+            PlayManager._play_stage_next?.Invoke();
         }
     }
 

@@ -6,6 +6,14 @@ public class SO_Skill_Attack : BaseSkill
     [Header("타겟 위치에 나타나는 이펙트 오브젝트")]
     [SerializeField] GameObject[] _target_attackeffect;
 
+    [Header("공격 데미지 퍼센트")]
+    [SerializeField] float _skilldamagepercent;
+
+    public int SkillDamage(int totaldamage)
+    {
+        return Mathf.CeilToInt(totaldamage * _skilldamagepercent);
+    }
+
     /// <summary>
     /// 스킬 실행
     /// </summary>
@@ -21,7 +29,8 @@ public class SO_Skill_Attack : BaseSkill
         ActiveSkillPlayAnimation(me);
 
         //데미지 주기
-        me.Target_To_Attack(target);
+        var totaldamage = SkillDamage(me.TotalDamage());
+        me.Target_To_Attack(target, totaldamage);
     }
 
     /// <summary>

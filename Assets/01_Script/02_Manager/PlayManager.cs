@@ -7,7 +7,10 @@ public class PlayManager : MonoBehaviour
     public static event Action _play_event;
     public static event Action _play_ready_event;
     public static Action _play_stage_allclear; //TODO: 모든 스테이지 클리어 처리 필요
-    public static Action _play_stageclear; //TODO: 스테이지 클리어 처리 필요 
+    public static Action _play_stage_next; //TODO: 스테이지 클리어 처리 필요 
+    public static Action<int, int> _play_stage_and_chapter_next; //TODO: 스테이지 클리어 처리 필요 
+    public static Action<int, int> _play_stage_and_chapter_start; //TODO: 스테이지 클리어 처리 필요 
+    public static Action _play_chapter_next; //TODO: 모든 챕터 생성 완료 
     public static Action _play_gameover; //TODO: 스테이지 실패 처리 
     public static PlayManager instance;
 
@@ -16,10 +19,12 @@ public class PlayManager : MonoBehaviour
     [SerializeField] SO_ChapterData _chapterdata;
     [SerializeField] GameObject _gameover;
     public St_ChapterData GetCurrentChapterData() => _chapterdata.GetChapterData(_current_chapter_id);
+    public SO_StageData GetCurrentStageData() => GetCurrentChapterData()._stagedata.Find(x => x._stageid == _current_stage_id);
+
 
     //챕터 및 스테이지 아이디
-    public int _current_chapter_id;
-    public int _current_stage_id;
+    protected int _current_chapter_id;
+    protected int _current_stage_id;
 
     const int MAXSTAGECOUNT = 10;//하나의 챕터에 총 10개의 스테이지가 존재 
 
@@ -31,15 +36,15 @@ public class PlayManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _play_stageclear += StageClear;
-        _play_stageclear += CreateGameOver;
+        _play_stage_next += StageClear;
+        _play_chapter_next += ChapterUpdate;
         _play_gameover += CreateGameOver;
     }
 
     void OnDisable()
     {
-        _play_stageclear -= StageClear;
-        _play_stageclear -= CreateGameOver;
+        _play_stage_next -= StageClear;
+        _play_chapter_next -= ChapterUpdate;
         _play_gameover -= CreateGameOver;
     }
 
@@ -55,6 +60,7 @@ public class PlayManager : MonoBehaviour
     {
         await UniTask.WaitForEndOfFrame();
         _play_ready_event?.Invoke();
+        _play_stage_and_chapter_start?.Invoke(_current_stage_id, MAXSTAGECOUNT);
         await UniTask.WaitForSeconds(1f, cancellationToken: this.GetCancellationTokenOnDestroy());
         _play_event?.Invoke();
     }
@@ -62,12 +68,14 @@ public class PlayManager : MonoBehaviour
     void StageClear()
     {
         _current_stage_id++;
+        _play_stage_and_chapter_next?.Invoke(_current_stage_id, MAXSTAGECOUNT);
+    }
 
-        if (_current_stage_id >= MAXSTAGECOUNT)
-        {
-            _current_stage_id = 0;
-            _current_chapter_id++;
-        }
+    void ChapterUpdate()
+    {
+        _current_chapter_id++;
+        _current_stage_id = 0;
+        _play_stage_and_chapter_next?.Invoke(_current_stage_id, MAXSTAGECOUNT);
     }
 
     void CreateGameOver()

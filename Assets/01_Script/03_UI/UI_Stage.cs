@@ -9,19 +9,17 @@ public class UI_Stage : MonoBehaviour
 
     void Start()
     {
-        StageNumberSetting();
-        PlayManager._play_stageclear += StageNumberSetting;
+        PlayManager._play_stage_and_chapter_next += StageNumberSetting;
+        PlayManager._play_stage_and_chapter_start += StageNumberSetting;
     }
     void OnDisable()
     {
-        PlayManager._play_stageclear -= StageNumberSetting;
+        PlayManager._play_stage_and_chapter_next -= StageNumberSetting;
+        PlayManager._play_stage_and_chapter_start -= StageNumberSetting;
     }
 
-    void StageNumberSetting()
+    void StageNumberSetting(int stageid, int stagemax)
     {
-        var currentchapterdata = PlayManager.instance.GetCurrentChapterData();
-        var _current_stage_id = PlayManager.instance._current_stage_id;
-        var maxstage = currentchapterdata._stagedata.Count;
-        _stagenumber.text = string.Format(STAGENUMBER, _current_stage_id, maxstage);
+        _stagenumber.text = string.Format(STAGENUMBER, stageid, stagemax);
     }
 }

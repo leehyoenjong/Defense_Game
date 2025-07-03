@@ -5,7 +5,6 @@ public abstract class BaseSkill : ScriptableObject
 {
 
     [Header("스킬 정보")]
-    public int _level;
     public St_SkillInfo _skillInfo;
     public ESKILLKIND _skillkind;
 
@@ -44,9 +43,13 @@ public abstract class BaseSkill : ScriptableObject
 [Serializable]
 public struct St_SkillInfo
 {
+    public string _name;
+    public string _explain;
     public float _cooltime;
     public float _duration;
     public int _mid;
+    public int _level;
+    public Sprite _skillicon;
 
     //이 스킬 사용 후 다음 스킬 사용까지 딜레이 시간
     public float _next_skilldelaytime;

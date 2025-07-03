@@ -4,15 +4,22 @@ using UnityEngine;
 public class UI_SkillChose : MonoBehaviour
 {
     [SerializeField] UI_SkillChose_Slot[] _skillchose_slots;
+    List<BaseSkill> _choseskilllist = new List<BaseSkill>();
 
-    void Start()
+    void OnEnable()
     {
         SettingSlot();
+        Time.timeScale = 0;
     }
 
+    void OnDisable()
+    {
+        Time.timeScale = 1;
+    }
 
     void SettingSlot()
     {
+        _choseskilllist.Clear();
         var maxcount = _skillchose_slots.Length;
         for (int i = 0; i < maxcount; i++)
         {
@@ -21,17 +28,19 @@ public class UI_SkillChose : MonoBehaviour
 
         for (int i = 0; i < maxcount; i++)
         {
-            var chosehero = ChoseHero();
-            if (chosehero.chosehero == null)
+            var chosedata = ChoseData();
+            if (chosedata.chosehero == null || chosedata.choseskill._skillInfo._mid == 0)
             {
-                return;
+                continue;
             }
-
-            _skillchose_slots[i].Setting(chosehero.chosehero, chosehero.choseskill);
+            _choseskilllist.Add(chosedata.choseskill);
+            _skillchose_slots[i].Setting(chosedata.chosehero, chosedata.choseskill, () => this.gameObject.SetActive(false));
         }
+
+        this.gameObject.SetActive(_choseskilllist.Count > 0);
     }
 
-    (Player_Base chosehero, BaseSkill choseskill) ChoseHero()
+    (Player_Base chosehero, BaseSkill choseskill) ChoseData()
     {
         var herolist = PlayerSpawnManager.instance.GetHeroList();
         var choseidxlist = new List<int>();
@@ -49,7 +58,7 @@ public class UI_SkillChose : MonoBehaviour
             var heroidx = choseidxlist[randomIdx];
             var chosehero = herolist[heroidx];
 
-            var choseskill = chosehero._so_npc.ChoseLevelLvSkill(chosehero);
+            var choseskill = chosehero._so_npc.ChoseLevelLvSkill(chosehero, _choseskilllist);
             if (choseskill != null)
             {
                 return (chosehero, choseskill);

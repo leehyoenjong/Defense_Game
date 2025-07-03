@@ -48,6 +48,10 @@ public abstract class BaseNPC : MonoBehaviour
         {
             _hit_event += () => _hpbarController.Hpbar_Update(_status._hp, _current_hp);
         }
+
+        //기본 스킬 삽입
+        AddActiveSkill(_so_npc._skill_Attack);
+        AddActiveSkill(_so_npc._skill_buff);
     }
 
     public virtual void OnSpawn()
@@ -70,10 +74,9 @@ public abstract class BaseNPC : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public virtual void Target_To_Attack(BaseNPC target_npc)
+    public virtual void Target_To_Attack(BaseNPC target_npc, int totaldamage)
     {
-        var my_damage = TotalDamage();
-        target_npc.Hp_Update(my_damage);
+        target_npc.Hp_Update(totaldamage);
     }
 
     public virtual void AddStatus(St_Status addstatus)
@@ -94,7 +97,7 @@ public abstract class BaseNPC : MonoBehaviour
         _status._hp -= removestatus._hp;
     }
 
-    int TotalDamage()
+    public int TotalDamage()
     {
         float damage = _status._damge;
 
@@ -138,25 +141,34 @@ public abstract class BaseNPC : MonoBehaviour
         _animationController.PlayAnimation(eanimation, isaction);
     }
 
-    public void AddActiveSkill(BaseSkill choseskill)
+    public void AddActiveSkill(BaseSkill addskill)
     {
-        if (choseskill._skillkind == ESKILLKIND.ATTACK)
+        if (addskill._skillkind == ESKILLKIND.ATTACK)
         {
-            var idx = _active_attackskill.FindIndex(x => x._skillInfo._mid == choseskill._skillInfo._mid);
+            var idx = _active_attackskill.FindIndex(x => x._skillInfo._mid == addskill._skillInfo._mid);
             if (idx != -1)
             {
                 _active_attackskill.RemoveAt(idx);
             }
-            _active_attackskill.Add(choseskill as SO_Skill_Attack);
+            _active_attackskill.Add(addskill as SO_Skill_Attack);
         }
         else
         {
-            var idx = _active_buffkskill.FindIndex(x => x._skillInfo._mid == choseskill._skillInfo._mid);
+            var idx = _active_buffkskill.FindIndex(x => x._skillInfo._mid == addskill._skillInfo._mid);
             if (idx != -1)
             {
                 _active_buffkskill.RemoveAt(idx);
             }
-            _active_buffkskill.Add(choseskill as SO_Skill_Buff);
+            _active_buffkskill.Add(addskill as SO_Skill_Buff);
+        }
+    }
+
+    public void AddActiveSkill(BaseSkill[] addskill)
+    {
+        var maxcount = addskill.Length;
+        for (int i = 0; i < maxcount; i++)
+        {
+            AddActiveSkill(addskill[i]);
         }
     }
 }
