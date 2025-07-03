@@ -18,7 +18,7 @@ public class UI_Hero : MonoBehaviour
     void HeroButtonSetting()
     {
         var maxcount = _herobtn.Length;
-        var userheroidlist = GameManger._userdata._userherodata;
+        var userheroidlist = UserData._userdata._userherodata;
         for (int i = 0; i < maxcount; i++)
         {
             _herobtn[i].Init(userheroidlist[i]._heroid);

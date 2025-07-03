@@ -26,7 +26,7 @@ public class PlayerSpawnManager : MonoBehaviour
 
     void CreatePlayer()
     {
-        var userherodata = GameManger._userdata._userherodata;
+        var userherodata = UserData._userdata._userherodata;
         var maxcount = userherodata.Length;
         for (int i = 0; i < maxcount; i++)
         {

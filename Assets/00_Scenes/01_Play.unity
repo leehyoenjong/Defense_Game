@@ -1449,7 +1449,6 @@ GameObject:
   - component: {fileID: 459241617}
   - component: {fileID: 459241619}
   - component: {fileID: 459241620}
-  - component: {fileID: 459241621}
   - component: {fileID: 459241622}
   m_Layer: 0
   m_Name: Manager
@@ -1473,8 +1472,6 @@ MonoBehaviour:
   _playerprefablist: {fileID: 11400000, guid: 94de3412ac9314490a95256faa5c60c5, type: 2}
   _chapterdata: {fileID: 11400000, guid: 4c2bfbfa2887c4dc690745a9d5ba9549, type: 2}
   _gameover: {fileID: 3499541011392078241, guid: 466bb3261f1c346c98f31c2f0086d6c1, type: 3}
-  _current_chapter_id: 0
-  _current_stage_id: 0
 --- !u!4 &459241618
 Transform:
   m_ObjectHideFlags: 0
@@ -1519,18 +1516,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e9c16388656a424399e56f103a35afb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &459241621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 459241616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80169d52ce12446fab1ad54765d8866b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &459241622

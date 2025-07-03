@@ -50,8 +50,7 @@ public class PlayManager : MonoBehaviour
 
     void Start()
     {
-        //TODO: 선택한 챕터 정보를 넘겨받을 수 있도록 해야함
-        _current_chapter_id = 0;
+        _current_chapter_id = UserData._userdata._chapterdata._lastchapternumber;
         _current_stage_id = 0;
         PlayGame().Forget();
     }
