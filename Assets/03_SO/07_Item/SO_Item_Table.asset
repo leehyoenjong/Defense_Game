@@ -19,6 +19,12 @@ MonoBehaviour:
     _itemicon: {fileID: -3988769855312385993, guid: 1734a2acd9ac0419fb448279c8a50872, type: 3}
     _itemkind: 1
     _connecttableid: 0
+  - _itemid: 2
+    _itemname: CRYSTAL
+    _itemexplain: CRYSTAL ITEM
+    _itemicon: {fileID: 5293031974318352618, guid: 809be890913a44f7480212137aee6501, type: 3}
+    _itemkind: 1
+    _connecttableid: 0
   - _itemid: 1000
     _itemname: GOLD GACHA
     _itemexplain: GOLD GACHA ITEM

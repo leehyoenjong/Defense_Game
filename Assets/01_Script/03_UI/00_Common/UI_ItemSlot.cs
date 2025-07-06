@@ -9,6 +9,10 @@ public class UI_ItemSlot : MonoBehaviour
     [SerializeField] Image _icon;
     [SerializeField] TextMeshProUGUI _value;
 
+
+    int _itemid;
+    public int GetItemID() => _itemid;
+
     public void Setting(int itemid, int itemvalue)
     {
         if (DataManager.instance.GetItemTable().GetItemdata().TryGetValue(itemid, out var itemdata) == false)
@@ -17,7 +21,7 @@ public class UI_ItemSlot : MonoBehaviour
             Debug.LogError($"아이템{itemid} 이 없습니다!");
             return;
         }
-
+        _itemid = itemid;
         _icon.sprite = itemdata._itemicon;
         _value.text = itemvalue.ToString();
     }
@@ -37,7 +41,7 @@ public class UI_ItemSlot : MonoBehaviour
             Debug.LogError($"아이템{itemlist._itemid} 이 없습니다!");
             return;
         }
-
+        _itemid = itemlist._itemid;
         _icon.sprite = itemdata._itemicon;
         _value.text = itemlist._itemvalue.ToString();
     }

@@ -19,7 +19,6 @@ public class SO_Item_Table : ScriptableObject
                 _itemlist_dic.Add(_itemlist[i]._itemid, _itemlist[i]);
             }
         }
-
         return _itemlist_dic;
     }
 
