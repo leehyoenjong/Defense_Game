@@ -14,17 +14,13 @@ public class PlayManager : MonoBehaviour
     public static Action _play_gameover; //TODO: 스테이지 실패 처리 
     public static PlayManager instance;
 
-    [SerializeField] SO_PlayerPrefab _playerprefablist;
-    public St_PlayerList GetHeroData(int heroid) => _playerprefablist.GetHeroList(heroid);
-    [SerializeField] SO_ChapterData _chapterdata;
     [SerializeField] GameObject _gameover;
-    public St_ChapterData GetCurrentChapterData() => _chapterdata.GetChapterData(_current_chapter_id);
-    public SO_StageData GetCurrentStageData() => GetCurrentChapterData()._stagedata.Find(x => x._stageid == _current_stage_id);
-
 
     //챕터 및 스테이지 아이디
     protected int _current_chapter_id;
+    public int GetCurrentChapterID() => _current_chapter_id;
     protected int _current_stage_id;
+    public int GetCurrentStageID() => _current_stage_id;
 
     const int MAXSTAGECOUNT = 10;//하나의 챕터에 총 10개의 스테이지가 존재 
 
@@ -82,7 +78,7 @@ public class PlayManager : MonoBehaviour
         var gameover = Instantiate(_gameover, null);
 
         //더 이상 챕터 정보가 없다면 클리어
-        var currentchapterdata = _chapterdata.GetChapterData(_current_chapter_id);
+        var currentchapterdata = DataManager.instance.GetChapterData(_current_chapter_id);
         bool isclear = currentchapterdata._stagedata == null || currentchapterdata._stagedata.Count <= 0;
         gameover.GetComponent<UI_GameOver>().Init(_current_chapter_id, _current_stage_id, isclear);
     }

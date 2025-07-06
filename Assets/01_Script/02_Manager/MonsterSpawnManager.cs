@@ -34,7 +34,8 @@ public class MonsterSpawnManager : MonoBehaviour
         while (true)
         {
             //현재 챕터 데이터 가져오기 
-            var currentchapterdata = PlayManager.instance.GetCurrentChapterData();
+            var chapterid = PlayManager.instance.GetCurrentChapterID();
+            var currentchapterdata = DataManager.instance.GetChapterData(chapterid);
 
             //더 이상 진행할 챕터 없을 경우 종료
             if (currentchapterdata._stagedata == null || currentchapterdata._stagedata.Count <= 0)
@@ -44,7 +45,8 @@ public class MonsterSpawnManager : MonoBehaviour
             }
 
             //스테이지 생성
-            var stagedata = PlayManager.instance.GetCurrentStageData();
+            var stageid = PlayManager.instance.GetCurrentStageID();
+            var stagedata = DataManager.instance.GetStageData(chapterid, stageid);
 
             //더 이상 진행할 스테이지가 없을 경우
             if (stagedata == null || stagedata._monsterlist == null || stagedata._monsterlist.Count <= 0)

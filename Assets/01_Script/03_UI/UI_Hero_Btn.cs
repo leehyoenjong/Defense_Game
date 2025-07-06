@@ -1,5 +1,4 @@
 using System;
-using Mono.Cecil.Cil;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,7 +38,7 @@ public class UI_Hero_Btn : MonoBehaviour
         this.gameObject.SetActive(true);
 
         //영웅의 기본 데이터를 가져와 이름, 아이콘을 매칭하고 스테이터스는 필드에 있는 거에서 매칭하기
-        var hero_origindata = PlayManager.instance.GetHeroData(_heroclass.GetID());
+        var hero_origindata = DataManager.instance.GetHeroData(_heroclass.GetID());
         _name.text = hero_origindata._name;
         _icon.sprite = hero_origindata._icon;
 

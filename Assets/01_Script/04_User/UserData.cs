@@ -20,6 +20,7 @@ public class UserData
 
     public St_UserHeroList[] _userherodata;
     public St_UserChapterData _chapterdata;
+    public St_UserInventory _userinventory;
 
     public UserData()
     {
@@ -40,12 +41,16 @@ public class UserData
 
         _chapterdata = new St_UserChapterData();
         _chapterdata._lastchapternumber = 1;
+
+        _userinventory = new St_UserInventory();
+        _userinventory._userinvendata = new List<St_UserInvenItemList>();
     }
 
     public void UserChapterUpdate()
     {
         _chapterdata._lastchapternumber++;
     }
+
 }
 
 

@@ -30,7 +30,7 @@ public class PlayerSpawnManager : MonoBehaviour
         var maxcount = userherodata.Length;
         for (int i = 0; i < maxcount; i++)
         {
-            var player = PlayManager.instance.GetHeroData(userherodata[i]._heroid);
+            var player = DataManager.instance.GetHeroData(userherodata[i]._heroid);
             if (player._player_id == 0)
             {
                 return;

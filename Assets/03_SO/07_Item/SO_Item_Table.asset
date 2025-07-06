@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6d6faeb7791944599c2475c2fa26e3c, type: 3}
+  m_Name: SO_Item_Table
+  m_EditorClassIdentifier: 
+  _itemlist:
+  - _itemid: 1
+    _itemname: GOLD
+    _itemexplain: GOLD ITEM
+    _itemicon: {fileID: -3988769855312385993, guid: 1734a2acd9ac0419fb448279c8a50872, type: 3}
+    _itemkind: 1
+    _connecttableid: 0
+  - _itemid: 1000
+    _itemname: GOLD GACHA
+    _itemexplain: GOLD GACHA ITEM
+    _itemicon: {fileID: -3988769855312385993, guid: 1734a2acd9ac0419fb448279c8a50872, type: 3}
+    _itemkind: 3
+    _connecttableid: 1
