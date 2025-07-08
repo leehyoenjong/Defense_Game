@@ -8,9 +8,7 @@ public class UI_ItemSlot : MonoBehaviour
     [SerializeField] RectTransform _iconrect;
     [SerializeField] Image _icon;
     [SerializeField] TextMeshProUGUI _value;
-
-
-    int _itemid;
+    protected int _itemid;
     public int GetItemID() => _itemid;
 
     public void Setting(int itemid, int itemvalue)

@@ -21,6 +21,7 @@ public class UserData
     public St_UserHeroList[] _userherodata;
     public St_UserChapterData _chapterdata;
     public St_UserInventory _userinventory;
+    public St_UserEquitHero _userequiphero;
 
     public UserData()
     {
@@ -44,6 +45,9 @@ public class UserData
 
         _userinventory = new St_UserInventory();
         _userinventory._userinvendata = new List<St_UserInvenItemList>();
+
+        _userequiphero = new St_UserEquitHero();
+        _userequiphero._equipheroid = new List<int>();
     }
 
     public void UserChapterUpdate()

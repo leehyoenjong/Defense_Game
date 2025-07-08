@@ -7,10 +7,11 @@ using UnityEngine;
 public class SO_NPC : ScriptableObject
 {
     public St_Status _status;
-    public SO_Skill_Attack[] _skill_Attack;
-    public SO_Skill_Buff[] _skill_buff;
+    public BaseSkill _basic_attack_skill;
+    [Header("고유스킬(스킬종류 최대 3가지)")]
     public BaseSkill[] _skill_chose_list;
     public int _diegold;
+    public AnimatorOverrideController _animator_with_ui;
 
     public BaseSkill ChoseLevelLvSkill(BaseNPC me, List<BaseSkill> alreadychoseskilllist)
     {
@@ -19,8 +20,7 @@ public class SO_NPC : ScriptableObject
 
         var choseskilllist = new List<BaseSkill>();
         choseskilllist.AddRange(_skill_chose_list);
-        choseskilllist.AddRange(_skill_Attack);
-        choseskilllist.AddRange(_skill_buff);
+        choseskilllist.Add(_basic_attack_skill);
 
         //choseskilllist에서 maxskill의 _mid에 해당하는 거 제거
         if (maxskill.Count > 0)

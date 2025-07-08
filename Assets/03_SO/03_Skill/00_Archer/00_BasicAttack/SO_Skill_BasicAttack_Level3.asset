@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _skillInfo:
     _name: Lv.3 Basic Attack!
-    _explain: 100% Damage Up!
+    _explain: 200% Damage Attack
     _cooltime: 1
     _duration: 0
     _mid: 1

@@ -47,8 +47,8 @@ public class SkillController : MonoBehaviour
         }
 
         //SO에 스킬이 없다면 그냥 return
-        var myattackskilllist = _me._so_npc._skill_Attack;
-        if (myattackskilllist.Length <= 0)
+        var myattackskilllist = _me.GetActiveAttackSkill();
+        if (myattackskilllist == null || myattackskilllist.Count <= 0)
         {
             return;
         }
@@ -84,8 +84,8 @@ public class SkillController : MonoBehaviour
             return;
         }
 
-        var mybufflist = _me._so_npc._skill_buff;
-        if (mybufflist.Length <= 0)
+        var mybufflist = _me.GetActiveBuffSkill();
+        if (mybufflist == null || mybufflist.Count <= 0)
         {
             return;
         }
@@ -101,7 +101,7 @@ public class SkillController : MonoBehaviour
         }
 
         //스킬 발동
-        _me._so_npc._skill_buff[_current_attack_skill_index].ActiveSkill(_me, ebuffskillactivetirrger);
+        mybufflist[_current_attack_skill_index].ActiveSkill(_me, ebuffskillactivetirrger);
 
         //스킬 발동 후 지속시간 후 종료되도록 처리
         BuffSkillDisable(skillinfo, _current_attack_skill_index).Forget();
@@ -113,7 +113,7 @@ public class SkillController : MonoBehaviour
     void AddAttackSkillIndex()
     {
         _current_attack_skill_index++;
-        if (_me._so_npc._skill_Attack.Length >= _current_attack_skill_index)
+        if (_me.GetActiveBuffSkill().Count >= _current_attack_skill_index)
         {
             _current_attack_skill_index = 0;
         }
@@ -122,7 +122,7 @@ public class SkillController : MonoBehaviour
     void AddBuffSkillIndex()
     {
         _current_buff_skill_index++;
-        if (_me._so_npc._skill_buff.Length >= _current_buff_skill_index)
+        if (_me.GetActiveBuffSkill().Count >= _current_buff_skill_index)
         {
             _current_buff_skill_index = 0;
         }
@@ -132,7 +132,7 @@ public class SkillController : MonoBehaviour
     {
         if (skillinfo._duration <= 0)
         {
-            _me._so_npc._skill_buff[idx].DisableSkill(_me);
+            _me.GetActiveBuffSkill()[idx].DisableSkill(_me);
             return;
         }
 
@@ -150,7 +150,7 @@ public class SkillController : MonoBehaviour
         _skilldurationtoken[skillinfo._mid] = new CancellationTokenSource();
 
         await UniTask.WaitForSeconds(skillinfo._duration, cancellationToken: _skilldurationtoken[skillinfo._mid].Token);
-        _me._so_npc._skill_buff[idx].DisableSkill(_me);
+        _me.GetActiveBuffSkill()[idx].DisableSkill(_me);
     }
 
     async UniTaskVoid SkillCoolTime(St_SkillInfo skillinfo)

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24aab73d63be043819766f7b6b42da92, type: 3}
+  m_Name: SO_Hero_Archer
+  m_EditorClassIdentifier: 
+  _status:
+    _hp: 100
+    _damge: 10
+    _armor: 0
+    _critical: 0.5
+    _critical_damage: 1
+  _basic_attack_skill: {fileID: 11400000, guid: 643284535e7c3435ebe0e175fa18c0b7, type: 2}
+  _hero_skill: {fileID: 0}
+  _skill_chose_list:
+  - {fileID: 11400000, guid: 81ea6de5911fb4448978471e0bbc21e5, type: 2}
+  - {fileID: 11400000, guid: 4c841f2dcb92443489f350c848f88d28, type: 2}
+  - {fileID: 11400000, guid: a450cdc37152747e798c41316fcfb6e1, type: 2}
+  _diegold: 0
+  _animator_with_ui: {fileID: 22100000, guid: dc406310c810440ddb0b7d952ee06142, type: 2}

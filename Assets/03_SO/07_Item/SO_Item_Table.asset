@@ -31,3 +31,15 @@ MonoBehaviour:
     _itemicon: {fileID: -3988769855312385993, guid: 1734a2acd9ac0419fb448279c8a50872, type: 3}
     _itemkind: 3
     _connecttableid: 1
+  - _itemid: 10000
+    _itemname: ARCHER
+    _itemexplain: HERO ARCHER
+    _itemicon: {fileID: 1572034964, guid: fd3e687915ab34741994494077343813, type: 3}
+    _itemkind: 2
+    _connecttableid: 1
+  - _itemid: 10001
+    _itemname: ARCHER_Test
+    _itemexplain: HERO ARCHER
+    _itemicon: {fileID: 1572034964, guid: fd3e687915ab34741994494077343813, type: 3}
+    _itemkind: 2
+    _connecttableid: 2

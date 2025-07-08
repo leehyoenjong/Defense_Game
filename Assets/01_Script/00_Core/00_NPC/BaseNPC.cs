@@ -50,8 +50,7 @@ public abstract class BaseNPC : MonoBehaviour
         }
 
         //기본 스킬 삽입
-        AddActiveSkill(_so_npc._skill_Attack);
-        AddActiveSkill(_so_npc._skill_buff);
+        AddActiveSkill(_so_npc._basic_attack_skill);
     }
 
     public virtual void OnSpawn()

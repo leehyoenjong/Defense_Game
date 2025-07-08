@@ -7,6 +7,7 @@ public class UI_ItemSlot_Btn : UI_ItemSlot
     [SerializeField] GameObject _click;
     [SerializeField] UnityEvent<UI_ItemSlot_Btn> _clickevent;
 
+
     public void Click()
     {
         _click.SetActive(true);

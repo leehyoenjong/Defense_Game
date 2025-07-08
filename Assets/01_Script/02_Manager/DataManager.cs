@@ -14,6 +14,7 @@ public class DataManager : MonoBehaviour
 
     [SerializeField] SO_PlayerPrefab _playerprefablist;
     public St_PlayerList GetHeroData(int heroid) => _playerprefablist.GetHeroList(heroid);
+    public SO_PlayerPrefab GetHeroData() => _playerprefablist;
 
     [SerializeField] SO_ChapterData _chapterdata;
     public St_ChapterData GetChapterData(int chapterid) => _chapterdata.GetChapterData(chapterid);
