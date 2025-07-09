@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
@@ -11,6 +12,11 @@ public class DataManager : MonoBehaviour
     [SerializeField] SO_Shop_Table _shoptable;
     public SO_Shop_Table GetShopTable() => _shoptable;
 
+    [SerializeField] SO_Upgrade_Table _upgradtable;
+    public St_UpgradeTable GetUpgradeData(int curretgrade) => _upgradtable.GetUpgradeData(curretgrade);
+
+    [SerializeField] SO_Status_Table _statustable;
+    public List<St_Status> GetStatusData(int statusid) => _statustable.GetStatusData(statusid);
 
     [SerializeField] SO_PlayerPrefab _playerprefablist;
     public St_PlayerList GetHeroData(int heroid) => _playerprefablist.GetHeroList(heroid);

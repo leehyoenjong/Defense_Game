@@ -47,7 +47,7 @@ public class UserData
         _userinventory._userinvendata = new List<St_UserInvenItemList>();
 
         _userequiphero = new St_UserEquitHero();
-        _userequiphero._equipheroid = new List<int>();
+        _userequiphero._equipheroid = new List<int>() { 10000, 0, 0, 0, 0 };
     }
 
     public void UserChapterUpdate()

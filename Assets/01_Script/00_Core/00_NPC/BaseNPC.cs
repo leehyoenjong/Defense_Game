@@ -55,9 +55,6 @@ public abstract class BaseNPC : MonoBehaviour
 
     public virtual void OnSpawn()
     {
-        //생성 시 스테이터스를 기본 스테이터스로 복사하기
-        _status = _so_npc._status;
-
         //생성 버프 발동 내부에 스테이터스 변화하는 게 존재할 수 있음
         _skillController?.ActiveBuffSkill(ESKILLTRIGGER.SPAWN);
 

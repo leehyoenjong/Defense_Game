@@ -8,13 +8,19 @@ public struct St_UserEquitHero
     public List<int> _equipheroid;
     public List<int> GetEquipHeroList() => _equipheroid;
 
-    public void EquipHero(int heroid)
+    public void EquipHero(int heroitemid, int idx)
     {
-        _equipheroid.Add(heroid);
+        UnequipHero(heroitemid);
+        _equipheroid[idx] = heroitemid;
     }
 
-    public void UnequipHero(int heroid)
+    public void UnequipHero(int heroitemid)
     {
-        _equipheroid.Remove(heroid);
+        var idx = _equipheroid.FindIndex(x => x == heroitemid);
+        if (idx == -1)
+        {
+            return;
+        }
+        _equipheroid[idx] = 0;
     }
 }

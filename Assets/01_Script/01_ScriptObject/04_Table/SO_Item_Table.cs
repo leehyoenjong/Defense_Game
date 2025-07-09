@@ -45,6 +45,11 @@ public class SO_Item_Table : ScriptableObject
         findtable.TryGetValue(itemdata._connecttableid, out var finddata);
         return finddata;
     }
+
+    public St_ItemTable FindConnectTableData(EITEMKIND kind, int connectid)
+    {
+        return _itemlist.Find(x => x._itemkind == kind && x._itemid == connectid);
+    }
 }
 
 public enum EITEMKIND

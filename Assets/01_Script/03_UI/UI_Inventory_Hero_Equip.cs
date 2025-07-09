@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class UI_Inventory_Hero_Equip : MonoBehaviour
 {
     [SerializeField] Image _icon;
-    int _heroitemid;
 
     public void Setting(int heroitemid)
     {
@@ -30,16 +29,5 @@ public class UI_Inventory_Hero_Equip : MonoBehaviour
         }
 
         _icon.sprite = herodata._icon;
-    }
-
-    public void Btn_Click()
-    {
-        if (_heroitemid > 0)
-        {
-            UserData._userdata._userequiphero.UnequipHero(_heroitemid);
-            return;
-        }
-
-        UserData._userdata._userequiphero.EquipHero(_heroitemid);
     }
 }

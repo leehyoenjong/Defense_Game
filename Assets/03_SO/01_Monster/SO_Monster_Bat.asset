@@ -12,13 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24aab73d63be043819766f7b6b42da92, type: 3}
   m_Name: SO_Monster_Bat
   m_EditorClassIdentifier: 
-  _status:
-    _hp: 100
-    _damge: 10
-    _armor: 10
-    _critical: 0
-    _critical_damage: 0
-  _skill_Attack:
-  - {fileID: 11400000, guid: 643284535e7c3435ebe0e175fa18c0b7, type: 2}
-  _skill_buff: []
+  _statusid: 1
+  _basic_attack_skill: {fileID: 11400000, guid: 643284535e7c3435ebe0e175fa18c0b7, type: 2}
+  _skill_chose_list: []
   _diegold: 10
+  _animator_with_ui: {fileID: 0}

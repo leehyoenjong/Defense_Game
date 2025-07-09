@@ -17,6 +17,7 @@ public class Monster_Base : BaseNPC
     {
         _moveController.ReSetting();
         _moveController.MoveToTarget(target);
+        _status = _so_npc.GetStatus();
         base.OnSpawn();
     }
 

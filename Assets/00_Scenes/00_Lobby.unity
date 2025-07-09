@@ -1401,6 +1401,7 @@ MonoBehaviour:
   _itemtable: {fileID: 11400000, guid: b61691a52b48949909932f27894a15d0, type: 2}
   _gachatable: {fileID: 11400000, guid: e266e211cf66641aab89b3edcf3adb98, type: 2}
   _shoptable: {fileID: 11400000, guid: 095452f2a434648a6934f428eb3849ef, type: 2}
+  _upgradtable: {fileID: 11400000, guid: 0643887603d694029a3a61f729912d8f, type: 2}
   _playerprefablist: {fileID: 11400000, guid: 94de3412ac9314490a95256faa5c60c5, type: 2}
   _chapterdata: {fileID: 11400000, guid: 4c2bfbfa2887c4dc690745a9d5ba9549, type: 2}
 --- !u!114 &1934618863

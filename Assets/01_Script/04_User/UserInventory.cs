@@ -6,12 +6,21 @@ using System.Collections.Generic;
 public struct St_UserInventory
 {
     public List<St_UserInvenItemList> _userinvendata;
+    public static event Action _upgrade_event;
 
     public void UpdateItemData(int itemid, int itemvalue)
     {
         var getitemresult = GetUserItemData(itemid);
         getitemresult.itemdata._itemvalue += itemvalue;
         _userinvendata[getitemresult.itemidx] = getitemresult.itemdata;
+    }
+
+    public void UpdateUpgrade(int itemid, int upgrade)
+    {
+        var getitemresult = GetUserItemData(itemid);
+        getitemresult.itemdata._grade = upgrade;
+        _userinvendata[getitemresult.itemidx] = getitemresult.itemdata;
+        _upgrade_event?.Invoke();
     }
 
     public (St_UserInvenItemList itemdata, int itemidx) GetUserItemData(int itemid)
@@ -33,4 +42,5 @@ public struct St_UserInvenItemList
 {
     public int _itemid;
     public int _itemvalue;
+    public int _grade;
 }

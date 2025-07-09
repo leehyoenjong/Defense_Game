@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SO_NPC", menuName = "SO_NPC", order = 0)]
 public class SO_NPC : ScriptableObject
 {
-    public St_Status _status;
+    public int _statusid;
     public BaseSkill _basic_attack_skill;
     [Header("고유스킬(스킬종류 최대 3가지)")]
     public BaseSkill[] _skill_chose_list;
@@ -78,15 +78,22 @@ public class SO_NPC : ScriptableObject
 
         return choseskill;
     }
-}
 
+    public St_Status GetStatus(int heroitemid)
+    {
+        var statusdata = DataManager.instance.GetStatusData(_statusid);
+        if (statusdata.Count == 1)
+        {
+            return statusdata[0];
+        }
 
-[Serializable]
-public struct St_Status
-{
-    public int _hp;
-    public int _damge;
-    public int _armor;
-    public float _critical;// 0~1
-    public float _critical_damage; // 0~1
+        var grade = UserData._userdata._userinventory.GetUserItemData(heroitemid).itemdata._grade;
+        return statusdata.Find(x => x._grade == grade);
+    }
+
+    public St_Status GetStatus()
+    {
+        var statusdata = DataManager.instance.GetStatusData(_statusid);
+        return statusdata[0];
+    }
 }

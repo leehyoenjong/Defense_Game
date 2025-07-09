@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -7,14 +9,15 @@ public class UI_Inventory_Hero : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _explain;
     [SerializeField] TextMeshProUGUI _explain_value;
-    [SerializeField] Image[] _upgrade;
-    [SerializeField] Sprite[] _upgradestar;
     [SerializeField] Transform _parent;
     [SerializeField] GameObject _slot;
     [SerializeField] UI_Inventory_Hero_SkillInfo[] _inventory_skill_infos;
-    [SerializeField] UI_Inventory_Hero_Equip[] _inventory_equip_heros;
+    [SerializeField] UI_Inventory_EquipWindow _inventory_equipwindow;
 
+    List<UI_ItemSlotUse_Btn> _activeheroslot = new List<UI_ItemSlotUse_Btn>();
     UI_ItemSlotUse_Btn _clickheroslot;
+
+    public static event Action<int> _click_slot;
 
     const string ITEMEXPLAIN = "{0}\n\nDAMAGE:\nCRITICAL:\nCRITICAL DAMAGE:";
     const string ITEMEXPLAINVALUE = "\n\n{0}\n{1}\n{2}";
@@ -23,7 +26,6 @@ public class UI_Inventory_Hero : MonoBehaviour
     void Start()
     {
         SettingSlot();
-        SettingEquipHero();
     }
 
     void SettingSlot()
@@ -43,6 +45,26 @@ public class UI_Inventory_Hero : MonoBehaviour
             {
                 SettingSkillInfo(itemid, slot);
             }
+            _activeheroslot.Add(slot);
+        }
+    }
+
+    /// <summary>
+    /// 장착한 영웅 앞으로 땡기기
+    /// _inventory_equipwindow 팝업창 종료 이벤트에도 넣어둠
+    /// </summary>
+    public void SortUseHeroSlot()
+    {
+        var maxcount = _activeheroslot.Count;
+        var userequipherolist = UserData._userdata._userequiphero.GetEquipHeroList();
+        for (int i = 0; i < maxcount; i++)
+        {
+            var isequip = userequipherolist.Contains(_activeheroslot[i].GetItemID());
+            if (isequip == false)
+            {
+                continue;
+            }
+            _activeheroslot[i].transform.SetAsFirstSibling();
         }
     }
 
@@ -60,6 +82,7 @@ public class UI_Inventory_Hero : MonoBehaviour
         //더블클릭한거임
         if (_clickheroslot == slot)
         {
+            _inventory_equipwindow.SetActive(true, _clickheroslot.GetItemID());
             return;
         }
 
@@ -68,11 +91,12 @@ public class UI_Inventory_Hero : MonoBehaviour
 
     void SettingSkillInfo(St_PlayerList heroinfo, UI_ItemSlotUse_Btn slot)
     {
+        var itemid = slot.GetItemID();
         slot.Click();
         _explain.text = string.Format(ITEMEXPLAIN, heroinfo._name);
-        var critical = heroinfo._npc._status._critical * 100f;
-        var criticaldamage = heroinfo._npc._status._critical * 100f;
-        _explain_value.text = string.Format(ITEMEXPLAINVALUE, heroinfo._npc._status._damge, critical.ToString("F1") + "%", criticaldamage.ToString("F1") + "%");
+        var critical = heroinfo._npc.GetStatus(itemid)._critical * 100f;
+        var criticaldamage = heroinfo._npc.GetStatus(itemid)._critical * 100f;
+        _explain_value.text = string.Format(ITEMEXPLAINVALUE, heroinfo._npc.GetStatus(itemid)._damge, critical.ToString("F1") + "%", criticaldamage.ToString("F1") + "%");
 
         var skillidlist = heroinfo._npc._skill_chose_list.Select(x => x._skillInfo._mid).Distinct().ToList();
         var maxcount = skillidlist.Count;
@@ -88,19 +112,6 @@ public class UI_Inventory_Hero : MonoBehaviour
 
         }
         _clickheroslot = slot;
-    }
-
-    /// <summary>
-    /// 영웅 장착 창이 꺼지면 불리도록 인스펙터 이벤트에 넣어둠
-    /// </summary>
-    public void SettingEquipHero()
-    {
-        var equipheroidlist = UserData._userdata._userequiphero.GetEquipHeroList();
-
-        var maxcount = _inventory_equip_heros.Length;
-        for (int i = 0; i < maxcount; i++)
-        {
-            _inventory_equip_heros[i].Setting(equipheroidlist[i]);
-        }
+        _click_slot?.Invoke(itemid);
     }
 }

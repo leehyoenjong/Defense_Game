@@ -11,6 +11,9 @@ public class Player_Base : BaseNPC
         transform.position = spawnpoint;
         StatusUpgradeManager._statusupgrade_event += AddStatus;
         UI_Hero_Btn._hero_click_event += AttackAreaView;
+
+        var userheroiteminfo = DataManager.instance.GetItemTable().FindConnectTableData(EITEMKIND.HERO, _id);
+        _status = _so_npc.GetStatus(userheroiteminfo._itemid);
         base.OnSpawn();
     }
 

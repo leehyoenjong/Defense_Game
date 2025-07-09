@@ -13,13 +13,22 @@ public class UI_ItemSlot : MonoBehaviour
 
     public void Setting(int itemid, int itemvalue)
     {
+        _itemid = itemid;
         if (DataManager.instance.GetItemTable().GetItemdata().TryGetValue(itemid, out var itemdata) == false)
         {
+
+            if (itemid == 0)
+            {
+                _icon.gameObject.SetActive(false);
+                _value.text = null;
+                return;
+            }
+
             //TODO: 아이템이 없습니다. 무조건 있어야함 에러 송출
             Debug.LogError($"아이템{itemid} 이 없습니다!");
             return;
         }
-        _itemid = itemid;
+        _icon.gameObject.SetActive(true);
         _icon.sprite = itemdata._itemicon;
         _value.text = itemvalue.ToString();
     }

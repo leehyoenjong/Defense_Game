@@ -137,7 +137,7 @@ public class StatusUpgradeManager : MonoBehaviour
     public St_Status GetStatusUpgradeDifference(int heroid)
     {
         var heroobejct = PlayerSpawnManager.instance.GetHeroList().Find(x => x.GetID() == heroid);
-        var baseStatus = heroobejct._so_npc._status;
+        var baseStatus = heroobejct.GetStatus();
 
         var differenceStatus = new St_Status();
 
@@ -177,7 +177,7 @@ public class StatusUpgradeManager : MonoBehaviour
     public St_Status GetStatusUpgradeAsStatus(int heroid)
     {
         var heroobejct = PlayerSpawnManager.instance.GetHeroList().Find(x => x.GetID() == heroid);
-        var baseStatus = heroobejct._so_npc._status;
+        var baseStatus = heroobejct.GetStatus();
 
         var upgradeStatus = new St_Status();
 
@@ -216,7 +216,7 @@ public class StatusUpgradeManager : MonoBehaviour
         var heroData = DataManager.instance.GetHeroData(heroid);
         var heroObject = heroData._playerobject;
         var baseNPC = heroObject.GetComponent<BaseNPC>();
-        var baseStatus = baseNPC._so_npc._status;
+        var baseStatus = baseNPC.GetStatus();
 
         var beforeUpgradeStatus = new St_Status();
 
