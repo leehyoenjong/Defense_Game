@@ -12,6 +12,7 @@ public abstract class BaseNPC : MonoBehaviour
     [SerializeField] protected AnimationController _animationController;
     [SerializeField] protected HpbarController _hpbarController;
     [SerializeField] protected SkillController _skillController;
+    [SerializeField] protected DamageTextController _damagetextcontroller;
 
     //기본 맴버변수 
     protected int _current_hp;
@@ -110,6 +111,7 @@ public abstract class BaseNPC : MonoBehaviour
     {
         _current_hp -= target_damage;
         _hit_event?.Invoke();
+        _damagetextcontroller?.CreateText(-target_damage);
 
         if (_current_hp <= 0 && _isdie == false)
         {
@@ -139,6 +141,11 @@ public abstract class BaseNPC : MonoBehaviour
 
     public void AddActiveSkill(BaseSkill addskill)
     {
+        if (addskill == null)
+        {
+            return;
+        }
+
         if (addskill._skillkind == ESKILLKIND.ATTACK)
         {
             var idx = _active_attackskill.FindIndex(x => x._skillInfo._mid == addskill._skillInfo._mid);

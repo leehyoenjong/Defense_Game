@@ -28,6 +28,15 @@ public class UI_Inventory_Hero : MonoBehaviour
         SettingSlot();
     }
 
+    void OnEnable()
+    {
+        UI_Inventory_Hero_Grade._upgrade_event += Setting_Status;
+    }
+    void OnDisable()
+    {
+        UI_Inventory_Hero_Grade._upgrade_event -= Setting_Status;
+    }
+
     void SettingSlot()
     {
         var itemherolist = DataManager.instance.GetItemTable().GetItemdata().Where(x => x.Value._itemkind == EITEMKIND.HERO).ToList();
@@ -39,14 +48,66 @@ public class UI_Inventory_Hero : MonoBehaviour
             var slot = Instantiate(_slot, _parent).GetComponent<UI_ItemSlotUse_Btn>();
             var itemid = itemherolist[i].Value._itemid;
             var uservalue = UserData._userdata._userinventory.GetUserItemData(itemid).itemdata._itemvalue;
-            slot.Setting(itemid, uservalue, SettingSkillInfo);
+            slot.Setting(itemid, uservalue, Setting);
             slot.UseItem(list);
             if (i == 0)
             {
-                SettingSkillInfo(itemid, slot);
+                Setting(itemid, slot);
             }
             _activeheroslot.Add(slot);
         }
+    }
+
+    void Setting(int heroitemid, UI_ItemSlotUse_Btn slot)
+    {
+        var connectheroid = DataManager.instance.GetItemTable().GetItemdata()[heroitemid]._connecttableid;
+        var heroinfo = DataManager.instance.GetHeroData(connectheroid);
+        if (heroinfo._player_id == 0)
+        {
+            //TODO: 무조건 있다는 가정 
+            Debug.LogError("캐릭터 정보가 없습니다.");
+            return;
+        }
+
+        //더블클릭한거임
+        if (_clickheroslot == slot)
+        {
+            _inventory_equipwindow.SetActive(true, _clickheroslot.GetItemID());
+            return;
+        }
+        _explain.text = string.Format(ITEMEXPLAIN, heroinfo._name);
+        Setting_SkillInfo(heroinfo, slot);
+        Setting_Status(heroitemid);
+    }
+
+    void Setting_SkillInfo(St_PlayerList heroinfo, UI_ItemSlotUse_Btn slot)
+    {
+        slot.Click();
+
+        var skillidlist = heroinfo._npc._skill_chose_list.Select(x => x._skillInfo._mid).Distinct().ToList();
+        var maxcount = skillidlist.Count;
+        for (int i = 0; i < maxcount; i++)
+        {
+            var choseskill = heroinfo._npc._skill_chose_list.First(x => x._skillInfo._mid == skillidlist[i]);
+            _inventory_skill_infos[i].Setting(choseskill);
+        }
+
+        if (_clickheroslot)
+        {
+            _clickheroslot.DisableClick();
+
+        }
+        _clickheroslot = slot;
+        _click_slot?.Invoke(slot.GetItemID());
+    }
+
+    void Setting_Status(int heroitemid)
+    {
+        var connectheroid = DataManager.instance.GetItemTable().GetItemdata()[heroitemid]._connecttableid;
+        var heroinfo = DataManager.instance.GetHeroData(connectheroid);
+        var critical = heroinfo._npc.GetStatus(heroitemid)._critical * 100f;
+        var criticaldamage = heroinfo._npc.GetStatus(heroitemid)._critical * 100f;
+        _explain_value.text = string.Format(ITEMEXPLAINVALUE, heroinfo._npc.GetStatus(heroitemid)._damge, critical.ToString("F1") + "%", criticaldamage.ToString("F1") + "%");
     }
 
     /// <summary>
@@ -66,52 +127,5 @@ public class UI_Inventory_Hero : MonoBehaviour
             }
             _activeheroslot[i].transform.SetAsFirstSibling();
         }
-    }
-
-    void SettingSkillInfo(int itemid, UI_ItemSlotUse_Btn slot)
-    {
-        var connectheroid = DataManager.instance.GetItemTable().GetItemdata()[itemid]._connecttableid;
-        var heroinfo = DataManager.instance.GetHeroData(connectheroid);
-        if (heroinfo._player_id == 0)
-        {
-            //TODO: 무조건 있다는 가정 
-            Debug.LogError("캐릭터 정보가 없습니다.");
-            return;
-        }
-
-        //더블클릭한거임
-        if (_clickheroslot == slot)
-        {
-            _inventory_equipwindow.SetActive(true, _clickheroslot.GetItemID());
-            return;
-        }
-
-        SettingSkillInfo(heroinfo, slot);
-    }
-
-    void SettingSkillInfo(St_PlayerList heroinfo, UI_ItemSlotUse_Btn slot)
-    {
-        var itemid = slot.GetItemID();
-        slot.Click();
-        _explain.text = string.Format(ITEMEXPLAIN, heroinfo._name);
-        var critical = heroinfo._npc.GetStatus(itemid)._critical * 100f;
-        var criticaldamage = heroinfo._npc.GetStatus(itemid)._critical * 100f;
-        _explain_value.text = string.Format(ITEMEXPLAINVALUE, heroinfo._npc.GetStatus(itemid)._damge, critical.ToString("F1") + "%", criticaldamage.ToString("F1") + "%");
-
-        var skillidlist = heroinfo._npc._skill_chose_list.Select(x => x._skillInfo._mid).Distinct().ToList();
-        var maxcount = skillidlist.Count;
-        for (int i = 0; i < maxcount; i++)
-        {
-            var choseskill = heroinfo._npc._skill_chose_list.First(x => x._skillInfo._mid == skillidlist[i]);
-            _inventory_skill_infos[i].Setting(choseskill);
-        }
-
-        if (_clickheroslot)
-        {
-            _clickheroslot.DisableClick();
-
-        }
-        _clickheroslot = slot;
-        _click_slot?.Invoke(itemid);
     }
 }

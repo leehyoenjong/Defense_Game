@@ -6,6 +6,7 @@ public class UI_Inventory_Hero_Grade : MonoBehaviour
 {
     [SerializeField] Image[] _upgrade;
     [SerializeField] Sprite[] _upgradestar;
+    public static Action<int> _upgrade_event;
     int _heroitemid;
 
     void OnEnable()
@@ -63,6 +64,7 @@ public class UI_Inventory_Hero_Grade : MonoBehaviour
 
         UserData._userdata._userinventory.UpdateItemData(upgradtable._priceitemid, -upgradtable._price);
         UserData._userdata._userinventory.UpdateUpgrade(_heroitemid, upgradtable._grade);
+        _upgrade_event?.Invoke(_heroitemid);
         UpgradeStar(_heroitemid);
     }
 }

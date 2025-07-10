@@ -48,7 +48,7 @@ public class SO_Item_Table : ScriptableObject
 
     public St_ItemTable FindConnectTableData(EITEMKIND kind, int connectid)
     {
-        return _itemlist.Find(x => x._itemkind == kind && x._itemid == connectid);
+        return _itemlist.Find(x => x._itemkind == kind && x._connecttableid == connectid);
     }
 }
 

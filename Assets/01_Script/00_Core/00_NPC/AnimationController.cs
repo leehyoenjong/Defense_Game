@@ -10,7 +10,8 @@ public class AnimationController : MonoBehaviour
 
     public void PlayAnimation(EANIMATION eanimation)
     {
-        _animator.SetTrigger(eanimation.ToString());
+        // 모든 애니메이션을 즉시 재생 (처음부터 시작)
+        _animator.Play(eanimation.ToString(), 0, 0f);
         _eanimation = eanimation;
     }
 

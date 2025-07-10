@@ -11,7 +11,7 @@ public class SO_Upgrade_Table : ScriptableObject
     public St_UpgradeTable GetUpgradeData(int currentgrade)
     {
         int nextgrade = currentgrade + 1;
-        if (nextgrade >= MAXGRADE)
+        if (nextgrade > MAXGRADE)
         {
             return default;
         }

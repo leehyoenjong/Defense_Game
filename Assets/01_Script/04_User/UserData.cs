@@ -17,8 +17,6 @@ public class UserData
     }
 
 
-
-    public St_UserHeroList[] _userherodata;
     public St_UserChapterData _chapterdata;
     public St_UserInventory _userinventory;
     public St_UserEquitHero _userequiphero;
@@ -36,10 +34,6 @@ public class UserData
 
     void CreateNewUserData()
     {
-        _userherodata = new St_UserHeroList[5];
-        _userherodata[0]._heroid = 1;
-        _userherodata[0]._heropoint = 1;
-
         _chapterdata = new St_UserChapterData();
         _chapterdata._lastchapternumber = 1;
 

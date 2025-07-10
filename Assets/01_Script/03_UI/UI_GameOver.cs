@@ -18,12 +18,12 @@ public class UI_GameOver : MonoBehaviour
 
     public void Btn_Home()
     {
-        SceneManager.LoadScene("00_Lobby");
+        SceneManager.LoadScene("00_LOBBY");
     }
 
     public void Btn_Replay()
     {
-        SceneManager.LoadScene("01_Play");
+        SceneManager.LoadScene("01_PLAY");
     }
 
     void OnDisable()

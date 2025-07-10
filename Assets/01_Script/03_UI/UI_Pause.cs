@@ -21,6 +21,6 @@ public class UI_Pause : MonoBehaviour
     public void Btn_Quit()
     {
         //TODO:추후에 씬 매니저로 이동 변경 예정
-        SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene("00_LOBBY");
     }
 }

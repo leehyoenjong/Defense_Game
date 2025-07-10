@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,22 +25,33 @@ public class PlayerSpawnManager : MonoBehaviour
 
     void CreatePlayer()
     {
-        var userherodata = UserData._userdata._userherodata;
-        var maxcount = userherodata.Length;
+        var userherodata = UserData._userdata._userequiphero;
+        var maxcount = userherodata.GetEquipHeroList().Count;
         for (int i = 0; i < maxcount; i++)
         {
-            var player = DataManager.instance.GetHeroData(userherodata[i]._heroid);
-            if (player._player_id == 0)
+            var heroitemid = userherodata.GetEquipHeroList()[i];
+            if (heroitemid <= 0)
             {
-                return;
+                continue;
             }
 
-            var createpoint = _playerpoint[userherodata[i]._heropoint];
+            if (DataManager.instance.GetItemTable().GetItemdata().TryGetValue(heroitemid, out var itemdata) == false)
+            {
+                continue;
+            }
+
+            var player = DataManager.instance.GetHeroData(itemdata._connecttableid);
+            if (player._player_id == 0)
+            {
+                continue;
+            }
+
+            var createpoint = _playerpoint[i];
             var createhero = Instantiate<GameObject>(player._playerobject);
 
             var hero = createhero.GetComponent<Player_Base>();
+            hero.IDSetting(itemdata._connecttableid);
             hero.OnSpawn(createpoint.position);
-            hero.IDSetting(userherodata[i]._heroid);
             _herolist.Add(hero);
         }
     }
