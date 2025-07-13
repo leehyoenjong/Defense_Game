@@ -9,10 +9,14 @@ public class UI_RewardPopup : MonoBehaviour
     [SerializeField] GameObject _itemslot;
     [SerializeField] TextMeshProUGUI _exitexplain;
 
+    public void Setting(int itemid, int itemvalue)
+    {
+        CreateSlot(itemid, itemvalue);
+    }
+
     public void Setting(St_RewardItemList itemlist)
     {
         CreateSlot(itemlist);
-        _exitexplain.gameObject.SetActive(false);
     }
 
     public void Setting(List<St_RewardItemList> itemlist)
@@ -28,5 +32,11 @@ public class UI_RewardPopup : MonoBehaviour
     {
         var itemslot = Instantiate<GameObject>(_itemslot, _createslotparent.transform).GetComponent<UI_ItemSlot>();
         itemslot.Setting(itemlist);
+    }
+
+    void CreateSlot(int itemid, int itemvalue)
+    {
+        var itemslot = Instantiate<GameObject>(_itemslot, _createslotparent.transform).GetComponent<UI_ItemSlot>();
+        itemslot.Setting(itemid, itemvalue);
     }
 }

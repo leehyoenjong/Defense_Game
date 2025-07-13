@@ -69,10 +69,12 @@ public class MonsterSpawnManager : MonoBehaviour
                         //딜레이 후 몬스터 생성
                         await UniTask.WaitForSeconds(stagedata._monsterlist[i]._delaytime, cancellationToken: this.GetCancellationTokenOnDestroy());
                     }
-                    var mon = Instantiate<GameObject>(stagedata._monsterlist[i]._monsterobject);
+                    var mon = Instantiate<GameObject>(stagedata._monsterlist[i].GetMonsterInfo()._npc._mybodyobject);
                     mon.transform.position = MonsterCreatePoint();
                     var monsterbase = mon.GetComponent<Monster_Base>();
                     _active_monsterlist.Add(monsterbase);
+
+                    monsterbase.IDSetting(stagedata._monsterlist[i]._monsterid);
                     monsterbase.OnSpawn(MonsterMovePoint());
                 }
             }

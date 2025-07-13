@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+[Serializable]
 public class UserData
 {
     static UserData _instance;
@@ -8,61 +9,71 @@ public class UserData
     {
         get
         {
-            if (_instance == null)
-            {
-                _instance = new UserData();
-            }
             return _instance;
         }
     }
 
+    public static void Create()
+    {
+        _instance = new UserData();
+    }
 
-    public St_UserChapterData _chapterdata;
+    public St_UserChapterData _userchapterdata;
     public St_UserInventory _userinventory;
     public St_UserEquitHero _userequiphero;
     public St_UserQuestData _userquestdata;
 
     public UserData()
     {
-        PlayManager._play_chapter_next += UserChapterUpdate;
+
         CreateNewUserData();
+        AddAction();
     }
 
     ~UserData()
     {
-        PlayManager._play_chapter_next -= UserChapterUpdate;
+        RemoveAction();
     }
 
     void CreateNewUserData()
     {
-        _chapterdata = new St_UserChapterData();
-        _chapterdata._lastchapternumber = 1;
+        _userchapterdata = new St_UserChapterData();
+        _userchapterdata._lastchapternumber = 1;
 
         _userinventory = new St_UserInventory();
         _userinventory._userinvendata = new List<St_UserInvenItemList>();
 
         _userequiphero = new St_UserEquitHero();
-        _userequiphero._equipheroid = new List<int>() { 10000, 0, 0,};
+        _userequiphero._equipheroid = new List<int>() { 10000, 0, 0, 0, 0 };
+
+        _userquestdata = new St_UserQuestData();
+        _userquestdata._questclearid = new List<int>();
+        _userquestdata._questvaluelist = new List<St_UserQuestList>();
     }
 
-    public void UserChapterUpdate()
+    void AddAction()
     {
-        _chapterdata._lastchapternumber++;
+        PlayManager._play_chapter_next += _userchapterdata.UserChapterUpdate;
+        Monster_Base._monsterdie += (monsterinfo) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.MONSTERKILL, 0, 1);
+        Monster_Base._monsterdie += (monsterinfo) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.TARGETMONSTERKILL, monsterinfo._npc._mid, 1);
+        UI_Shop_Slot._shop_buy_complted_event += (shopid) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.GACHA, 0, 1);
+        UI_Shop_Slot._shop_buy_complted_event += (shopid) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.TARGETGACHA, shopid, 1);
+        UI_Inventory_Hero_Grade._upgrade_event += (heroid) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.UPGRADE, 0, 1);
+        UI_Inventory_Hero_Grade._upgrade_event += (heroid) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.TARGETHEROUPGRADE, heroid, 1);
+        UI_QuestSlot._quest_clear_event += (questinfo) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.QUESTCLEARCOUNT, 0, 1);
+        UI_QuestSlot._quest_clear_event += (questinfo) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.TARGETTYPEQUESTCLEARCOUNT, (int)questinfo._questtype, 1);
     }
 
-}
-
-
-[Serializable]
-public struct St_UserHeroList
-{
-    public int _heroid;
-    public int _heropoint;
-}
-
-
-[Serializable]
-public struct St_UserChapterData
-{
-    public int _lastchapternumber;
+    void RemoveAction()
+    {
+        PlayManager._play_chapter_next -= _userchapterdata.UserChapterUpdate;
+        Monster_Base._monsterdie -= (monsterinfo) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.MONSTERKILL, 0, 1);
+        Monster_Base._monsterdie -= (monsterinfo) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.TARGETMONSTERKILL, monsterinfo._npc._mid, 1);
+        UI_Shop_Slot._shop_buy_complted_event -= (shopid) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.GACHA, 0, 1);
+        UI_Shop_Slot._shop_buy_complted_event -= (shopid) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.TARGETGACHA, shopid, 1);
+        UI_Inventory_Hero_Grade._upgrade_event -= (heroid) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.UPGRADE, 0, 1);
+        UI_Inventory_Hero_Grade._upgrade_event -= (heroid) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.TARGETHEROUPGRADE, heroid, 1);
+        UI_QuestSlot._quest_clear_event -= (questinfo) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.QUESTCLEARCOUNT, 0, 1);
+        UI_QuestSlot._quest_clear_event -= (questinfo) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.TARGETTYPEQUESTCLEARCOUNT, (int)questinfo._questtype, 1);
+    }
 }

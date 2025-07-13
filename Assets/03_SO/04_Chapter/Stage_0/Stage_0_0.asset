@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stageid: 0
   _monsterlist:
-  - _monsterobject: {fileID: 2213426367315815728, guid: 34de4d1903fa1489a85f10a713a6e3b8, type: 3}
+  - _monsterid: 1
     _count: 5
     _delaytime: 0

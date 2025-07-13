@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UI_Inventory_Hero : MonoBehaviour
 {
@@ -62,7 +61,7 @@ public class UI_Inventory_Hero : MonoBehaviour
     {
         var connectheroid = DataManager.instance.GetItemTable().GetItemdata()[heroitemid]._connecttableid;
         var heroinfo = DataManager.instance.GetHeroData(connectheroid);
-        if (heroinfo._player_id == 0)
+        if (heroinfo._npc._mid == 0)
         {
             //TODO: 무조건 있다는 가정 
             Debug.LogError("캐릭터 정보가 없습니다.");
@@ -75,12 +74,12 @@ public class UI_Inventory_Hero : MonoBehaviour
             _inventory_equipwindow.SetActive(true, _clickheroslot.GetItemID());
             return;
         }
-        _explain.text = string.Format(ITEMEXPLAIN, heroinfo._name);
+        _explain.text = string.Format(ITEMEXPLAIN, heroinfo._npc._name);
         Setting_SkillInfo(heroinfo, slot);
         Setting_Status(heroitemid);
     }
 
-    void Setting_SkillInfo(St_PlayerList heroinfo, UI_ItemSlotUse_Btn slot)
+    void Setting_SkillInfo(St_HeroTable heroinfo, UI_ItemSlotUse_Btn slot)
     {
         slot.Click();
 

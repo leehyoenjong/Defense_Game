@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class UI_Shop_Slot : MonoBehaviour
 
     const string VEIWTEXT = "{0}\n<size=50><color=yellow>{1}</color></size>";
     int _shopid;
+    public static event Action<int> _shop_buy_complted_event;
 
     public void Setting(int shopid)
     {
@@ -43,7 +45,13 @@ public class UI_Shop_Slot : MonoBehaviour
 
     public void Btn_Buy()
     {
-        DataManager.instance.GetShopTable().BuyProduct(_shopid);
+        var buycheck = DataManager.instance.GetShopTable().BuyProduct(_shopid);
+        if (buycheck == false)
+        {
+            return;
+        }
+
+        _shop_buy_complted_event?.Invoke(_shopid);
     }
 
     public void SettingProbability(GameObject popup)

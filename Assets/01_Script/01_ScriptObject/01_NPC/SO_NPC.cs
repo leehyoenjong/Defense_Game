@@ -6,12 +6,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SO_NPC", menuName = "SO_NPC", order = 0)]
 public class SO_NPC : ScriptableObject
 {
+    [Header("기본정보")]
+    public int _mid;
     public int _statusid;
+    public string _name;
+    public Sprite _icon;
+    [Header("스킬")]
     public BaseSkill _basic_attack_skill;
     [Header("고유스킬(스킬종류 최대 3가지)")]
     public BaseSkill[] _skill_chose_list;
-    public int _diegold;
-    public AnimatorOverrideController _animator_with_ui;
+
+
+    public GameObject _mybodyobject;
 
     public BaseSkill ChoseLevelLvSkill(BaseNPC me, List<BaseSkill> alreadychoseskilllist)
     {

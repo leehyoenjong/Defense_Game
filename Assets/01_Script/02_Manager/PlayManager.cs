@@ -46,7 +46,7 @@ public class PlayManager : MonoBehaviour
 
     void Start()
     {
-        _current_chapter_id = UserData._userdata._chapterdata._lastchapternumber;
+        _current_chapter_id = UserData._userdata._userchapterdata._lastchapternumber;
         _current_stage_id = 0;
         PlayGame().Forget();
     }

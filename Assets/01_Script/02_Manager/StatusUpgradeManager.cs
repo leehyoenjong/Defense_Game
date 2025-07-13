@@ -214,7 +214,7 @@ public class StatusUpgradeManager : MonoBehaviour
     {
         // PlayManager에서 기본 헤로 데이터 가져오기
         var heroData = DataManager.instance.GetHeroData(heroid);
-        var heroObject = heroData._playerobject;
+        var heroObject = heroData._npc._mybodyobject;
         var baseNPC = heroObject.GetComponent<BaseNPC>();
         var baseStatus = baseNPC.GetStatus();
 

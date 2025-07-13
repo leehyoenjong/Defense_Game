@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1319252448831545818}
   - component: {fileID: 4887204511132536653}
   - component: {fileID: 1981297462912986319}
+  - component: {fileID: 3579098253825149807}
   m_Layer: 5
   m_Name: Btn_HOME
   m_TagString: Untagged
@@ -121,9 +122,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6799510441227708027}
-        m_TargetAssemblyTypeName: UI_GameOver, Assembly-CSharp
-        m_MethodName: Btn_Home
+      - m_Target: {fileID: 3579098253825149807}
+        m_TargetAssemblyTypeName: UI_SceneMoveBtn, Assembly-CSharp
+        m_MethodName: Btn_SceneMove
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -133,6 +134,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3579098253825149807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 515861373861575915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd754c3ad959144598b338dbc27a68fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scenename: 01_LOBBY
 --- !u!1 &1395524508501004171
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,6 +441,7 @@ GameObject:
   - component: {fileID: 7726316872926344302}
   - component: {fileID: 4330068313584470833}
   - component: {fileID: 2619956486914991786}
+  - component: {fileID: 6181184631832370376}
   m_Layer: 5
   m_Name: Btn_REPLAY
   m_TagString: Untagged
@@ -536,9 +551,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6799510441227708027}
-        m_TargetAssemblyTypeName: UI_GameOver, Assembly-CSharp
-        m_MethodName: Btn_Replay
+      - m_Target: {fileID: 6181184631832370376}
+        m_TargetAssemblyTypeName: UI_SceneMoveBtn, Assembly-CSharp
+        m_MethodName: Btn_SceneMove
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -548,6 +563,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6181184631832370376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2615520779753360941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd754c3ad959144598b338dbc27a68fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scenename: 02_PLAY
 --- !u!1 &2637369769663942465
 GameObject:
   m_ObjectHideFlags: 0

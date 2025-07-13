@@ -10,6 +10,6 @@ public class UI_Lobby : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _lastchapter.text = string.Format(CHAPTERTITLE, UserData._userdata._chapterdata._lastchapternumber);
+        _lastchapter.text = string.Format(CHAPTERTITLE, UserData._userdata._userchapterdata._lastchapternumber);
     }
 }

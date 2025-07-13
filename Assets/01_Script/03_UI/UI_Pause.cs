@@ -17,10 +17,4 @@ public class UI_Pause : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
-
-    public void Btn_Quit()
-    {
-        //TODO:추후에 씬 매니저로 이동 변경 예정
-        SceneManager.LoadScene("00_LOBBY");
-    }
 }

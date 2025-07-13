@@ -13,13 +13,7 @@ MonoBehaviour:
   m_Name: SO_Hero_Table
   m_EditorClassIdentifier: 
   _playerlist:
-  - _player_id: 1
-    _name: ARCHER
-    _icon: {fileID: 1572034964, guid: f36a3328d5d99de4096650ac8dfe60cf, type: 3}
-    _playerobject: {fileID: 8119325562826731349, guid: 52ce9d63c030e4abbb82182945a22e15, type: 3}
-    _npc: {fileID: 11400000, guid: 87a5004d563014781beef6e5361f3ba1, type: 2}
-  - _player_id: 2
-    _name: ARCHER_Test
-    _icon: {fileID: 1572034964, guid: f36a3328d5d99de4096650ac8dfe60cf, type: 3}
-    _playerobject: {fileID: 8119325562826731349, guid: 52ce9d63c030e4abbb82182945a22e15, type: 3}
-    _npc: {fileID: 11400000, guid: 111ee6e046ad349949cee62623c2dccc, type: 2}
+  - _npc: {fileID: 11400000, guid: 87a5004d563014781beef6e5361f3ba1, type: 2}
+    _animator_with_ui: {fileID: 22100000, guid: dc406310c810440ddb0b7d952ee06142, type: 2}
+  - _npc: {fileID: 11400000, guid: 111ee6e046ad349949cee62623c2dccc, type: 2}
+    _animator_with_ui: {fileID: 22100000, guid: dc406310c810440ddb0b7d952ee06142, type: 2}

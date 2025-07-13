@@ -21,13 +21,13 @@ public class UI_Inventory_Hero_Equip : MonoBehaviour
         }
 
         var herodata = DataManager.instance.GetHeroData(heroitemdata._connecttableid);
-        if (herodata._player_id == 0)
+        if (herodata._npc._mid == 0)
         {
             Debug.LogError("영웅 아이디가 없습니다!");
             _icon.gameObject.SetActive(false);
             return;
         }
 
-        _icon.sprite = herodata._icon;
+        _icon.sprite = herodata._npc._icon;
     }
 }

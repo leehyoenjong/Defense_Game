@@ -39,8 +39,8 @@ public class UI_Hero_Btn : MonoBehaviour
 
         //영웅의 기본 데이터를 가져와 이름, 아이콘을 매칭하고 스테이터스는 필드에 있는 거에서 매칭하기
         var hero_origindata = DataManager.instance.GetHeroData(_heroclass.GetID());
-        _name.text = hero_origindata._name;
-        _icon.sprite = hero_origindata._icon;
+        _name.text = hero_origindata._npc._name;
+        _icon.sprite = hero_origindata._npc._icon;
 
         var criticalper = _heroclass.GetStatus()._critical * 100;
         var criticaldamageper = _heroclass.GetStatus()._critical_damage * 100;

@@ -4,6 +4,8 @@ using UnityEngine;
 public class Monster_Base : BaseNPC
 {
     [SerializeField] MoveController _moveController;
+    public static event Action<St_MonsterTable> _monsterdie;
+    St_MonsterTable _monsterinfo;
 
     protected override void Start()
     {
@@ -11,6 +13,12 @@ public class Monster_Base : BaseNPC
         _moveController._move_end_check += () => PlayAnimation(EANIMATION.MOVE, false);
         _moveController._move_check += () => _animationController.CheckRunAnimation();
         base.Start();
+    }
+
+    public override void IDSetting(int id)
+    {
+        base.IDSetting(id);
+        _monsterinfo = DataManager.instance.GetMonsterInfo(id);
     }
 
     public virtual void OnSpawn(Vector2 target)
@@ -25,7 +33,7 @@ public class Monster_Base : BaseNPC
     {
         base.NPC_Die();
         _moveController.ReSetting();
-        GoldManager._gold_add_event?.Invoke(_so_npc._diegold);
+        _monsterdie?.Invoke(_monsterinfo);
     }
 
     public override void OnRelease()

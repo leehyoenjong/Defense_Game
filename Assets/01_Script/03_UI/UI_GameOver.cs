@@ -16,16 +16,6 @@ public class UI_GameOver : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    public void Btn_Home()
-    {
-        SceneManager.LoadScene("00_LOBBY");
-    }
-
-    public void Btn_Replay()
-    {
-        SceneManager.LoadScene("01_PLAY");
-    }
-
     void OnDisable()
     {
         Time.timeScale = 1;

@@ -12,7 +12,9 @@ public class SO_StageData : ScriptableObject
 [Serializable]
 public struct St_Stage
 {
-    public GameObject _monsterobject;
+    public int _monsterid;
     public int _count;
     public float _delaytime;
+
+    public St_MonsterTable GetMonsterInfo() => DataManager.instance.GetMonsterInfo(_monsterid);
 }

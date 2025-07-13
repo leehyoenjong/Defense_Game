@@ -41,13 +41,13 @@ public class PlayerSpawnManager : MonoBehaviour
             }
 
             var player = DataManager.instance.GetHeroData(itemdata._connecttableid);
-            if (player._player_id == 0)
+            if (player._npc._mid == 0)
             {
                 continue;
             }
 
             var createpoint = _playerpoint[i];
-            var createhero = Instantiate<GameObject>(player._playerobject);
+            var createhero = Instantiate<GameObject>(player._npc._mybodyobject);
 
             var hero = createhero.GetComponent<Player_Base>();
             hero.IDSetting(itemdata._connecttableid);

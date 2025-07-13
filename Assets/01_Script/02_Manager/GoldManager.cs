@@ -4,22 +4,22 @@ using UnityEngine;
 public class GoldManager : MonoBehaviour
 {
     public static event Action<int> _gold_get_event;
-    public static Action<int> _gold_add_event;
+
     int _current_gold;
 
     void Start()
     {
-        _gold_add_event = AddGold;
+        Monster_Base._monsterdie += AddGold;
     }
 
     void OnDisable()
     {
-        _gold_add_event = null;
+        Monster_Base._monsterdie -= AddGold;
     }
 
-    void AddGold(int addgold)
+    void AddGold(St_MonsterTable monsterinfo)
     {
-        _current_gold += addgold;
+        _current_gold += monsterinfo._diegold;
         _gold_get_event?.Invoke(_current_gold);
     }
 }

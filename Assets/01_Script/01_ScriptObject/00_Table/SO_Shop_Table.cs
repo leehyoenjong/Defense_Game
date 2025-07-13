@@ -59,20 +59,20 @@ public class SO_Shop_Table : ScriptableObject
         return getitemopenList;
     }
 
-    public void BuyProduct(int shopid)
+    public bool BuyProduct(int shopid)
     {
         if (GetShopData().TryGetValue(shopid, out var shopdata) == false)
         {
             //TODO: 상품이 무조건 있는 것으로 할 것이기 때문에 상품이 없다면 에러 송출
             Debug.LogError("상품이 없습니다!");
-            return;
+            return false;
         }
 
         // if (CheckMoney(shopdata) == false)
         // {
         //     //TODO: 돈이 부족하다는 시스템 메시지 띄우기
         //     Debug.Log("재화가 부족합니다!");
-        //     return;
+        //      return false;
         // }
 
         //상품 가격만큼 아이템 제거
@@ -87,6 +87,7 @@ public class SO_Shop_Table : ScriptableObject
         }
 
         RewardManager.instance.CraeteReward(totalresult);
+        return true;
     }
 }
 

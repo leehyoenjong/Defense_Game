@@ -15,6 +15,8 @@ public abstract class BaseNPC : MonoBehaviour
     [SerializeField] protected DamageTextController _damagetextcontroller;
 
     //기본 맴버변수 
+    protected int _myid;
+    public int GetID() => _myid;
     protected int _current_hp;
     protected bool _isdie;
     protected St_Status _status;
@@ -52,6 +54,12 @@ public abstract class BaseNPC : MonoBehaviour
 
         //기본 스킬 삽입
         AddActiveSkill(_so_npc._basic_attack_skill);
+    }
+
+
+    public virtual void IDSetting(int id)
+    {
+        _myid = id;
     }
 
     public virtual void OnSpawn()
