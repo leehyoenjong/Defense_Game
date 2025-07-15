@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using BackEnd;
+using BackEnd.BackndNewtonsoft.Json;
 using UnityEngine;
 
 [Serializable]
@@ -9,6 +11,61 @@ public struct St_UserQuestData
 {
     public List<St_UserQuestList> _questvaluelist;//퀘스트 값 리스트 
     public List<int> _questclearid;//퀘스트 클리어 리스트
+
+    public Param Get_UserData()
+    {
+        var param = new Param();
+        param.Add("_questvaluelist", _questvaluelist);
+        param.Add("_questclearid", _questclearid);
+        return param;
+    }
+
+    public bool Load_UserData(BackendReturnObject loadresult)
+    {
+        if (loadresult.IsSuccess() == false)
+        {
+            return false;
+        }
+
+        var userdatajson = loadresult.FlattenRows();
+
+        // 퀘스트 클리어 ID 리스트 로드
+        if (userdatajson.ContainsKey("_questclearid"))
+        {
+            var questclearid = userdatajson["_questclearid"];
+            var maxcount = questclearid.Count;
+            for (int i = 0; i < maxcount; i++)
+            {
+                if (int.TryParse(questclearid[i].ToString(), out var clearid) == false)
+                {
+                    continue;
+                }
+                _questclearid.Add(clearid);
+            }
+        }
+
+        // 퀘스트 값 리스트 로드
+        if (userdatajson.ContainsKey("_questvaluelist"))
+        {
+            var questvaluelist = userdatajson["_questvaluelist"];
+            var maxcount = questvaluelist.Count;
+            for (int i = 0; i < maxcount; i++)
+            {
+                try
+                {
+                    var questData = JsonConvert.DeserializeObject<St_UserQuestList>(questvaluelist[i].ToString());
+                    _questvaluelist.Add(questData);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"퀘스트 값 리스트 로드 실패: {ex.Message}");
+                    continue;
+                }
+            }
+        }
+
+        return true;
+    }
 
     /// <summary>
     /// 퀘스트 값 가져오기 

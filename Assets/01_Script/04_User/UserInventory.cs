@@ -1,12 +1,54 @@
 
 using System;
 using System.Collections.Generic;
+using BackEnd;
+using BackEnd.BackndNewtonsoft.Json;
+using UnityEngine;
 
 [Serializable]
 public struct St_UserInventory
 {
     public List<St_UserInvenItemList> _userinvendata;
     public static event Action _upgrade_event;
+
+    public Param Get_UserData()
+    {
+        var param = new Param();
+        param.Add("_userinvendata", _userinvendata);
+        return param;
+    }
+
+    public bool Load_UserData(BackendReturnObject loadresult)
+    {
+        if (loadresult.IsSuccess() == false)
+        {
+            return false;
+        }
+
+        var userdatajson = loadresult.FlattenRows();
+
+        // 인벤토리 아이템 데이터 로드
+        if (userdatajson.ContainsKey("_userinvendata"))
+        {
+            var userinvendata = userdatajson["_userinvendata"];
+            var maxcount = userinvendata.Count;
+            for (int i = 0; i < maxcount; i++)
+            {
+                try
+                {
+                    var itemData = JsonConvert.DeserializeObject<St_UserInvenItemList>(userinvendata[i].ToString());
+                    _userinvendata.Add(itemData);
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError($"인벤토리 아이템 데이터 로드 실패: {ex.Message}");
+                    continue;
+                }
+            }
+        }
+
+        return true;
+    }
 
     public void UpdateItemData(int itemid, int itemvalue)
     {

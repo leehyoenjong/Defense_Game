@@ -25,7 +25,6 @@ public class UserData
 
     public UserData()
     {
-
         CreateNewUserData();
         AddAction();
     }
