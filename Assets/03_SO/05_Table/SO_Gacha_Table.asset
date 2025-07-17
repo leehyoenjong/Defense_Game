@@ -16,18 +16,21 @@ MonoBehaviour:
   - _gachaid: 1
     _equaldistribution: 1
     _rewardlist:
-    - _itemid: 1
-      _itemvalue: 100
+    - _itemid: 10000
+      _itemvalue: 1
       _percent: 0
-    - _itemid: 1
-      _itemvalue: 1000
+    - _itemid: 10001
+      _itemvalue: 1
       _percent: 0
-    - _itemid: 1
-      _itemvalue: 10000
+    - _itemid: 10002
+      _itemvalue: 1
       _percent: 0
-    - _itemid: 1
-      _itemvalue: 100000
+    - _itemid: 10003
+      _itemvalue: 1
       _percent: 0
-    - _itemid: 1
-      _itemvalue: 1000000
+    - _itemid: 10004
+      _itemvalue: 1
+      _percent: 0
+    - _itemid: 10005
+      _itemvalue: 1
       _percent: 0

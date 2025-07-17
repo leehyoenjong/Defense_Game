@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SO_Hero_DeathKnight
   m_EditorClassIdentifier: 
   _mid: 2
-  _statusid: 1
-  _name: Wizard
-  _icon: {fileID: 1572034964, guid: fdf56bf2c0b633940b834f68fddfc571, type: 3}
+  _statusid: 2
+  _name: Death Knight
+  _icon: {fileID: 1572034964, guid: e506889aec7514442a0a569ded7a996c, type: 3}
   _basic_attack_skill: {fileID: 11400000, guid: 643284535e7c3435ebe0e175fa18c0b7, type: 2}
   _skill_chose_list:
   - {fileID: 11400000, guid: 81ea6de5911fb4448978471e0bbc21e5, type: 2}

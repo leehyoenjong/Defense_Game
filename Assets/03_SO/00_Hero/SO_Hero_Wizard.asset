@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24aab73d63be043819766f7b6b42da92, type: 3}
   m_Name: SO_Hero_Wizard
   m_EditorClassIdentifier: 
-  _mid: 2
-  _statusid: 1
+  _mid: 6
+  _statusid: 3
   _name: Wizard
   _icon: {fileID: 1572034964, guid: fdf56bf2c0b633940b834f68fddfc571, type: 3}
   _basic_attack_skill: {fileID: 11400000, guid: 643284535e7c3435ebe0e175fa18c0b7, type: 2}

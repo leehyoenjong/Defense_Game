@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0310d48b5ef8b482193c1153aea3ffa4, type: 3}
+  m_Name: SO_Skill_AreaAllAttack_Level1
+  m_EditorClassIdentifier: 
+  _skillInfo:
+    _name: ALL Area Attack
+    _explain: All Area Attack Skill Damage 150%!
+    _cooltime: 3
+    _duration: 0
+    _mid: 2
+    _level: 1
+    _skillicon: {fileID: 21300000, guid: b123bdad4f47a734c80135e456f2d162, type: 3}
+    _next_skilldelaytime: 0
+  _skillkind: 1
+  _eanimation: 5
+  _eskilltrigger: 1
+  _active_skillEffect: []
+  _target_attackeffect: []
+  _skilldamagepercent: 150

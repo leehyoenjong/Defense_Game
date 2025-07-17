@@ -9,6 +9,15 @@ public class SO_Skill_Attack : BaseSkill
     [Header("공격 데미지 퍼센트")]
     [SerializeField] float _skilldamagepercent;
 
+    [Header("ㅡㅡㅡㅡ공격 타입ㅡㅡㅡㅡ")]
+    [SerializeField] EATTACKTYPE _attack_type;
+
+    [Header("ㅡㅡㅡㅡ범위ㅡㅡㅡㅡ")]
+    [SerializeField] EATTACKAREA _attack_area;
+
+    [Header("ㅡㅡㅡㅡ타겟ㅡㅡㅡㅡ")]
+    [SerializeField] EATTACKTARGETKIND _attack_target_kind;
+
     public int SkillDamage(int totaldamage)
     {
         return Mathf.CeilToInt(totaldamage * _skilldamagepercent);
@@ -43,5 +52,10 @@ public class SO_Skill_Attack : BaseSkill
         {
             var targettoeffect = Instantiate<GameObject>(_target_attackeffect[i], targetposition, default);
         }
+    }
+
+    public virtual BaseNPC GetTarget()
+    {
+        return null;
     }
 }

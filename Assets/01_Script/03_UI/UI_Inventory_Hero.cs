@@ -71,6 +71,11 @@ public class UI_Inventory_Hero : MonoBehaviour
         //더블클릭한거임
         if (_clickheroslot == slot)
         {
+            if (UserData._userdata._userinventory.GetUserItemData(_clickheroslot.GetItemID()).itemdata._itemvalue > 0)
+            {
+                return;
+            }
+
             _inventory_equipwindow.SetActive(true, _clickheroslot.GetItemID());
             return;
         }

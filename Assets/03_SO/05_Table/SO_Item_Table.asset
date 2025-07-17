@@ -26,9 +26,9 @@ MonoBehaviour:
     _itemkind: 1
     _connecttableid: 0
   - _itemid: 1000
-    _itemname: GOLD GACHA
-    _itemexplain: GOLD GACHA ITEM
-    _itemicon: {fileID: -3988769855312385993, guid: 1734a2acd9ac0419fb448279c8a50872, type: 3}
+    _itemname: HERO GACHA
+    _itemexplain: HERO GACHA ITEM
+    _itemicon: {fileID: -5045538080160109740, guid: 110fdf5d798e84dfbb5f29097b581192, type: 3}
     _itemkind: 3
     _connecttableid: 1
   - _itemid: 10000
@@ -38,8 +38,32 @@ MonoBehaviour:
     _itemkind: 2
     _connecttableid: 1
   - _itemid: 10001
-    _itemname: ARCHER_Test
-    _itemexplain: HERO ARCHER
-    _itemicon: {fileID: 1572034964, guid: fd3e687915ab34741994494077343813, type: 3}
+    _itemname: Death Knight
+    _itemexplain: HERO DEATH KINGHT
+    _itemicon: {fileID: 1572034964, guid: e506889aec7514442a0a569ded7a996c, type: 3}
     _itemkind: 2
     _connecttableid: 2
+  - _itemid: 10002
+    _itemname: Knight
+    _itemexplain: HERO KNIGHT
+    _itemicon: {fileID: 1572034964, guid: f050f0b04d9fe2b44bca3bcd7bba9e92, type: 3}
+    _itemkind: 2
+    _connecttableid: 3
+  - _itemid: 10003
+    _itemname: Mage
+    _itemexplain: HERO MAGE
+    _itemicon: {fileID: 1572034964, guid: 504d0241974b2b04983dbd8b9a928ea9, type: 3}
+    _itemkind: 2
+    _connecttableid: 4
+  - _itemid: 10004
+    _itemname: Paladin
+    _itemexplain: HERO PALADIN
+    _itemicon: {fileID: 1572034964, guid: 258ba7d3ac3c1a34888cf0144497463a, type: 3}
+    _itemkind: 2
+    _connecttableid: 5
+  - _itemid: 10005
+    _itemname: Wizard
+    _itemexplain: HERO WIZARD
+    _itemicon: {fileID: 1572034964, guid: fdf56bf2c0b633940b834f68fddfc571, type: 3}
+    _itemkind: 2
+    _connecttableid: 6
