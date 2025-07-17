@@ -16,4 +16,12 @@ MonoBehaviour:
   - _npc: {fileID: 11400000, guid: 87a5004d563014781beef6e5361f3ba1, type: 2}
     _animator_with_ui: {fileID: 22100000, guid: dc406310c810440ddb0b7d952ee06142, type: 2}
   - _npc: {fileID: 11400000, guid: 111ee6e046ad349949cee62623c2dccc, type: 2}
-    _animator_with_ui: {fileID: 22100000, guid: dc406310c810440ddb0b7d952ee06142, type: 2}
+    _animator_with_ui: {fileID: 22100000, guid: 301f27260b3a84c39967006c571eb015, type: 2}
+  - _npc: {fileID: 11400000, guid: 9ae89b2ca395c4a088356a09340a02f1, type: 2}
+    _animator_with_ui: {fileID: 22100000, guid: 301f27260b3a84c39967006c571eb015, type: 2}
+  - _npc: {fileID: 11400000, guid: 98de594c174bd4ce78baf0703ea12b4a, type: 2}
+    _animator_with_ui: {fileID: 22100000, guid: 301f27260b3a84c39967006c571eb015, type: 2}
+  - _npc: {fileID: 11400000, guid: ef373e3d5617449029d8272c7adb9806, type: 2}
+    _animator_with_ui: {fileID: 22100000, guid: 301f27260b3a84c39967006c571eb015, type: 2}
+  - _npc: {fileID: 11400000, guid: 3bae3343f41714c20aae7f38d4fdb6e3, type: 2}
+    _animator_with_ui: {fileID: 22100000, guid: 301f27260b3a84c39967006c571eb015, type: 2}

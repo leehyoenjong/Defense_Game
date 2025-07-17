@@ -20,13 +20,17 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-    void OnApplicationQuit()
-    {
-        BackEndUserData.UpdateUserData();
-    }
-
     void Start()
     {
         UI_Login._login_faild_event += CreatePopup;
+    }
+
+    void OnApplicationQuit()
+    {
+        if (BackEnd.Backend.IsInitialized == false)
+        {
+            return;
+        }
+        BackEndUserData.UpdateUserData();
     }
 }

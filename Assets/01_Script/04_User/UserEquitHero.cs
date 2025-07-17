@@ -23,7 +23,7 @@ public struct St_UserEquitHero
             return false;
         }
 
-        var userdatajson = loadresult.FlattenRows();
+        var userdatajson = loadresult.FlattenRows()[0];
 
         // 장착 영웅 ID 리스트 로드
         if (userdatajson.ContainsKey("_equipheroid"))
@@ -46,6 +46,7 @@ public struct St_UserEquitHero
     {
         UnequipHero(heroitemid);
         _equipheroid[idx] = heroitemid;
+        BackEndLog.WriteLog(LogType.EQUIP, $"{idx} 번호에 {heroitemid}번 영웅 장착");
     }
 
     public void UnequipHero(int heroitemid)

@@ -12,6 +12,7 @@ public class UI_Login : MonoBehaviour
     public void Btn_GuestLogin()
     {
         var loginresult = _login.ActiveLogin_Guset();
+        Debug.Log($"로그인 정보 :{loginresult.ToString()}");
         LoginResult(loginresult);
     }
 
@@ -25,13 +26,14 @@ public class UI_Login : MonoBehaviour
     {
         var loginstage = (BackEndLoginState)loginresult.StatusCode;
         UserData.Create();
+
         switch (loginstage)
         {
-            case BackEndLoginState.SUCCESS:
+            case BackEndLoginState.NEW_USER_SUCCESS:
                 _userdata.NewUserDataInit();
                 _ = SceneManager.LoadSceneAsync("01_LOBBY");
                 break;
-            case BackEndLoginState.DUPLICATE_SUCCESS:
+            case BackEndLoginState.SUCCESS:
                 var isloadresult = await _userdata.LoadUserData();
                 if (isloadresult.Item1 == false)
                 {

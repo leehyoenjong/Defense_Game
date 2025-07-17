@@ -27,7 +27,7 @@ public struct St_UserQuestData
             return false;
         }
 
-        var userdatajson = loadresult.FlattenRows();
+        var userdatajson = loadresult.FlattenRows()[0];
 
         // 퀘스트 클리어 ID 리스트 로드
         if (userdatajson.ContainsKey("_questclearid"))
@@ -123,6 +123,7 @@ public struct St_UserQuestData
         if (questinfo._questtype == EQUESTTYPE.REPEAT)
         {
             UserData._userdata._userquestdata.QuestClearUpdateValue(questinfo, clearcount);
+            BackEndLog.WriteLog(LogType.QUEST, $"클리어 반복 퀘스트 번호:{questid}");
             return;
         }
 
@@ -132,6 +133,7 @@ public struct St_UserQuestData
             Debug.LogError("여러번 클리어함! / 퀘스트 아이디에 문제있음!");
         }
         _questclearid.Add(questid);
+        BackEndLog.WriteLog(LogType.QUEST, $"클리어 퀘스트 번호:{questid}");
     }
 
     public void QuestClearUpdateValue(St_QuestTable questinfo, int clearcount)
@@ -202,11 +204,14 @@ public struct St_UserQuestData
                 userquest._targetid = targetid;
                 userquest._totalvalue = targetvalue;
                 _questvaluelist.Add(userquest);
+                BackEndLog.WriteLog(LogType.QUEST, $"퀘스트 타입:{targetquesttype.ToString()} / 퀘스트 아이템 아이디: {targetid} / 획득 후:{userquest._totalvalue}");
                 continue;
             }
             userquest = _questvaluelist[questindex];
+            var beforevalue = userquest._totalvalue;
             userquest._totalvalue += targetvalue;
             _questvaluelist[questindex] = userquest;
+            BackEndLog.WriteLog(LogType.QUEST, $"퀘스트 타입:{targetquesttype.ToString()} / 퀘스트 아이템 아이디: {targetid} / 획득 전:{beforevalue} / 획득 후:{userquest._totalvalue}");
         }
     }
 }

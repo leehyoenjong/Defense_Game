@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: -826580015
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1572034964, guid: fd3e687915ab34741994494077343813, type: 3}
+  m_Sprite: {fileID: 1572034964, guid: fdf56bf2c0b633940b834f68fddfc571, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -98,7 +98,7 @@ Animator:
   m_GameObject: {fileID: 4216034037254758192}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: c7e832a3562714bbcb1a974c1bb95332, type: 2}
+  m_Controller: {fileID: 22100000, guid: 0854a380ea6fc4812b13b140c68b4afd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -122,12 +122,12 @@ GameObject:
   - component: {fileID: 6769310987232183062}
   - component: {fileID: 6038194448659119922}
   - component: {fileID: 3155842828763983625}
-  - component: {fileID: 2971587115833002143}
   - component: {fileID: 7800691118166326555}
   - component: {fileID: 1979834640165065519}
   - component: {fileID: 1562766766549833141}
+  - component: {fileID: 3306690007691426202}
   m_Layer: 8
-  m_Name: Player_Archer
+  m_Name: Hero_Knight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf1428839cf684e16abd65aeb573ecdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _me: {fileID: 2971587115833002143}
+  _me: {fileID: 0}
   _attackAreaController: {fileID: 3155842828763983625}
 --- !u!114 &3155842828763983625
 MonoBehaviour:
@@ -196,23 +196,6 @@ MonoBehaviour:
   _showAttackArea: 0
   _attackAreaColor: {r: 1, g: 0, b: 0, a: 1}
   _segments: 36
---- !u!114 &2971587115833002143
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8119325562826731349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b96b079c490b248bfa0197a5a8e4dca0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _so_npc: {fileID: 11400000, guid: 87a5004d563014781beef6e5361f3ba1, type: 2}
-  _animationController: {fileID: 6769310987232183062}
-  _hpbarController: {fileID: 0}
-  _skillController: {fileID: 6038194448659119922}
-  _attackareacontroller: {fileID: 3155842828763983625}
 --- !u!50 &7800691118166326555
 Rigidbody2D:
   serializedVersion: 5
@@ -383,3 +366,21 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &3306690007691426202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8119325562826731349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a839f13a3cb2a4b7c9ea2b9799094b23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _so_npc: {fileID: 11400000, guid: 9ae89b2ca395c4a088356a09340a02f1, type: 2}
+  _animationController: {fileID: 6769310987232183062}
+  _hpbarController: {fileID: 0}
+  _skillController: {fileID: 6038194448659119922}
+  _damagetextcontroller: {fileID: 0}
+  _attackareacontroller: {fileID: 3155842828763983625}

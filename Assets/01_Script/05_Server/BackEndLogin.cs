@@ -17,8 +17,8 @@ public class BackEndLogin : MonoBehaviour
 
 public enum BackEndLoginState
 {
-    SUCCESS = 200,
-    DUPLICATE_SUCCESS,
+    SUCCESS= 200,
+    NEW_USER_SUCCESS = 201,
     DEVICE_NULL = 400,
     BAD_LOGIN,
     NONE_CONNECT_USER = 403

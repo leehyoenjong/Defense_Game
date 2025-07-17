@@ -5,8 +5,8 @@ public class PlayerSpawnManager : MonoBehaviour
 {
     public static PlayerSpawnManager instance;
     [SerializeField] Transform[] _playerpoint;
-    List<Player_Base> _herolist = new List<Player_Base>();
-    public List<Player_Base> GetHeroList() => _herolist;
+    List<Hero_Base> _herolist = new List<Hero_Base>();
+    public List<Hero_Base> GetHeroList() => _herolist;
 
     void Awake()
     {
@@ -49,7 +49,7 @@ public class PlayerSpawnManager : MonoBehaviour
             var createpoint = _playerpoint[i];
             var createhero = Instantiate<GameObject>(player._npc._mybodyobject);
 
-            var hero = createhero.GetComponent<Player_Base>();
+            var hero = createhero.GetComponent<Hero_Base>();
             hero.IDSetting(itemdata._connecttableid);
             hero.OnSpawn(createpoint.position);
             _herolist.Add(hero);

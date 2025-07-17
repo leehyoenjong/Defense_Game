@@ -10,7 +10,7 @@ public class UI_Hero_Btn : MonoBehaviour
     [SerializeField] Image _icon;
 
     const string STATUSDATA = "- {0}\n- {1}%\n- {2}%";
-    Player_Base _heroclass;
+    Hero_Base _heroclass;
     public static event Action<int> _hero_click_event;
 
     void OnDisable()

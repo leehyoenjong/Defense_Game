@@ -20,7 +20,7 @@ public struct St_UserChapterData
             return false;
         }
 
-        var userdatajson = loadresult.FlattenRows();
+        var userdatajson = loadresult.FlattenRows()[0];
 
         // 마지막 챕터 번호 로드
         if (userdatajson.ContainsKey("_lastchapternumber"))
@@ -36,6 +36,8 @@ public struct St_UserChapterData
 
     public void UserChapterUpdate()
     {
+        var beforechapternum = _lastchapternumber;
         _lastchapternumber++;
+        BackEndLog.WriteLog(LogType.CHAPTER, $"스테이지 변경 전:{beforechapternum} / 변경 후 :{_lastchapternumber}");
     }
 }

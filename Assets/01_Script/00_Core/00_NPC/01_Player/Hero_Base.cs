@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player_Base : BaseNPC
+public class Hero_Base : BaseNPC
 {
     [SerializeField] AttackAreaController _attackareacontroller;
 

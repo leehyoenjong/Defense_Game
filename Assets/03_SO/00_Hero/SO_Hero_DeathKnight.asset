@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24aab73d63be043819766f7b6b42da92, type: 3}
+  m_Name: SO_Hero_DeathKnight
+  m_EditorClassIdentifier: 
+  _mid: 2
+  _statusid: 1
+  _name: Wizard
+  _icon: {fileID: 1572034964, guid: fdf56bf2c0b633940b834f68fddfc571, type: 3}
+  _basic_attack_skill: {fileID: 11400000, guid: 643284535e7c3435ebe0e175fa18c0b7, type: 2}
+  _skill_chose_list:
+  - {fileID: 11400000, guid: 81ea6de5911fb4448978471e0bbc21e5, type: 2}
+  - {fileID: 11400000, guid: 4c841f2dcb92443489f350c848f88d28, type: 2}
+  - {fileID: 11400000, guid: a450cdc37152747e798c41316fcfb6e1, type: 2}
+  _mybodyobject: {fileID: 8119325562826731349, guid: d74569b0985a441dcacf3fd4792cdd93, type: 3}

@@ -40,7 +40,7 @@ public class UI_SkillChose : MonoBehaviour
         this.gameObject.SetActive(_choseskilllist.Count > 0);
     }
 
-    (Player_Base chosehero, BaseSkill choseskill) ChoseData()
+    (Hero_Base chosehero, BaseSkill choseskill) ChoseData()
     {
         var herolist = PlayerSpawnManager.instance.GetHeroList();
         var choseidxlist = new List<int>();
