@@ -69,8 +69,14 @@ public class SkillController : MonoBehaviour
             return;
         }
 
-        //스킬 발동 
-        _me.GetActiveAttackSkill()[_current_attack_skill_index].ActiveSkill(_me, target);
+        //스킬 발동 및 발동 여부
+        var activeskillresult = _me.GetActiveAttackSkill()[_current_attack_skill_index].ActiveSkill(_me);
+        if (activeskillresult == false)
+        {
+            AddAttackSkillIndex();
+            return;
+        }
+
         SkillCoolTime(skillinfo).Forget();
         _skill_attack_event?.Invoke();
         AddAttackSkillIndex();

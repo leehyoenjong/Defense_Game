@@ -25,5 +25,14 @@ MonoBehaviour:
   _eanimation: 4
   _eskilltrigger: 1
   _active_skillEffect: []
+  _eusetype: 1
+  _enter_hit_object:
+  - {fileID: 6202462865118328157, guid: bc330a95b74500d4f883c68f56579840, type: 3}
+  _etargetkind: 2
+  _etargetfiltertype: 8
+  _eskillarea: 0
+  _circleRadius: 1
+  _boxWidth: 1
+  _boxHeight: 1
   _target_attackeffect: []
   _skilldamagepercent: 1.1

@@ -5,6 +5,7 @@ public class Monster_Base : BaseNPC
 {
     [SerializeField] MoveController _moveController;
     public static event Action<St_MonsterTable> _monsterdie;
+    public static Action<Monster_Base> _monster_die_animation_exit;
     St_MonsterTable _monsterinfo;
 
     protected override void Start()
@@ -39,6 +40,6 @@ public class Monster_Base : BaseNPC
     public override void OnRelease()
     {
         base.OnRelease();
-        MonsterSpawnManager._monster_die_animation_exit?.Invoke(this);
+        _monster_die_animation_exit?.Invoke(this);
     }
 }

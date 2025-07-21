@@ -14,7 +14,7 @@ TagManager:
   - Monster
   - Load
   - Player
-  - 
+  - AttackObject
   - 
   - 
   - 
@@ -52,6 +52,9 @@ TagManager:
     locked: 0
   - name: AttackArea
     uniqueID: 3486558233
+    locked: 0
+  - name: AttackEffect
+    uniqueID: 3072343785
     locked: 0
   m_RenderingLayers:
   - Default

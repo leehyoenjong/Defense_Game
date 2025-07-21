@@ -182,4 +182,20 @@ public abstract class BaseNPC : MonoBehaviour
             AddActiveSkill(addskill[i]);
         }
     }
+
+    /// <summary>
+    /// 현재 체력 반환
+    /// </summary>
+    public int GetCurrentHP()
+    {
+        return _current_hp;
+    }
+
+    /// <summary>
+    /// 최대 체력 반환
+    /// </summary>
+    public int GetMaxHP()
+    {
+        return _status._hp;
+    }
 }
