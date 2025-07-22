@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8153470421899391959}
   - component: {fileID: 2836935225656223677}
   m_Layer: 5
-  m_Name: Hero_Btn
+  m_Name: '@UI_Play_Hero_Btn'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -8,12 +8,14 @@ public class UI_Inventory_Hero : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _explain;
     [SerializeField] TextMeshProUGUI _explain_value;
-    [SerializeField] Transform _parent;
-    [SerializeField] GameObject _slot;
-    [SerializeField] UI_Inventory_Hero_SkillInfo[] _inventory_skill_infos;
+    [SerializeField] Transform _heroslotparent;
+    [SerializeField] Transform _heroskillinfoparent;
+    [SerializeField] GameObject _heroslot;
+    [SerializeField] GameObject _heroskillinfoslot;
     [SerializeField] UI_Inventory_EquipWindow _inventory_equipwindow;
 
     List<UI_ItemSlotUse_Btn> _activeheroslot = new List<UI_ItemSlotUse_Btn>();
+    List<UI_Inventory_Hero_SkillInfo> _inventory_skill_infos = new List<UI_Inventory_Hero_SkillInfo>();
     UI_ItemSlotUse_Btn _clickheroslot;
 
     public static event Action<int> _click_slot;
@@ -44,7 +46,7 @@ public class UI_Inventory_Hero : MonoBehaviour
         var list = UserData._userdata._userequiphero.GetEquipHeroList();
         for (int i = 0; i < maxcount; i++)
         {
-            var slot = Instantiate(_slot, _parent).GetComponent<UI_ItemSlotUse_Btn>();
+            var slot = Instantiate(_heroslot, _heroslotparent).GetComponent<UI_ItemSlotUse_Btn>();
             var itemid = itemherolist[i].Value._itemid;
             var uservalue = UserData._userdata._userinventory.GetUserItemData(itemid).itemdata._itemvalue;
             slot.Setting(itemid, uservalue, Setting);
@@ -88,12 +90,30 @@ public class UI_Inventory_Hero : MonoBehaviour
     {
         slot.Click();
 
+        var maxcount = _inventory_skill_infos.Count;
+        for (int i = 0; i < maxcount; i++)
+        {
+            _inventory_skill_infos[i].gameObject.SetActive(false);
+        }
+
         var skillidlist = heroinfo._npc._skill_chose_list.Select(x => x._skillInfo._mid).Distinct().ToList();
-        var maxcount = skillidlist.Count;
+        maxcount = skillidlist.Count;
         for (int i = 0; i < maxcount; i++)
         {
             var choseskill = heroinfo._npc._skill_chose_list.First(x => x._skillInfo._mid == skillidlist[i]);
-            _inventory_skill_infos[i].Setting(choseskill);
+
+            UI_Inventory_Hero_SkillInfo skillinfoslot = null;
+            if (i < _inventory_skill_infos.Count)
+            {
+                skillinfoslot = _inventory_skill_infos[i];
+            }
+            else
+            {
+                skillinfoslot = Instantiate(_heroskillinfoslot, _heroskillinfoparent).GetComponent<UI_Inventory_Hero_SkillInfo>();
+                _inventory_skill_infos.Add(skillinfoslot);
+            }
+            skillinfoslot.gameObject.SetActive(true);
+            skillinfoslot.Setting(choseskill);
         }
 
         if (_clickheroslot)

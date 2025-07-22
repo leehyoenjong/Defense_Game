@@ -437,7 +437,7 @@ GameObject:
   - component: {fileID: 8542489411651478198}
   - component: {fileID: 3241522070108668470}
   m_Layer: 5
-  m_Name: BasicSkillInfo
+  m_Name: '@UI_Inventory_HeroSkillInfo'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
