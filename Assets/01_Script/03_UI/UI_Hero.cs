@@ -21,7 +21,8 @@ public class UI_Hero : MonoBehaviour
         var userheroidlist = UserData._userdata._userequiphero._equipheroid;
         for (int i = 0; i < maxcount; i++)
         {
-            _herobtn[i].Init(userheroidlist[i]);
+            var itemdata = DataManager.instance.GetItemTable().SearchItemData(userheroidlist[i]);
+            _herobtn[i].Init(itemdata._connecttableid);
         }
     }
 }

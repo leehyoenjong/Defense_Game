@@ -26,27 +26,62 @@ public struct St_UserInventory
         }
 
         var userdatajson = loadresult.FlattenRows()[0];
-        Debug.Log($"{userdatajson.ToString()}");
+        Debug.Log($"전체 데이터: {userdatajson.ToString()}");
 
         // 인벤토리 아이템 데이터 로드
         if (userdatajson.ContainsKey("_userinvendata"))
         {
             var userinvendata = userdatajson["_userinvendata"];
+            Debug.Log($"인벤토리 데이터 타입: {userinvendata.GetType()}");
+            Debug.Log($"인벤토리 데이터 내용: {userinvendata.ToString()}");
+
             var maxcount = userinvendata.Count;
+            Debug.Log($"아이템 개수: {maxcount}");
+
             for (int i = 0; i < maxcount; i++)
             {
                 try
                 {
-                    Debug.Log($"가져온 데이터 :{userinvendata[i].ToString()}");
-                    var itemData = JsonConvert.DeserializeObject<St_UserInvenItemList>(userinvendata[i].ToString());
+                    var itemJsonData = userinvendata[i];
+                    Debug.Log($"아이템 [{i}] 타입: {itemJsonData.GetType()}");
+                    Debug.Log($"아이템 [{i}] 내용: {itemJsonData.ToString()}");
+
+                    // JsonData에서 직접 값을 추출하여 구조체 생성
+                    var itemData = new St_UserInvenItemList();
+
+                    // 각 필드가 존재하는지 확인하고 값 추출
+                    if (itemJsonData.ContainsKey("_itemid"))
+                    {
+                        itemData._itemid = (int)itemJsonData["_itemid"];
+                        Debug.Log($"아이템 ID: {itemData._itemid}");
+                    }
+
+                    if (itemJsonData.ContainsKey("_itemvalue"))
+                    {
+                        itemData._itemvalue = (int)itemJsonData["_itemvalue"];
+                        Debug.Log($"아이템 값: {itemData._itemvalue}");
+                    }
+
+                    if (itemJsonData.ContainsKey("_grade"))
+                    {
+                        itemData._grade = (int)itemJsonData["_grade"];
+                        Debug.Log($"아이템 등급: {itemData._grade}");
+                    }
+
                     _userinvendata.Add(itemData);
+                    Debug.Log($"성공적으로 로드된 아이템: ID={itemData._itemid}, Value={itemData._itemvalue}, Grade={itemData._grade}");
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"인벤토리 아이템 데이터 로드 실패: {ex.Message}");
+                    Debug.LogError($"인벤토리 아이템 [{i}] 데이터 로드 실패: {ex.Message}");
+                    Debug.LogError($"스택 트레이스: {ex.StackTrace}");
                     return false;
                 }
             }
+        }
+        else
+        {
+            Debug.Log("_userinvendata 키가 존재하지 않습니다.");
         }
 
         return true;

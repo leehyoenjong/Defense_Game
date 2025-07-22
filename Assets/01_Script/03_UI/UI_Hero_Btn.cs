@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,9 +26,15 @@ public class UI_Hero_Btn : MonoBehaviour
 
     public void Init(int heroid)
     {
+        if (heroid <= 0)
+        {
+            this.gameObject.SetActive(false);
+            return;
+        }
+
         //현재 필드에 있는 영웅들 리스트를 가져와 아이디 매칭 
         var herolist = PlayerSpawnManager.instance.GetHeroList();
-        var heroclass = herolist.Find(x => x.GetID() == heroid);
+        var heroclass = herolist.First(x => x.GetID() == heroid);
         if (heroclass == null)
         {
             this.gameObject.SetActive(false);

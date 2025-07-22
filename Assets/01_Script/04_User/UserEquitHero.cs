@@ -22,7 +22,7 @@ public struct St_UserEquitHero
         {
             return false;
         }
-
+        _equipheroid.Clear();
         var userdatajson = loadresult.FlattenRows()[0];
 
         // 장착 영웅 ID 리스트 로드
@@ -38,7 +38,6 @@ public struct St_UserEquitHero
                 }
             }
         }
-
         return true;
     }
 
@@ -58,6 +57,4 @@ public struct St_UserEquitHero
         }
         _equipheroid[idx] = 0;
     }
-
-
 }

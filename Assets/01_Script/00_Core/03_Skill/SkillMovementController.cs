@@ -38,13 +38,11 @@ public class SkillMovementController : MonoBehaviour
     private Transform _homingTarget;
     private Vector3 _startPosition;
     private float _elapsedTime = 0f;
-    private Rigidbody _rigidbody;
     private Rigidbody2D _rigidbody2D;
 
     private void Start()
     {
         _startPosition = transform.position;
-        _rigidbody = GetComponent<Rigidbody>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
 
         InitializeMovement();

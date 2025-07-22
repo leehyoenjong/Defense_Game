@@ -52,7 +52,7 @@ public abstract class BaseNPC : MonoBehaviour
             _hit_event += () => _hpbarController.Hpbar_Update(_status._hp, _current_hp);
         }
 
-        //기본 스킬 삽입
+        //스킬 삽입
         AddActiveSkill(_so_npc._basic_attack_skill);
     }
 
