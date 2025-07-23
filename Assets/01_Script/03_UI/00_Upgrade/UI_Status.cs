@@ -4,7 +4,7 @@ using UnityEngine;
 public class UI_Status : MonoBehaviour
 {
     [SerializeField] UI_Btn_Status_Upgrade[] _btnstatusupgrades;
-    public static Func<Hero_Base> _heroclass;
+    public static Func<BaseNPC> _heroclass;
     public static event Action _status_disable_event;
 
     void OnEnable()

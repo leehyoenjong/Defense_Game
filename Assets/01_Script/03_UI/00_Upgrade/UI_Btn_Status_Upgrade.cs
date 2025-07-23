@@ -13,7 +13,7 @@ public class UI_Btn_Status_Upgrade : MonoBehaviour
     public static event Action<int, ESTATUSUPGRADE> _statusupgrade_event;
     const float ACTIVEDEALYTIME = 0.2f;//꾸욱 누를때 딜레이
     const float POINTUPDEALYTIME = 1f;//첫 딜레이
-    Hero_Base _heroclass;
+    BaseNPC _heroclass;
     bool _ispointdown;
     float _delaytime;
 
@@ -35,7 +35,7 @@ public class UI_Btn_Status_Upgrade : MonoBehaviour
         ActiveUpgarde();
     }
 
-    public void Init(Hero_Base heroclass)
+    public void Init(BaseNPC heroclass)
     {
         this._heroclass = heroclass;
         LevelAndValueSetting();

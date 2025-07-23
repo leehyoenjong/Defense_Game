@@ -16,6 +16,6 @@ MonoBehaviour:
   _statusid: 1
   _name: BAT
   _icon: {fileID: 2129977301182375049, guid: b438465a32eb63243a7889eb1f400d29, type: 3}
-  _basic_attack_skill: {fileID: 11400000, guid: 643284535e7c3435ebe0e175fa18c0b7, type: 2}
+  _basic_attack_skill: {fileID: 11400000, guid: c31bcfa678ffb430a9a89fec888b82c8, type: 2}
   _skill_chose_list: []
   _mybodyobject: {fileID: 2213426367315815728, guid: 34de4d1903fa1489a85f10a713a6e3b8, type: 3}

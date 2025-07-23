@@ -5,8 +5,8 @@ public class PlayerSpawnManager : MonoBehaviour
 {
     public static PlayerSpawnManager instance;
     [SerializeField] Transform[] _playerpoint;
-    List<Hero_Base> _herolist = new List<Hero_Base>();
-    public List<Hero_Base> GetHeroList() => _herolist;
+    List<BaseNPC> _herolist = new List<BaseNPC>();
+    public List<BaseNPC> GetHeroList() => _herolist;
 
     void Awake()
     {
@@ -16,11 +16,23 @@ public class PlayerSpawnManager : MonoBehaviour
     void OnEnable()
     {
         PlayManager._play_ready_event += CreatePlayer;
+        BaseSkill._skill_target_list_event += GetHeroList;
     }
 
     void OnDisable()
     {
         PlayManager._play_ready_event -= CreatePlayer;
+        BaseSkill._skill_target_list_event -= GetHeroList;
+    }
+
+    List<BaseNPC> GetHeroList(ETARGETKIND kind)
+    {
+        if (kind != ETARGETKIND.HERO)
+        {
+            return null;
+        }
+
+        return _herolist;
     }
 
     void CreatePlayer()

@@ -13,6 +13,7 @@ public class UI_Inventory_Hero : MonoBehaviour
     [SerializeField] GameObject _heroslot;
     [SerializeField] GameObject _heroskillinfoslot;
     [SerializeField] UI_Inventory_EquipWindow _inventory_equipwindow;
+    [SerializeField] Animator _herobody;
 
     List<UI_ItemSlotUse_Btn> _activeheroslot = new List<UI_ItemSlotUse_Btn>();
     List<UI_Inventory_Hero_SkillInfo> _inventory_skill_infos = new List<UI_Inventory_Hero_SkillInfo>();
@@ -41,9 +42,8 @@ public class UI_Inventory_Hero : MonoBehaviour
     void SettingSlot()
     {
         var itemherolist = DataManager.instance.GetItemTable().GetItemdata().Where(x => x.Value._itemkind == EITEMKIND.HERO).ToList();
-
-        var maxcount = itemherolist.Count;
         var list = UserData._userdata._userequiphero.GetEquipHeroList();
+        var maxcount = itemherolist.Count;
         for (int i = 0; i < maxcount; i++)
         {
             var slot = Instantiate(_heroslot, _heroslotparent).GetComponent<UI_ItemSlotUse_Btn>();
@@ -84,6 +84,7 @@ public class UI_Inventory_Hero : MonoBehaviour
         _explain.text = string.Format(ITEMEXPLAIN, heroinfo._npc._name);
         Setting_SkillInfo(heroinfo, slot);
         Setting_Status(heroitemid);
+        Setting_HeroBody(heroitemid);
     }
 
     void Setting_SkillInfo(St_HeroTable heroinfo, UI_ItemSlotUse_Btn slot)
@@ -134,6 +135,13 @@ public class UI_Inventory_Hero : MonoBehaviour
         _explain_value.text = string.Format(ITEMEXPLAINVALUE, heroinfo._npc.GetStatus(heroitemid)._damge, critical.ToString("F1") + "%", criticaldamage.ToString("F1") + "%");
     }
 
+    void Setting_HeroBody(int heroitemid)
+    {
+        var connectheroid = DataManager.instance.GetItemTable().GetItemdata()[heroitemid]._connecttableid;
+        var heroinfo = DataManager.instance.GetHeroData(connectheroid);
+        _herobody.runtimeAnimatorController = heroinfo._animator_with_ui;
+    }
+
     /// <summary>
     /// 장착한 영웅 앞으로 땡기기
     /// _inventory_equipwindow 팝업창 종료 이벤트에도 넣어둠
@@ -142,14 +150,17 @@ public class UI_Inventory_Hero : MonoBehaviour
     {
         var maxcount = _activeheroslot.Count;
         var userequipherolist = UserData._userdata._userequiphero.GetEquipHeroList();
-        for (int i = 0; i < maxcount; i++)
+        for (int i = maxcount - 1; i >= 0; i--)
         {
+            //장착여부는 항상 체크
+            _activeheroslot[i].UseItem(userequipherolist);
             var isequip = userequipherolist.Contains(_activeheroslot[i].GetItemID());
             if (isequip == false)
             {
                 continue;
             }
             _activeheroslot[i].transform.SetAsFirstSibling();
+
         }
     }
 }

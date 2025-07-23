@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80b3628114e2142809daa957ab461f61, type: 3}
+  m_Name: SO_Skill_BasicAttack
+  m_EditorClassIdentifier: 
+  _skillInfo:
+    _name: 
+    _explain: 
+    _cooltime: 0.3
+    _duration: 0
+    _mid: 1000
+    _level: 0
+    _skillicon: {fileID: 0}
+    _next_skilldelaytime: 0
+  _skillkind: 1
+  _eanimation: 4
+  _eskilltrigger: 1
+  _active_skillEffect: []
+  _eusetype: 0
+  _enter_hit_object: []
+  _etargetkind: 4
+  _etargetfiltertype: 0
+  _eskillarea: 0
+  _circleRadius: 1
+  _boxWidth: 1
+  _boxHeight: 1
+  _target_attackeffect: []
+  _skilldamagepercent: 1

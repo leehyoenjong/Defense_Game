@@ -8,11 +8,11 @@ public class UI_SkillChose_Slot : MonoBehaviour
     [SerializeField] TextMeshProUGUI _name, _explain;
     [SerializeField] Image _skillicon;
 
-    Hero_Base _chosehero;
+    BaseNPC _chosehero;
     BaseSkill _choseskill;
     Action _exit;
 
-    public void Setting(Hero_Base chosehero, BaseSkill choseskill, Action exit)
+    public void Setting(BaseNPC chosehero, BaseSkill choseskill, Action exit)
     {
         this.gameObject.SetActive(true);
         _chosehero = chosehero;

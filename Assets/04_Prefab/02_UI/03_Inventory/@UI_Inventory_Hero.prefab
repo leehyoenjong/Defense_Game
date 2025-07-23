@@ -2208,7 +2208,7 @@ Animator:
   m_GameObject: {fileID: 7506606483471202442}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: bf66503ed3ddc499f83128cead033783, type: 2}
+  m_Controller: {fileID: 22100000, guid: 8e511fc214ba44056806d9105e27a764, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2410,6 +2410,7 @@ MonoBehaviour:
   _heroslot: {fileID: 1359744652975903660, guid: 774224a3fa9d743b182a4a1646f4fcb6, type: 3}
   _heroskillinfoslot: {fileID: 4246141888676620777, guid: dd872d0b762fc4b92a0d20b4a98b833b, type: 3}
   _inventory_equipwindow: {fileID: 2200114363896515972}
+  _herobody: {fileID: 7002854324138248654}
 --- !u!114 &6819323464659959351
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ public class MonsterSpawnManager : MonoBehaviour
     [SerializeField] Transform[] _protectpoint;
     [SerializeField] Transform[] _createpoint;
 
-    List<Monster_Base> _active_monsterlist = new List<Monster_Base>();
+    List<BaseNPC> _active_monsterlist = new List<BaseNPC>();
     const float NEXTSTAGETIME = 5f;//죽은 몬스터 수와 상관없이 60초마다 몬스터 생성
 
     Vector2 MAXDOWNPOINT = new Vector2(-4.6f, -1.2f);
@@ -20,12 +20,24 @@ public class MonsterSpawnManager : MonoBehaviour
     {
         PlayManager._play_event += CreateMonster().Forget;
         Monster_Base._monster_die_animation_exit += (diemon) => RemoveMonsterList(diemon);
+        BaseSkill._skill_target_list_event += GetMonsterList;
     }
 
     void OnDisable()
     {
         PlayManager._play_event -= CreateMonster().Forget;
         Monster_Base._monster_die_animation_exit -= (diemon) => RemoveMonsterList(diemon);
+        BaseSkill._skill_target_list_event -= GetMonsterList;
+    }
+
+    List<BaseNPC> GetMonsterList(ETARGETKIND kind)
+    {
+        if (kind != ETARGETKIND.MONSTER)
+        {
+            return null;
+        }
+
+        return _active_monsterlist;
     }
 
     async UniTaskVoid CreateMonster()
