@@ -119,7 +119,7 @@ public class SkillController : MonoBehaviour
     void AddAttackSkillIndex()
     {
         _current_attack_skill_index++;
-        if (_me.GetActiveBuffSkill().Count <= _current_attack_skill_index)
+        if (_me.GetActiveAttackSkill().Count <= _current_attack_skill_index)
         {
             _current_attack_skill_index = 0;
         }

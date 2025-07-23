@@ -116,7 +116,6 @@ public class StatusUpgradeManager : MonoBehaviour
     //TODO: 추후 데이터 테이블을 이용해서 비용 할 수 있도록 개선 필요
     bool UpgradeCointSetting(int nextlevel)
     {
-        return true;
         var nextlevelcoinvalue = MAXCOINVALUE / MAXLEVEL;
         var currentupgradecoinvalue = nextlevelcoinvalue * nextlevel;
 

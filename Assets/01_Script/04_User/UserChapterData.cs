@@ -30,7 +30,6 @@ public struct St_UserChapterData
                 _lastchapternumber = chapternumber;
             }
         }
-
         return true;
     }
 

@@ -19,6 +19,11 @@ public class DamageTextController : MonoBehaviour
 
     public void CreateText(int damage)
     {
+        if (_textqueue.Count <= 0)
+        {
+            return;
+        }
+
         var text = _textqueue.Dequeue();
         text.gameObject.SetActive(true);
         text.text = damage.ToString();

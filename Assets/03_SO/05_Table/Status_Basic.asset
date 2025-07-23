@@ -127,3 +127,11 @@ MonoBehaviour:
       _armor: 0
       _critical: 0.5
       _critical_damage: 0.5
+  - _mid: 10000
+    _statuslist:
+    - _grade: 1
+      _hp: 10000
+      _damge: 0
+      _armor: 0
+      _critical: 0
+      _critical_damage: 0

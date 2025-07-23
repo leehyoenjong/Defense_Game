@@ -64,8 +64,7 @@ public abstract class BaseNPC : MonoBehaviour
 
     public virtual void OnSpawn()
     {
-        //기본 능력치 적용
-        _status = _so_npc.GetStatus(_so_npc._statusid);
+        Setting_Status();
 
         //생성 버프 발동 내부에 스테이터스 변화하는 게 존재할 수 있음
         _skillController?.ActiveBuffSkill(ESKILLTRIGGER.SPAWN);
@@ -74,6 +73,17 @@ public abstract class BaseNPC : MonoBehaviour
         _current_hp = _status._hp;
 
         this.gameObject.SetActive(true);
+    }
+
+    protected virtual void Setting_Status(int itemid = 0)
+    {
+        //기본 능력치 적용
+        if (itemid > 0)
+        {
+            _status = _so_npc.GetStatus(itemid);
+            return;
+        }
+        _status = _so_npc.GetStatus();
     }
 
     public virtual void OnRelease()

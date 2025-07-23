@@ -15,9 +15,8 @@ public class SO_NPC : ScriptableObject
     public BaseSkill _basic_attack_skill;
     [Header("고유스킬(스킬종류 최대 3가지)")]
     public BaseSkill[] _skill_chose_list;
-
-
     public GameObject _mybodyobject;
+
 
     public BaseSkill ChoseLevelLvSkill(BaseNPC me, List<BaseSkill> alreadychoseskilllist)
     {

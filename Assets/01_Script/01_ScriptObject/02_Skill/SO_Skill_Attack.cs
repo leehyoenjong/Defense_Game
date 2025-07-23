@@ -83,7 +83,6 @@ public class SO_Skill_Attack : BaseSkill
 
         // 스킬 오브젝트 생성 (충돌 감지 컴포넌트 포함)
         CreateSkillObjects(me, TargetAttack, targetlist[0].transform.position);
-
         return true;
     }
 

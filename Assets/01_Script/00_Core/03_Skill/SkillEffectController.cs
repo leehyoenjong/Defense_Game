@@ -19,8 +19,7 @@ public class SkillEffectController : MonoBehaviour
     private Action<BaseNPC, BaseNPC> _action; // 실행할 스킬
 
     // 충돌한 대상들을 추적 (한 번만 적용되도록)
-    private System.Collections.Generic.HashSet<BaseNPC> _hitTargets =
-        new System.Collections.Generic.HashSet<BaseNPC>();
+    private System.Collections.Generic.HashSet<BaseNPC> _hitTargets = new System.Collections.Generic.HashSet<BaseNPC>();
 
     private void Start()
     {
@@ -48,10 +47,14 @@ public class SkillEffectController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         var targetNPC = other.gameObject.GetComponent<BaseNPC>();
-        if (targetNPC == null || targetNPC.CheckDie())
+        if (targetNPC == null || targetNPC.CheckDie() || (_targetLayer & (1 << other.gameObject.layer)) == 0)
             return;
 
         _action(_caster, targetNPC);
+        if (_destroyOnHit)
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     /// <summary>
@@ -64,14 +67,7 @@ public class SkillEffectController : MonoBehaviour
 
         Gizmos.color = Color.yellow;
 
-        // 컬라이더가 있다면 그 영역을 표시
-        var collider = GetComponent<Collider>();
-        if (collider != null)
-        {
-            Gizmos.DrawWireCube(transform.position, collider.bounds.size);
-            return;
-        }
-
+        // 2D 컬라이더가 있다면 그 영역을 표시
         var collider2D = GetComponent<Collider2D>();
         if (collider2D != null)
         {

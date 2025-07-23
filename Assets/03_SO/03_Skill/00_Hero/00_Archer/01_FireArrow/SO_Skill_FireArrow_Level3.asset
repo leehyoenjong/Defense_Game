@@ -15,7 +15,7 @@ MonoBehaviour:
   _skillInfo:
     _name: FireArrow
     _explain: FireArrow Damage 300%
-    _cooltime: 5
+    _cooltime: 1
     _duration: 3
     _mid: 2
     _level: 3

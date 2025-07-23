@@ -37,7 +37,7 @@ public class UserData
     void CreateNewUserData()
     {
         _userchapterdata = new St_UserChapterData();
-        _userchapterdata._lastchapternumber = 1;
+        _userchapterdata._lastchapternumber = 0;
 
         _userinventory = new St_UserInventory();
         _userinventory._userinvendata = new List<St_UserInvenItemList>();

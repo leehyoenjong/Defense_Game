@@ -6,7 +6,6 @@ public class PlayManager : MonoBehaviour
 {
     public static event Action _play_event;
     public static event Action _play_ready_event;
-    public static Action _play_stage_allclear; //TODO: 모든 스테이지 클리어 처리 필요
     public static Action _play_stage_next; //TODO: 스테이지 클리어 처리 필요 
     public static Action<int, int> _play_stage_and_chapter_next; //TODO: 스테이지 클리어 처리 필요 
     public static Action<int, int> _play_stage_and_chapter_start; //TODO: 스테이지 클리어 처리 필요 
@@ -53,7 +52,7 @@ public class PlayManager : MonoBehaviour
 
     async UniTaskVoid PlayGame()
     {
-        await UniTask.WaitForEndOfFrame();
+        await UniTask.WaitForEndOfFrame(cancellationToken: this.GetCancellationTokenOnDestroy());
         _play_ready_event?.Invoke();
         _play_stage_and_chapter_start?.Invoke(_current_stage_id, MAXSTAGECOUNT);
         await UniTask.WaitForSeconds(1f, cancellationToken: this.GetCancellationTokenOnDestroy());

@@ -41,7 +41,8 @@ public class MonsterSpawnManager : MonoBehaviour
             //더 이상 진행할 챕터 없을 경우 종료
             if (currentchapterdata._stagedata == null || currentchapterdata._stagedata.Count <= 0)
             {
-                PlayManager._play_stage_allclear?.Invoke();
+                await UniTask.WaitUntil(() => _active_monsterlist.Count <= 0, cancellationToken: this.GetCancellationTokenOnDestroy());
+                PlayManager._play_gameover?.Invoke();
                 return;
             }
 
@@ -80,8 +81,18 @@ public class MonsterSpawnManager : MonoBehaviour
                 }
             }
 
+            var delaytime = NEXTSTAGETIME;
+
             //60초마다 몬스터 생성
-            await UniTask.WaitForSeconds(NEXTSTAGETIME, cancellationToken: this.GetCancellationTokenOnDestroy());
+            while (true)
+            {
+                await UniTask.WaitForFixedUpdate(cancellationToken: this.GetCancellationTokenOnDestroy());
+                delaytime -= Time.fixedDeltaTime;
+                if (delaytime <= 0)
+                {
+                    break;
+                }
+            }
             PlayManager._play_stage_next?.Invoke();
         }
     }
@@ -94,6 +105,7 @@ public class MonsterSpawnManager : MonoBehaviour
         }
 
         _active_monsterlist.Remove(diemon);
+        Debug.Log($"남은 몬스터 수 :{_active_monsterlist.Count}");
     }
 
     Vector3 MonsterMovePoint()

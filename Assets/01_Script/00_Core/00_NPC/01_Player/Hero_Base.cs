@@ -12,6 +12,12 @@ public class Hero_Base : BaseNPC
         base.OnSpawn();
     }
 
+    protected override void Setting_Status(int itemid = 0)
+    {
+        var heroiteminfo = DataManager.instance.GetItemTable().FindConnectTableData(EITEMKIND.HERO, _so_npc._mid);
+        base.Setting_Status(heroiteminfo._itemid);
+    }
+
     void AddStatus(int id)
     {
         if (id != _myid)
