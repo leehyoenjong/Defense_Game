@@ -16,23 +16,13 @@ public class PlayerSpawnManager : MonoBehaviour
     void OnEnable()
     {
         PlayManager._play_ready_event += CreatePlayer;
-        BaseSkill._skill_target_list_event += GetHeroList;
+        BaseSkill._skill_target_dictionary_list.Add(ETARGETKIND.HERO, _herolist);
     }
 
     void OnDisable()
     {
         PlayManager._play_ready_event -= CreatePlayer;
-        BaseSkill._skill_target_list_event -= GetHeroList;
-    }
-
-    List<BaseNPC> GetHeroList(ETARGETKIND kind)
-    {
-        if (kind != ETARGETKIND.HERO)
-        {
-            return null;
-        }
-
-        return _herolist;
+        BaseSkill._skill_target_dictionary_list.Remove(ETARGETKIND.HERO);
     }
 
     void CreatePlayer()

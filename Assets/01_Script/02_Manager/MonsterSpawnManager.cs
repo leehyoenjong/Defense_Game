@@ -20,24 +20,14 @@ public class MonsterSpawnManager : MonoBehaviour
     {
         PlayManager._play_event += CreateMonster().Forget;
         Monster_Base._monster_die_animation_exit += (diemon) => RemoveMonsterList(diemon);
-        BaseSkill._skill_target_list_event += GetMonsterList;
+        BaseSkill._skill_target_dictionary_list.Add(ETARGETKIND.MONSTER, _active_monsterlist);
     }
 
     void OnDisable()
     {
         PlayManager._play_event -= CreateMonster().Forget;
         Monster_Base._monster_die_animation_exit -= (diemon) => RemoveMonsterList(diemon);
-        BaseSkill._skill_target_list_event -= GetMonsterList;
-    }
-
-    List<BaseNPC> GetMonsterList(ETARGETKIND kind)
-    {
-        if (kind != ETARGETKIND.MONSTER)
-        {
-            return null;
-        }
-
-        return _active_monsterlist;
+        BaseSkill._skill_target_dictionary_list.Remove(ETARGETKIND.MONSTER);
     }
 
     async UniTaskVoid CreateMonster()

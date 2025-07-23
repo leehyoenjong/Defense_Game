@@ -54,18 +54,21 @@ public struct St_UserInventory
                     {
                         itemData._itemid = (int)itemJsonData["_itemid"];
                         Debug.Log($"아이템 ID: {itemData._itemid}");
+                        continue;
                     }
 
                     if (itemJsonData.ContainsKey("_itemvalue"))
                     {
                         itemData._itemvalue = (int)itemJsonData["_itemvalue"];
                         Debug.Log($"아이템 값: {itemData._itemvalue}");
+                        continue;
                     }
 
                     if (itemJsonData.ContainsKey("_grade"))
                     {
                         itemData._grade = (int)itemJsonData["_grade"];
                         Debug.Log($"아이템 등급: {itemData._grade}");
+                        continue;
                     }
 
                     _userinvendata.Add(itemData);

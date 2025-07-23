@@ -45,10 +45,7 @@ public abstract class BaseSkill : ScriptableObject
 
     [ConditionalField("_eskillarea", (int)ESKILLAREA.BOX)]
     public float _boxHeight = 1f;
-
-
-    public static Func<ETARGETKIND, List<BaseNPC>> _skill_target_list_event;
-
+    public static Dictionary<ETARGETKIND, List<BaseNPC>> _skill_target_dictionary_list = new Dictionary<ETARGETKIND, List<BaseNPC>>();
     public const int MAXLEVEL = 3;
 
     /// <summary>
@@ -113,8 +110,11 @@ public abstract class BaseSkill : ScriptableObject
 
     public virtual List<BaseNPC> FilterTargetList(BaseNPC me)
     {
-        var targetlist = BaseSkill._skill_target_list_event?.Invoke(_etargetkind) ?? null;
-        if (targetlist == null || targetlist.Count <= 0)
+        if (_skill_target_dictionary_list.TryGetValue(_etargetkind, out var targetlist) == false)
+        {
+            return null;
+        }
+        if (targetlist.Count <= 0)
         {
             return null;
         }

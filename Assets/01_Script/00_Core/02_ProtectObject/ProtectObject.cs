@@ -5,6 +5,16 @@ public class ProtectObject : BaseNPC
 {
     [SerializeField] HpBarController_Text _hpbarController_text;
 
+    void OnEnable()
+    {
+        BaseSkill._skill_target_dictionary_list.Add(ETARGETKIND.PROTECT, new System.Collections.Generic.List<BaseNPC>() { this });
+    }
+
+    void OnDisable()
+    {
+        BaseSkill._skill_target_dictionary_list.Remove(ETARGETKIND.PROTECT);
+    }
+
     protected override void Start()
     {
         base.Start();
