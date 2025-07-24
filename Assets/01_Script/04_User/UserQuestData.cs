@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using BackEnd;
-using BackEnd.BackndNewtonsoft.Json;
 using UnityEngine;
 
 [Serializable]
@@ -36,10 +35,10 @@ public struct St_UserQuestData
             var questclearid = userdatajson["_questclearid"];
             Debug.Log($"퀘스트 클리어 ID 데이터 타입: {questclearid.GetType()}");
             Debug.Log($"퀘스트 클리어 ID 데이터 내용: {questclearid.ToString()}");
-            
+
             var maxcount = questclearid.Count;
             Debug.Log($"클리어 퀘스트 개수: {maxcount}");
-            
+
             for (int i = 0; i < maxcount; i++)
             {
                 if (int.TryParse(questclearid[i].ToString(), out var clearid) == false)
@@ -62,10 +61,10 @@ public struct St_UserQuestData
             var questvaluelist = userdatajson["_questvaluelist"];
             Debug.Log($"퀘스트 값 리스트 데이터 타입: {questvaluelist.GetType()}");
             Debug.Log($"퀘스트 값 리스트 데이터 내용: {questvaluelist.ToString()}");
-            
+
             var maxcount = questvaluelist.Count;
             Debug.Log($"퀘스트 값 개수: {maxcount}");
-            
+
             for (int i = 0; i < maxcount; i++)
             {
                 try
@@ -251,6 +250,7 @@ public struct St_UserQuestData
             St_UserQuestList userquest = default;
             var targetquesttype = (EQUESTTYPE)i;
             var questindex = _questvaluelist.FindIndex(x => x._questvaluetype == questvaluetype && x._questtype == targetquesttype && x._targetid == targetid);
+
             if (questindex == -1)
             {
                 userquest._questtype = targetquesttype;

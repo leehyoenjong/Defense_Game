@@ -7,7 +7,7 @@ public class BackEndLog : MonoBehaviour
     {
         Param param = new Param();
         param.Add(message);
-        Backend.GameLog.InsertLogV2(logtype.ToString(), param);
+        Backend.GameLog.InsertLogV2(logtype.ToString(), param, (callback) => { });
     }
 }
 

@@ -1,5 +1,5 @@
 using System;
-using System.Linq;
+using System.Diagnostics;
 using UnityEngine;
 
 public class AttackAreaController : MonoBehaviour
@@ -30,29 +30,20 @@ public class AttackAreaController : MonoBehaviour
             return;
         }
 
-        var ovelap = Physics2D.OverlapCircleAll(transform.position, _radius, _targetlayer);
-        if (ovelap == null || ovelap.Length <= 0)
+        var ovelap = Physics2D.OverlapCircle(transform.position, _radius, _targetlayer);
+        if (ovelap == null)
         {
             return;
         }
 
-        for (int i = 0; i < ovelap.Length; i++)
+        var targetnpc = ovelap.GetComponent<BaseNPC>();
+        if (targetnpc == null || targetnpc.CheckDie())
         {
-            var targetnpc = ovelap[i].GetComponent<BaseNPC>();
-            if (targetnpc == null)
-            {
-                continue;
-            }
-
-            if (targetnpc.CheckDie())
-            {
-                continue;
-            }
-
-            _targetnpc = targetnpc;
-            _enter_active_skill_event?.Invoke(_targetnpc, ESKILLTRIGGER.AREAENTER);
             return;
         }
+
+        _targetnpc = targetnpc;
+        _enter_active_skill_event?.Invoke(_targetnpc, ESKILLTRIGGER.AREAENTER);
     }
 
     void SetupLineRenderer()
