@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf1428839cf684e16abd65aeb573ecdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _me: {fileID: 0}
+  _me: {fileID: 5884664491304166559}
   _attackAreaController: {fileID: 3155842828763983625}
 --- !u!114 &3155842828763983625
 MonoBehaviour:
