@@ -22,8 +22,8 @@ public abstract class BaseSkill : ScriptableObject
     [Header("ㅡㅡㅡㅡ발동 타입ㅡㅡㅡㅡ")]
     public EUSETYPE _eusetype;
 
-    [Header("닿으면 데미지 닳는 오브젝트 (OBJECT_ENTER 모드에서만 사용)")]
-    [ConditionalField("_eusetype", (int)EUSETYPE.OBJECT_ENTER)]
+    [Header("닿으면 데미지 닳는 오브젝트 (OBJECT 사용하는 모드에서만 사용)")]
+    [ConditionalField("_eusetype", true, (int)EUSETYPE.OBJECT_ENTER, (int)EUSETYPE.OBJECT_VIEW)]
     public List<GameObject> _enter_hit_object;
 
     [Header("ㅡㅡㅡㅡ타겟 종류ㅡㅡㅡㅡ")]
@@ -73,8 +73,12 @@ public abstract class BaseSkill : ScriptableObject
     /// <param name="targetPosition">타겟 위치 (optional, 유도탄/포물선용)</param>
     public virtual void CreateSkillObjects(BaseNPC caster, Action<BaseNPC, BaseNPC> action, Vector3 targetposition)
     {
-        if (_eusetype != EUSETYPE.OBJECT_ENTER)
+        if (_eusetype != EUSETYPE.OBJECT_ENTER && _eusetype != EUSETYPE.OBJECT_VIEW)
             return;
+
+        // 타겟 리스트 가져오기 (유도 미사일용)
+        var targetList = FilterTargetList(caster);
+        var filteredTargets = FilterTargetsByArea(caster, targetList);
 
         // _enter_hit_object 배열의 오브젝트들을 생성
         var maxCount = _enter_hit_object.Count;
@@ -96,9 +100,40 @@ public abstract class BaseSkill : ScriptableObject
 
             // Movement Controller 설정
             var movementController = skillObject.GetComponent<SkillMovementController>();
-            if (movementController != null && targetposition != Vector3.zero)
+            if (movementController != null)
             {
-                movementController.SetTargetPosition(targetposition);
+                // 움직임 타입에 따라 다른 설정 적용
+                switch (movementController._movementType)
+                {
+                    case EMOVEMENTTYPE.HOMING:
+                        // 유도 타입: 타겟 설정
+                        if (filteredTargets != null && filteredTargets.Count > 0)
+                        {
+                            movementController.SetHomingTargets(filteredTargets[0]);
+                        }
+                        break;
+
+                    case EMOVEMENTTYPE.PARABOLA:
+                        // 포물선 타입: 타겟 위치 설정
+                        if (targetposition != Vector3.zero)
+                        {
+                            movementController.SetTargetPosition(targetposition);
+                        }
+                        else if (filteredTargets != null && filteredTargets.Count > 0)
+                        {
+                            movementController.SetTargetPosition(filteredTargets[0].transform.position);
+                        }
+                        break;
+
+                    case EMOVEMENTTYPE.ROTATE:
+                        // 회전 타입: 중심점 설정 (caster를 중심으로)
+                        movementController.SetRotationCenter(caster.transform);
+                        break;
+
+                    default:
+                        // 직진 등 기본 움직임은 별도 설정 불필요
+                        break;
+                }
             }
         }
     }

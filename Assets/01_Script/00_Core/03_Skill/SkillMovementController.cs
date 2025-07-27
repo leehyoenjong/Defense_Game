@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -35,10 +36,13 @@ public class SkillMovementController : MonoBehaviour
 
     // 프라이빗 변수들
     private Vector3 _direction;
-    private Transform _homingTarget;
+    private BaseNPC _homingTarget;
+    private Vector3 _lastTargetPosition; // 타겟의 마지막 위치 저장
+    private bool _isTargetLost = false;  // 타겟을 잃었는지 여부
     private Vector3 _startPosition;
     private float _elapsedTime = 0f;
     private Rigidbody2D _rigidbody2D;
+
 
     private void Start()
     {
@@ -87,7 +91,6 @@ public class SkillMovementController : MonoBehaviour
                 break;
             case EMOVEMENTTYPE.HOMING:
                 _direction = transform.forward;
-                FindHomingTarget();
                 break;
             case EMOVEMENTTYPE.PARABOLA:
                 if (_targetPosition == Vector3.zero)
@@ -118,28 +121,48 @@ public class SkillMovementController : MonoBehaviour
     /// </summary>
     private void MoveHoming()
     {
-        // 타겟이 없거나 죽었으면 새로 찾기
-        if (_homingTarget == null || (_homingTarget.GetComponent<BaseNPC>()?.CheckDie() ?? false))
+        // 타겟이 없거나 죽었으면 처리
+        if (_homingTarget == null || _homingTarget.CheckDie())
         {
-            FindHomingTarget();
+            // 아직 타겟을 잃지 않은 상태라면 마지막 위치로 설정
+            if (!_isTargetLost && _homingTarget != null)
+            {
+                _lastTargetPosition = _homingTarget.transform.position;
+                _isTargetLost = true;
+            }
+            // 타겟을 잃은 상태가 아니고 새로운 타겟을 찾을 수 없다면
+            else if (!_isTargetLost)
+            {
+                // 여전히 타겟을 찾지 못했다면 타겟 상실 처리
+                if (_homingTarget == null)
+                {
+                    _isTargetLost = true;
+                    _lastTargetPosition = transform.position + _direction * 10f; // 현재 방향으로 일정 거리
+                }
+            }
         }
 
-        if (_homingTarget != null)
+        // 타겟이 있는 경우
+        Vector2 newPosition = default;
+        if (_homingTarget != null && !_isTargetLost)
         {
-            Vector3 targetDirection = (_homingTarget.position - transform.position).normalized;
-            _direction = Vector3.Slerp(_direction, targetDirection, _homingStrength * Time.deltaTime).normalized;
-
-            // 회전
-            transform.LookAt(transform.position + _direction);
+            newPosition = Vector2.MoveTowards(this.transform.position, _homingTarget.transform.position, _speed * Time.deltaTime);
+        }
+        // 타겟을 잃은 경우 마지막 위치로 이동
+        else if (_isTargetLost)
+        {
+            newPosition = Vector2.MoveTowards(this.transform.position, _lastTargetPosition, _speed * Time.deltaTime);
         }
 
         // 이동
-        Vector3 movement = _direction * _speed * Time.deltaTime;
+        transform.position = new Vector3(newPosition.x, newPosition.y, transform.position.z);
 
-        if (_rigidbody2D != null)
-            _rigidbody2D.MovePosition(transform.position + movement);
-        else
-            transform.position += movement;
+        // 마지막 위치에 충분히 가까워지면 삭제
+        if (Vector3.Distance(transform.position, _lastTargetPosition) < 0.01f)
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
     /// <summary>
@@ -189,32 +212,6 @@ public class SkillMovementController : MonoBehaviour
     }
 
     /// <summary>
-    /// 유도 타겟 찾기
-    /// </summary>
-    private void FindHomingTarget()
-    {
-        Collider[] targets = Physics.OverlapSphere(transform.position, _detectionRadius, _targetLayer);
-        float closestDistance = float.MaxValue;
-        Transform closestTarget = null;
-
-        foreach (var target in targets)
-        {
-            var npc = target.GetComponent<BaseNPC>();
-            if (npc == null || npc.CheckDie())
-                continue;
-
-            float distance = Vector3.Distance(transform.position, target.transform.position);
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                closestTarget = target.transform;
-            }
-        }
-
-        _homingTarget = closestTarget;
-    }
-
-    /// <summary>
     /// 타겟 위치 설정 (외부에서 호출)
     /// </summary>
     public void SetTargetPosition(Vector3 targetPos)
@@ -231,6 +228,28 @@ public class SkillMovementController : MonoBehaviour
     }
 
     /// <summary>
+    /// 유도 타겟 설정 (외부에서 호출)
+    /// </summary>
+    public void SetHomingTarget(BaseNPC target)
+    {
+        _homingTarget = target;
+        _isTargetLost = false;
+        if (target != null)
+        {
+            _lastTargetPosition = target.transform.position;
+        }
+    }
+
+    /// <summary>
+    /// 유도 타겟 리스트 설정 (외부에서 호출)
+    /// </summary>
+    public void SetHomingTargets(BaseNPC targets)
+    {
+        _homingTarget = targets;
+        SetHomingTarget(targets);
+    }
+
+    /// <summary>
     /// 디버그용 기즈모
     /// </summary>
     private void OnDrawGizmosSelected()
@@ -241,10 +260,16 @@ public class SkillMovementController : MonoBehaviour
         {
             case EMOVEMENTTYPE.HOMING:
                 Gizmos.DrawWireSphere(transform.position, _detectionRadius);
-                if (_homingTarget != null)
+                if (_homingTarget != null && !_isTargetLost)
                 {
                     Gizmos.color = Color.red;
-                    Gizmos.DrawLine(transform.position, _homingTarget.position);
+                    Gizmos.DrawLine(transform.position, _homingTarget.transform.position);
+                }
+                else if (_isTargetLost)
+                {
+                    Gizmos.color = Color.yellow;
+                    Gizmos.DrawWireSphere(_lastTargetPosition, 0.5f);
+                    Gizmos.DrawLine(transform.position, _lastTargetPosition);
                 }
                 break;
 

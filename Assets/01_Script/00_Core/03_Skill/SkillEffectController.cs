@@ -15,11 +15,9 @@ public class SkillEffectController : MonoBehaviour
     [SerializeField] private bool _showDebugGizmos = true;
 
     // 스킬 정보
-    private BaseNPC _caster; // 스킬 사용자
+    BaseNPC _caster; // 스킬 사용자
+    BaseNPC _target; // 타겟
     private Action<BaseNPC, BaseNPC> _action; // 실행할 스킬
-
-    // 충돌한 대상들을 추적 (한 번만 적용되도록)
-    private System.Collections.Generic.HashSet<BaseNPC> _hitTargets = new System.Collections.Generic.HashSet<BaseNPC>();
 
     private void Start()
     {
@@ -48,7 +46,9 @@ public class SkillEffectController : MonoBehaviour
     {
         var targetNPC = other.gameObject.GetComponent<BaseNPC>();
         if (targetNPC == null || targetNPC.CheckDie() || (_targetLayer & (1 << other.gameObject.layer)) == 0)
+        {
             return;
+        }
 
         _action(_caster, targetNPC);
         if (_destroyOnHit)

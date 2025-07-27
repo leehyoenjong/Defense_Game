@@ -27,6 +27,7 @@ public class SO_Skill_Buff : BaseSkill
                 ExecuteImmediateBuff(me);
                 break;
             case EUSETYPE.OBJECT_ENTER:
+            case EUSETYPE.OBJECT_VIEW:
                 ExecuteObjectEnterBuff(me);
                 break;
         }

@@ -24,7 +24,8 @@ public class ConditionalFieldPropertyDrawer : PropertyDrawer
             var conditionalProperty = FindConditionalProperty(property, conditionalAttribute._conditionalSourceField);
             if (conditionalProperty != null)
             {
-                EditorGUI.LabelField(debugRect, $"[DEBUG] {conditionalAttribute._conditionalSourceField}: {GetCurrentValue(conditionalProperty)} == {conditionalAttribute._conditionalValue}", EditorStyles.miniLabel);
+                string valuesStr = string.Join(", ", conditionalAttribute._conditionalValues);
+                EditorGUI.LabelField(debugRect, $"[DEBUG] {conditionalAttribute._conditionalSourceField}: {GetCurrentValue(conditionalProperty)} in [{valuesStr}]", EditorStyles.miniLabel);
             }
         }
         #endif
@@ -65,8 +66,8 @@ public class ConditionalFieldPropertyDrawer : PropertyDrawer
             return true;
         }
 
-        // 조건 체크
-        bool conditionMet = CheckCondition(conditionalProperty, conditionalAttribute._conditionalValue);
+        // 조건 체크 (여러 값 중 하나라도 일치하면 조건 만족)
+        bool conditionMet = CheckConditions(conditionalProperty, conditionalAttribute._conditionalValues);
         return conditionalAttribute._showWhenTrue ? conditionMet : !conditionMet;
     }
 
@@ -99,6 +100,19 @@ public class ConditionalFieldPropertyDrawer : PropertyDrawer
         
         // 일반 필드의 경우
         return property.serializedObject.FindProperty(conditionalSourceField);
+    }
+
+    private bool CheckConditions(SerializedProperty conditionalProperty, object[] conditionalValues)
+    {
+        // 여러 조건 값 중 하나라도 일치하면 true 반환
+        foreach (object conditionalValue in conditionalValues)
+        {
+            if (CheckCondition(conditionalProperty, conditionalValue))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private bool CheckCondition(SerializedProperty conditionalProperty, object conditionalValue)

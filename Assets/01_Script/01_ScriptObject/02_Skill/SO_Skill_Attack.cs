@@ -30,6 +30,8 @@ public class SO_Skill_Attack : BaseSkill
                 return ExecuteImmediateSkill(me);
             case EUSETYPE.OBJECT_ENTER:
                 return ExecuteObjectEnterSkill(me);
+            case EUSETYPE.OBJECT_VIEW:
+                return ExecuteObjectEnterSkill(me);
             default:
                 return false;
         }

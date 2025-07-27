@@ -2,6 +2,7 @@ public enum EUSETYPE
 {
     NOW,//즉시 발동
     OBJECT_ENTER,//오브젝트에 닿으면 발동
+    OBJECT_VIEW,//확정 타겟으로 날라감
 }
 
 public enum ESKILLAREA
