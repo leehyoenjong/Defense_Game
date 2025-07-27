@@ -19,6 +19,11 @@ public class ProtectObject : BaseNPC
     {
         base.Start();
         OnSpawn();
+    }
+
+    public override void OnSpawn()
+    {
+        base.OnSpawn();
         _hpbarController_text.Hpbar_Update(_status._hp, _current_hp);
         _hit_event += () => _hpbarController_text.Hpbar_Update(_status._hp, _current_hp);
     }

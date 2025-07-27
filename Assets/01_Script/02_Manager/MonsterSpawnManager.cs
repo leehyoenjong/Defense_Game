@@ -1,34 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterSpawnManager : MonoBehaviour
 {
-    [SerializeField] Transform[] _protectpoint;
-    [SerializeField] Transform[] _createpoint;
-
     List<BaseNPC> _active_monsterlist = new List<BaseNPC>();
-    const float NEXTSTAGETIME = 5f;//죽은 몬스터 수와 상관없이 60초마다 몬스터 생성
+
+    [SerializeField]
+    Transform[]
+     _createpoint;
+
+    [SerializeField]
+    Transform[]
+     _protectpoint;
+
+    //죽은 몬스터 수와 상관없이 60초마다 몬스터 생성
 
     Vector2 MAXDOWNPOINT = new Vector2(-4.6f, -1.2f);
+
     Vector2 MAXUPPOINT = new Vector2(1.8f, 2.5f);
 
-
-    void OnEnable()
-    {
-        PlayManager._play_event += CreateMonster().Forget;
-        Monster_Base._monster_die_animation_exit += (diemon) => RemoveMonsterList(diemon);
-        BaseSkill._skill_target_dictionary_list.Add(ETARGETKIND.MONSTER, _active_monsterlist);
-    }
-
-    void OnDisable()
-    {
-        PlayManager._play_event -= CreateMonster().Forget;
-        Monster_Base._monster_die_animation_exit -= (diemon) => RemoveMonsterList(diemon);
-        BaseSkill._skill_target_dictionary_list.Remove(ETARGETKIND.MONSTER);
-    }
+    const float NEXTSTAGETIME = 5f;
+    int counts = 0;
 
     async UniTaskVoid CreateMonster()
     {
@@ -73,6 +66,11 @@ public class MonsterSpawnManager : MonoBehaviour
                     }
                     var mon = Instantiate<GameObject>(stagedata._monsterlist[i].GetMonsterInfo()._npc._mybodyobject);
                     mon.transform.position = MonsterCreatePoint();
+                    if (Application.isEditor)
+                    {
+                        mon.gameObject.name = $"몬스터_{counts}";
+                        counts++;
+                    }
                     var monsterbase = mon.GetComponent<Monster_Base>();
                     _active_monsterlist.Add(monsterbase);
 
@@ -97,15 +95,13 @@ public class MonsterSpawnManager : MonoBehaviour
         }
     }
 
-    void RemoveMonsterList(Monster_Base diemon)
+    Vector3 MonsterCreatePoint()
     {
-        if (_active_monsterlist.Contains(diemon) == false)
-        {
-            return;
-        }
-
-        _active_monsterlist.Remove(diemon);
-        Debug.Log($"남은 몬스터 수 :{_active_monsterlist.Count}");
+        var randomindex = UnityEngine.Random.Range(0, _createpoint.Length);
+        var createpoint = _createpoint[randomindex].position;
+        createpoint.x += UnityEngine.Random.Range(-1f, 1f);
+        createpoint.y += UnityEngine.Random.Range(-1f, 1f);
+        return createpoint;
     }
 
     Vector3 MonsterMovePoint()
@@ -135,12 +131,28 @@ public class MonsterSpawnManager : MonoBehaviour
         return movepoint;
     }
 
-    Vector3 MonsterCreatePoint()
+    void OnDisable()
     {
-        var randomindex = UnityEngine.Random.Range(0, _createpoint.Length);
-        var createpoint = _createpoint[randomindex].position;
-        createpoint.x += UnityEngine.Random.Range(-1f, 1f);
-        createpoint.y += UnityEngine.Random.Range(-1f, 1f);
-        return createpoint;
+        PlayManager._play_event -= CreateMonster().Forget;
+        Monster_Base._monster_die_animation_exit -= (diemon) => RemoveMonsterList(diemon);
+        BaseSkill._skill_target_dictionary_list.Remove(ETARGETKIND.MONSTER);
+    }
+
+    void OnEnable()
+    {
+        PlayManager._play_event += CreateMonster().Forget;
+        Monster_Base._monster_die_animation_exit += (diemon) => RemoveMonsterList(diemon);
+        BaseSkill._skill_target_dictionary_list.Add(ETARGETKIND.MONSTER, _active_monsterlist);
+    }
+
+    void RemoveMonsterList(Monster_Base diemon)
+    {
+        if (_active_monsterlist.Contains(diemon) == false)
+        {
+            return;
+        }
+
+        _active_monsterlist.Remove(diemon);
+        Debug.Log($"남은 몬스터 수 :{_active_monsterlist.Count}");
     }
 }

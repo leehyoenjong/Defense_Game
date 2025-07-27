@@ -17,8 +17,8 @@ public abstract class BaseNPC : MonoBehaviour
     //기본 맴버변수 
     protected int _myid;
     public int GetID() => _myid;
-    protected int _current_hp;
-    protected bool _isdie;
+    [SerializeField] protected int _current_hp;
+    [SerializeField] protected bool _isdie;
     protected St_Status _status;
     public St_Status GetStatus() => _status;
 
@@ -37,6 +37,19 @@ public abstract class BaseNPC : MonoBehaviour
     //함수
     protected virtual void Start()
     {
+
+    }
+
+
+    public virtual void IDSetting(int id)
+    {
+        _myid = id;
+    }
+
+    public virtual void OnSpawn()
+    {
+        Setting_Status();
+
         //애니메이션 관련
         if (_animationController)
         {
@@ -54,17 +67,6 @@ public abstract class BaseNPC : MonoBehaviour
 
         //스킬 삽입
         AddActiveSkill(_so_npc._basic_attack_skill);
-    }
-
-
-    public virtual void IDSetting(int id)
-    {
-        _myid = id;
-    }
-
-    public virtual void OnSpawn()
-    {
-        Setting_Status();
 
         //생성 버프 발동 내부에 스테이터스 변화하는 게 존재할 수 있음
         _skillController?.ActiveBuffSkill(ESKILLTRIGGER.SPAWN);
@@ -130,14 +132,21 @@ public abstract class BaseNPC : MonoBehaviour
 
     protected virtual void Hp_Update(int target_damage)
     {
+        if (_isdie)
+        {
+            return;
+        }
+
         _current_hp -= target_damage;
         _hit_event?.Invoke();
         _damagetextcontroller?.CreateText(-target_damage);
 
+        Debug.Log($"{this.gameObject.name}의 상태 전 :{_current_hp}/{_isdie}/{_current_hp <= 0 && _isdie == false}");
         if (_current_hp <= 0 && _isdie == false)
         {
             NPC_Die();
         }
+        Debug.Log($"{this.gameObject.name}의 상태 후 :{_current_hp}/{_isdie}/{_current_hp <= 0 && _isdie == false}");
     }
 
     protected virtual void NPC_Die()
