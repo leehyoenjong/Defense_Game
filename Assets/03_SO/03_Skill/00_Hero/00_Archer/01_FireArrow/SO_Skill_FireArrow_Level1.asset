@@ -25,8 +25,9 @@ MonoBehaviour:
   _eanimation: 6
   _eskilltrigger: 1
   _active_skillEffect: []
-  _eusetype: 0
-  _enter_hit_object: []
+  _eusetype: 1
+  _enter_hit_object:
+  - {fileID: 1182817581567632008, guid: 85c566d2907bb394db9a688f6b612031, type: 3}
   _etargetkind: 2
   _etargetfiltertype: 9
   _eskillarea: 0

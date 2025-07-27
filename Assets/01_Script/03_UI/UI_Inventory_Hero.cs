@@ -54,6 +54,7 @@ public class UI_Inventory_Hero : MonoBehaviour
             if (i == 0)
             {
                 Setting(itemid, slot);
+                _click_slot?.Invoke(itemid);
             }
             _activeheroslot.Add(slot);
         }
