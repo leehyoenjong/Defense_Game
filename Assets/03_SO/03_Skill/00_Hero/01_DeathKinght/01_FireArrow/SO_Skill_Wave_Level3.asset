@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0310d48b5ef8b482193c1153aea3ffa4, type: 3}
-  m_Name: SO_Skill_FireArrow_Level3
+  m_Name: SO_Skill_Wave_Level3
   m_EditorClassIdentifier: 
   _skillInfo:
-    _name: FireArrow
-    _explain: FireArrow Damage 300%
+    _name: Wave Attack!
+    _explain: Wave Attack Damage 300%
     _cooltime: 5
     _duration: 3
-    _mid: 2
+    _mid: 4
     _level: 3
     _skillicon: {fileID: 21300000, guid: b123bdad4f47a734c80135e456f2d162, type: 3}
     _next_skilldelaytime: 0

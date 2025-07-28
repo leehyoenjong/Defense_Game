@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// ConditionalFieldAttribute용 PropertyDrawer
 /// 조건에 따라 필드를 표시하거나 숨깁니다.
-/// 배열 필드도 지원합니다.
+/// 배열 필드와 다중 필드 조건도 지원합니다.
 /// </summary>
 [CustomPropertyDrawer(typeof(ConditionalFieldAttribute))]
 public class ConditionalFieldPropertyDrawer : PropertyDrawer
@@ -21,12 +21,8 @@ public class ConditionalFieldPropertyDrawer : PropertyDrawer
         if (shouldShow)
         {
             var debugRect = new Rect(position.x, position.y - 15, position.width, 15);
-            var conditionalProperty = FindConditionalProperty(property, conditionalAttribute._conditionalSourceField);
-            if (conditionalProperty != null)
-            {
-                string valuesStr = string.Join(", ", conditionalAttribute._conditionalValues);
-                EditorGUI.LabelField(debugRect, $"[DEBUG] {conditionalAttribute._conditionalSourceField}: {GetCurrentValue(conditionalProperty)} in [{valuesStr}]", EditorStyles.miniLabel);
-            }
+            string debugInfo = GetDebugInfo(property, conditionalAttribute);
+            EditorGUI.LabelField(debugRect, debugInfo, EditorStyles.miniLabel);
         }
         #endif
 
@@ -57,6 +53,24 @@ public class ConditionalFieldPropertyDrawer : PropertyDrawer
 
     private bool ShouldShowProperty(SerializedProperty property, ConditionalFieldAttribute conditionalAttribute)
     {
+        bool conditionMet;
+
+        if (conditionalAttribute.IsMultiFieldCondition)
+        {
+            // 다중 필드 조건 처리
+            conditionMet = EvaluateMultiFieldConditions(property, conditionalAttribute);
+        }
+        else
+        {
+            // 기존 단일 필드 조건 처리
+            conditionMet = EvaluateSingleFieldCondition(property, conditionalAttribute);
+        }
+
+        return conditionalAttribute._showWhenTrue ? conditionMet : !conditionMet;
+    }
+
+    private bool EvaluateSingleFieldCondition(SerializedProperty property, ConditionalFieldAttribute conditionalAttribute)
+    {
         // 조건 필드 찾기
         SerializedProperty conditionalProperty = FindConditionalProperty(property, conditionalAttribute._conditionalSourceField);
         
@@ -67,8 +81,55 @@ public class ConditionalFieldPropertyDrawer : PropertyDrawer
         }
 
         // 조건 체크 (여러 값 중 하나라도 일치하면 조건 만족)
-        bool conditionMet = CheckConditions(conditionalProperty, conditionalAttribute._conditionalValues);
-        return conditionalAttribute._showWhenTrue ? conditionMet : !conditionMet;
+        return CheckConditions(conditionalProperty, conditionalAttribute._conditionalValues);
+    }
+
+    private bool EvaluateMultiFieldConditions(SerializedProperty property, ConditionalFieldAttribute conditionalAttribute)
+    {
+        var fieldConditions = conditionalAttribute._fieldConditions;
+        bool[] conditionResults = new bool[fieldConditions.Length];
+
+        // 각 필드 조건을 개별적으로 평가
+        for (int i = 0; i < fieldConditions.Length; i++)
+        {
+            var fieldCondition = fieldConditions[i];
+            SerializedProperty conditionalProperty = FindConditionalProperty(property, fieldCondition._fieldName);
+            
+            if (conditionalProperty == null)
+            {
+                // 조건 필드를 찾을 수 없으면 해당 조건은 거짓으로 처리
+                conditionResults[i] = false;
+            }
+            else
+            {
+                conditionResults[i] = CheckConditions(conditionalProperty, fieldCondition._values);
+            }
+        }
+
+        // AND/OR 연산 수행
+        return conditionalAttribute._conditionOperator == ConditionalFieldAttribute.ConditionOperator.And
+            ? EvaluateAndConditions(conditionResults)
+            : EvaluateOrConditions(conditionResults);
+    }
+
+    private bool EvaluateAndConditions(bool[] conditionResults)
+    {
+        // 모든 조건이 참이어야 함
+        foreach (bool result in conditionResults)
+        {
+            if (!result) return false;
+        }
+        return true;
+    }
+
+    private bool EvaluateOrConditions(bool[] conditionResults)
+    {
+        // 조건 중 하나라도 참이면 됨
+        foreach (bool result in conditionResults)
+        {
+            if (result) return true;
+        }
+        return false;
     }
 
     private SerializedProperty FindConditionalProperty(SerializedProperty property, string conditionalSourceField)
@@ -139,6 +200,40 @@ public class ConditionalFieldPropertyDrawer : PropertyDrawer
             
             default:
                 return false;
+        }
+    }
+
+    private string GetDebugInfo(SerializedProperty property, ConditionalFieldAttribute conditionalAttribute)
+    {
+        if (conditionalAttribute.IsMultiFieldCondition)
+        {
+            // 다중 필드 디버그 정보
+            string debugInfo = $"[DEBUG Multi] {conditionalAttribute._conditionOperator}: ";
+            for (int i = 0; i < conditionalAttribute._fieldConditions.Length; i++)
+            {
+                var fieldCondition = conditionalAttribute._fieldConditions[i];
+                var conditionalProperty = FindConditionalProperty(property, fieldCondition._fieldName);
+                if (conditionalProperty != null)
+                {
+                    string currentValue = GetCurrentValue(conditionalProperty);
+                    string valuesStr = string.Join(", ", fieldCondition._values);
+                    debugInfo += $"{fieldCondition._fieldName}={currentValue} in [{valuesStr}]";
+                    if (i < conditionalAttribute._fieldConditions.Length - 1)
+                        debugInfo += " | ";
+                }
+            }
+            return debugInfo;
+        }
+        else
+        {
+            // 단일 필드 디버그 정보
+            var conditionalProperty = FindConditionalProperty(property, conditionalAttribute._conditionalSourceField);
+            if (conditionalProperty != null)
+            {
+                string valuesStr = string.Join(", ", conditionalAttribute._conditionalValues);
+                return $"[DEBUG] {conditionalAttribute._conditionalSourceField}: {GetCurrentValue(conditionalProperty)} in [{valuesStr}]";
+            }
+            return "[DEBUG] Property not found";
         }
     }
 

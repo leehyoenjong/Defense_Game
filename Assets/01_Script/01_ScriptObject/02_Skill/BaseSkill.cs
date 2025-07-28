@@ -36,14 +36,14 @@ public abstract class BaseSkill : ScriptableObject
     [Header("ㅡㅡㅡㅡ범위 설정ㅡㅡㅡㅡ")]
 
     //원형 범위
-    [ConditionalField("_eskillarea", (int)ESKILLAREA.CIRCLE)]
+    [ConditionalField(ConditionalFieldAttribute.ConditionOperator.And, true, "_eskillarea", (int)ESKILLAREA.CIRCLE, "_eusetype", (int)EUSETYPE.OBJECT_ENTER)]
     public float _circleRadius = 1f;
 
     //박스 범위
-    [ConditionalField("_eskillarea", (int)ESKILLAREA.BOX)]
+    [ConditionalField(ConditionalFieldAttribute.ConditionOperator.And, true, "_eskillarea", (int)ESKILLAREA.BOX, "_eusetype", (int)EUSETYPE.OBJECT_ENTER)]
     public float _boxWidth = 1f;
 
-    [ConditionalField("_eskillarea", (int)ESKILLAREA.BOX)]
+    [ConditionalField(ConditionalFieldAttribute.ConditionOperator.And, true, "_eskillarea", (int)ESKILLAREA.BOX, "_eusetype", (int)EUSETYPE.OBJECT_ENTER)]
     public float _boxHeight = 1f;
     public static Dictionary<ETARGETKIND, List<BaseNPC>> _skill_target_dictionary_list = new Dictionary<ETARGETKIND, List<BaseNPC>>();
     public const int MAXLEVEL = 3;

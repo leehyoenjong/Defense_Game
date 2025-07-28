@@ -16,7 +16,6 @@ public class SkillEffectController : MonoBehaviour
 
     // 스킬 정보
     BaseNPC _caster; // 스킬 사용자
-    BaseNPC _target; // 타겟
     private Action<BaseNPC, BaseNPC> _action; // 실행할 스킬
 
     private void Start()

@@ -4889,6 +4889,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4956,6 +4959,8 @@ GameObject:
   - component: {fileID: 7205773765734643574}
   - component: {fileID: 7408240995975672324}
   - component: {fileID: 7407096426847847092}
+  - component: {fileID: 4789359120910877436}
+  - component: {fileID: 6146878726698177847}
   m_Layer: 0
   m_Name: WallShadow
   m_TagString: Untagged
@@ -9886,6 +9891,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9942,3 +9950,46 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &4789359120910877436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7209338590660237626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1119dbe8534834867836ec415004e0f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  _destroyOnHit: 0
+  _lifeTime: 3
+  _showDebugGizmos: 1
+--- !u!114 &6146878726698177847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7209338590660237626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21a81dd55b6c8432ab0ef88f885b7a36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movementType: 1
+  _speed: 50
+  _lifeTime: 5
+  _homingStrength: 2
+  _detectionRadius: 10
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _arcHeight: 5
+  _targetPosition: {x: 0, y: 0, z: 0}
+  _rotationSpeed: 90
+  _rotationRadius: 3
+  _rotationCenter: {fileID: 0}

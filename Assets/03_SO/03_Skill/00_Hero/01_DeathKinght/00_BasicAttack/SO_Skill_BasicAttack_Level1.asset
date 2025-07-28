@@ -17,7 +17,7 @@ MonoBehaviour:
     _explain: 110% Damage Attack
     _cooltime: 1
     _duration: 0
-    _mid: 1
+    _mid: 3
     _level: 1
     _skillicon: {fileID: 21300000, guid: 8d95bcf261f259f4786a397bc66e3705, type: 3}
     _next_skilldelaytime: 0
