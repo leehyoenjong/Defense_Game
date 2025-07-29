@@ -19,7 +19,7 @@ MonoBehaviour:
     _duration: 0
     _mid: 3
     _level: 1
-    _skillicon: {fileID: 21300000, guid: 8d95bcf261f259f4786a397bc66e3705, type: 3}
+    _skillicon: {fileID: 21300000, guid: 8a96b38c76be79946a150249547b07bc, type: 3}
     _next_skilldelaytime: 0
   _skillkind: 1
   _eanimation: 4

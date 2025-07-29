@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0310d48b5ef8b482193c1153aea3ffa4, type: 3}
-  m_Name: SO_Skill_FireArrow_Level1
+  m_Name: SO_Skill_FireEnchant_Level2
   m_EditorClassIdentifier: 
   _skillInfo:
-    _name: FireArrow
-    _explain: FireArrow Damage 100%
-    _cooltime: 5
+    _name: FireEnchant
+    _explain: FireEnchant Damage 200%
+    _cooltime: 1
     _duration: 3
-    _mid: 2
-    _level: 1
-    _skillicon: {fileID: 21300000, guid: b123bdad4f47a734c80135e456f2d162, type: 3}
+    _mid: 6
+    _level: 2
+    _skillicon: {fileID: 21300000, guid: c890dd06d4a350946ab11e4778bf47d8, type: 3}
     _next_skilldelaytime: 0
   _skillkind: 1
   _eanimation: 6
@@ -27,7 +27,7 @@ MonoBehaviour:
   _active_skillEffect: []
   _eusetype: 1
   _enter_hit_object:
-  - {fileID: 1182817581567632008, guid: 85c566d2907bb394db9a688f6b612031, type: 3}
+  - {fileID: 7395350200383773721, guid: 07dc03ec70ca9704eb355e3139e3af37, type: 3}
   _etargetkind: 2
   _etargetfiltertype: 9
   _eskillarea: 0
@@ -35,5 +35,5 @@ MonoBehaviour:
   _boxWidth: 1
   _boxHeight: 1
   _target_attackeffect:
-  - {fileID: 3050942199546623091, guid: 46660d7c20f9b264084e19daa4b93b1e, type: 3}
-  _skilldamagepercent: 1
+  - {fileID: 9156195482086878315, guid: 7ba91c8099322fa449991617bf66d418, type: 3}
+  _skilldamagepercent: 2

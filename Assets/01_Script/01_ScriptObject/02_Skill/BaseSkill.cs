@@ -106,10 +106,11 @@ public abstract class BaseSkill : ScriptableObject
                 switch (movementController._movementType)
                 {
                     case EMOVEMENTTYPE.HOMING:
+                    case EMOVEMENTTYPE.NOW:
                         // 유도 타입: 타겟 설정
                         if (filteredTargets != null && filteredTargets.Count > 0)
                         {
-                            movementController.SetHomingTargets(filteredTargets[0]);
+                            movementController.SetTargets(filteredTargets[0]);
                         }
                         break;
 

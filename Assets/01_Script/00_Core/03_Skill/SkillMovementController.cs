@@ -12,6 +12,9 @@ public class SkillMovementController : MonoBehaviour
     [SerializeField] private float _speed = 10f;
     [SerializeField] private float _lifeTime = 5f;
 
+    [Header("도달 후 삭제 시간")]
+    [SerializeField] private float _destorytime = 1f;
+
     [Header("유도 설정")]
     [ConditionalField("_movementType", (int)EMOVEMENTTYPE.HOMING)]
     [SerializeField] private float _homingStrength = 2f;
@@ -39,16 +42,17 @@ public class SkillMovementController : MonoBehaviour
     private BaseNPC _homingTarget;
     private Vector3 _lastTargetPosition; // 타겟의 마지막 위치 저장
     private bool _isTargetLost = false;  // 타겟을 잃었는지 여부
+    private bool _isarraive;
+
     private Vector3 _startPosition;
     private float _elapsedTime = 0f;
-    private Rigidbody2D _rigidbody2D;
+
+
 
 
     private void Start()
     {
         _startPosition = transform.position;
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-
         InitializeMovement();
 
         // 생존 시간 후 제거
@@ -60,6 +64,11 @@ public class SkillMovementController : MonoBehaviour
 
     private void Update()
     {
+        if (_isarraive)
+        {
+            return;
+        }
+
         _elapsedTime += Time.deltaTime;
 
         switch (_movementType)
@@ -76,6 +85,9 @@ public class SkillMovementController : MonoBehaviour
             case EMOVEMENTTYPE.ROTATE:
                 MoveRotate();
                 break;
+            case EMOVEMENTTYPE.NOW:
+                NowMove();
+                break;
         }
     }
 
@@ -90,7 +102,6 @@ public class SkillMovementController : MonoBehaviour
                 _direction = transform.forward;
                 break;
             case EMOVEMENTTYPE.HOMING:
-                _direction = transform.forward;
                 break;
             case EMOVEMENTTYPE.PARABOLA:
                 if (_targetPosition == Vector3.zero)
@@ -100,6 +111,37 @@ public class SkillMovementController : MonoBehaviour
                 if (_rotationCenter == null)
                     _rotationCenter = transform.parent;
                 break;
+            case EMOVEMENTTYPE.NOW:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 타겟 지정
+    /// </summary>
+    void TargetSetting()
+    {
+        // 타겟이 존재하면 타겟 위치로 
+        if (_homingTarget != null && _homingTarget.CheckDie())
+        {
+            _lastTargetPosition = _homingTarget.transform.position;
+            return;
+        }
+
+        // 타겟이 아직 있다면 타겟의 마지막 위치로 
+        if (!_isTargetLost && _homingTarget == null)
+        {
+            _lastTargetPosition = _homingTarget.transform.position;
+            _isTargetLost = true;
+            return;
+        }
+
+        // 타겟을 잃은 상태가 아니고 새로운 타겟을 찾을 수 없다면
+        if (!_isTargetLost && _homingTarget == null)
+        {
+            _isTargetLost = true;
+            _lastTargetPosition = transform.position + _direction * 10f; // 현재 방향으로 일정 거리
+            return;
         }
     }
 
@@ -109,11 +151,16 @@ public class SkillMovementController : MonoBehaviour
     private void MoveStraight()
     {
         Vector3 movement = _direction * _speed * Time.deltaTime;
+        transform.position += movement;
+    }
 
-        if (_rigidbody2D != null)
-            _rigidbody2D.MovePosition(transform.position + movement);
-        else
-            transform.position += movement;
+    private void NowMove()
+    {
+        TargetSetting();
+        var newposition = _lastTargetPosition;
+        transform.position = new Vector3(newposition.x, newposition.y, transform.position.z);
+        _isarraive = true;
+        Destroy(gameObject, _destorytime);
     }
 
     /// <summary>
@@ -121,46 +168,18 @@ public class SkillMovementController : MonoBehaviour
     /// </summary>
     private void MoveHoming()
     {
-        // 타겟이 없거나 죽었으면 처리
-        if (_homingTarget == null || _homingTarget.CheckDie())
-        {
-            // 아직 타겟을 잃지 않은 상태라면 마지막 위치로 설정
-            if (!_isTargetLost && _homingTarget != null)
-            {
-                _lastTargetPosition = _homingTarget.transform.position;
-                _isTargetLost = true;
-            }
-            // 타겟을 잃은 상태가 아니고 새로운 타겟을 찾을 수 없다면
-            else if (!_isTargetLost)
-            {
-                // 여전히 타겟을 찾지 못했다면 타겟 상실 처리
-                if (_homingTarget == null)
-                {
-                    _isTargetLost = true;
-                    _lastTargetPosition = transform.position + _direction * 10f; // 현재 방향으로 일정 거리
-                }
-            }
-        }
+        TargetSetting();
 
         // 타겟이 있는 경우
-        Vector2 newPosition = default;
-        if (_homingTarget != null && !_isTargetLost)
-        {
-            newPosition = Vector2.MoveTowards(this.transform.position, _homingTarget.transform.position, _speed * Time.deltaTime);
-        }
-        // 타겟을 잃은 경우 마지막 위치로 이동
-        else if (_isTargetLost)
-        {
-            newPosition = Vector2.MoveTowards(this.transform.position, _lastTargetPosition, _speed * Time.deltaTime);
-        }
-
+        Vector2 newPosition = Vector2.MoveTowards(this.transform.position, _lastTargetPosition, _speed * Time.deltaTime);
         // 이동
         transform.position = new Vector3(newPosition.x, newPosition.y, transform.position.z);
 
         // 마지막 위치에 충분히 가까워지면 삭제
         if (Vector3.Distance(transform.position, _lastTargetPosition) < 0.01f)
         {
-            Destroy(gameObject);
+            _isarraive = true;
+            Destroy(gameObject, _destorytime);
             return;
         }
     }
@@ -228,25 +247,16 @@ public class SkillMovementController : MonoBehaviour
     }
 
     /// <summary>
-    /// 유도 타겟 설정 (외부에서 호출)
-    /// </summary>
-    public void SetHomingTarget(BaseNPC target)
-    {
-        _homingTarget = target;
-        _isTargetLost = false;
-        if (target != null)
-        {
-            _lastTargetPosition = target.transform.position;
-        }
-    }
-
-    /// <summary>
     /// 유도 타겟 리스트 설정 (외부에서 호출)
     /// </summary>
-    public void SetHomingTargets(BaseNPC targets)
+    public void SetTargets(BaseNPC targets)
     {
         _homingTarget = targets;
-        SetHomingTarget(targets);
+        _isTargetLost = false;
+        if (targets != null)
+        {
+            _lastTargetPosition = targets.transform.position;
+        }
     }
 
     /// <summary>
@@ -296,5 +306,6 @@ public enum EMOVEMENTTYPE
     STRAIGHT,     // 직진
     HOMING,       // 유도탄
     PARABOLA,     // 포물선
-    ROTATE        // 회전
+    ROTATE,        // 회전
+    NOW,           // 타겟 위치에 생성
 }

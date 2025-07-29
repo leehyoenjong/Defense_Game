@@ -17,17 +17,16 @@ MonoBehaviour:
     _explain: 150% Damage Attack
     _cooltime: 1
     _duration: 0
-    _mid: 1
+    _mid: 5
     _level: 2
-    _skillicon: {fileID: 21300000, guid: 8d95bcf261f259f4786a397bc66e3705, type: 3}
+    _skillicon: {fileID: 21300000, guid: 3925691c2a021aa429c1dc89712a1253, type: 3}
     _next_skilldelaytime: 0
   _skillkind: 1
   _eanimation: 4
   _eskilltrigger: 1
   _active_skillEffect: []
-  _eusetype: 1
-  _enter_hit_object:
-  - {fileID: 6202462865118328157, guid: bc330a95b74500d4f883c68f56579840, type: 3}
+  _eusetype: 0
+  _enter_hit_object: []
   _etargetkind: 2
   _etargetfiltertype: 8
   _eskillarea: 0
