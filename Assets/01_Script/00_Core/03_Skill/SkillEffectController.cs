@@ -11,6 +11,9 @@ public class SkillEffectController : MonoBehaviour
     [SerializeField] private bool _destroyOnHit = true;
     [SerializeField] private float _lifeTime; // 생존 시간
 
+    [Header("현재 이 오브젝트 대신 닿았을때 생성되며 데미지가 들어가는 이펙트")]
+    [SerializeField] GameObject _boom_effect;
+
     [Header("디버그")]
     [SerializeField] private bool _showDebugGizmos = true;
 
@@ -49,11 +52,18 @@ public class SkillEffectController : MonoBehaviour
             return;
         }
 
-        _action(_caster, targetNPC);
         if (_destroyOnHit)
         {
             Destroy(this.gameObject);
         }
+
+        if (_boom_effect != null)
+        {
+            Instantiate(_boom_effect, other.transform.position, default).GetComponent<SkillEffectController>().Initialize(_caster, _action);
+            return;
+        }
+
+        _action(_caster, targetNPC);
     }
 
     /// <summary>

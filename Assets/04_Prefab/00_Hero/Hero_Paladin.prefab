@@ -98,7 +98,7 @@ Animator:
   m_GameObject: {fileID: 4216034037254758192}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: db6d74c99bf2c45458e016b4aad8570d, type: 2}
+  m_Controller: {fileID: 22100000, guid: cca6f26f7e67f465dbe620cef4362760, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -383,4 +383,6 @@ MonoBehaviour:
   _hpbarController: {fileID: 0}
   _skillController: {fileID: 6038194448659119922}
   _damagetextcontroller: {fileID: 0}
+  _current_hp: 0
+  _isdie: 0
   _attackareacontroller: {fileID: 3155842828763983625}

@@ -18,7 +18,10 @@ MonoBehaviour:
   _icon: {fileID: 1572034964, guid: 258ba7d3ac3c1a34888cf0144497463a, type: 3}
   _basic_attack_skill: {fileID: 11400000, guid: 643284535e7c3435ebe0e175fa18c0b7, type: 2}
   _skill_chose_list:
-  - {fileID: 11400000, guid: 81ea6de5911fb4448978471e0bbc21e5, type: 2}
-  - {fileID: 11400000, guid: 4c841f2dcb92443489f350c848f88d28, type: 2}
-  - {fileID: 11400000, guid: a450cdc37152747e798c41316fcfb6e1, type: 2}
+  - {fileID: 11400000, guid: 121cb313508fd49c3a68d605889bc291, type: 2}
+  - {fileID: 11400000, guid: 4c64c07a513334e19b847f55f4fe1b8c, type: 2}
+  - {fileID: 11400000, guid: 0822d3e55ef334922a1b97afdb2d4de6, type: 2}
+  - {fileID: 11400000, guid: 7ec4384458b5b4e0a9adaf74c726a519, type: 2}
+  - {fileID: 11400000, guid: ac96483cd396247c59de85451eb00a03, type: 2}
+  - {fileID: 11400000, guid: 1b2323cf6d7844baab30d1d420485216, type: 2}
   _mybodyobject: {fileID: 8119325562826731349, guid: 5242132ba56ea4f7b9ce8b6e8822375d, type: 3}

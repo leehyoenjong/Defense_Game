@@ -28,7 +28,7 @@ MonoBehaviour:
   _eusetype: 0
   _enter_hit_object: []
   _etargetkind: 2
-  _etargetfiltertype: 8
+  _etargetfiltertype: 9
   _eskillarea: 0
   _circleRadius: 1
   _boxWidth: 1
