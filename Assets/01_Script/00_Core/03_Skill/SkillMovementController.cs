@@ -15,28 +15,6 @@ public class SkillMovementController : MonoBehaviour
     [Header("도달 후 삭제 시간")]
     [SerializeField] private float _destorytime = 1f;
 
-    [Header("유도 설정")]
-    [ConditionalField("_movementType", (int)EMOVEMENTTYPE.HOMING)]
-    [SerializeField] private float _homingStrength = 2f;
-    [ConditionalField("_movementType", (int)EMOVEMENTTYPE.HOMING)]
-    [SerializeField] private float _detectionRadius = 10f;
-    [ConditionalField("_movementType", (int)EMOVEMENTTYPE.HOMING)]
-    [SerializeField] private LayerMask _targetLayer;
-
-    [Header("포물선 설정")]
-    [ConditionalField("_movementType", (int)EMOVEMENTTYPE.PARABOLA)]
-    [SerializeField] private float _arcHeight = 5f;
-    [ConditionalField("_movementType", (int)EMOVEMENTTYPE.PARABOLA)]
-    [SerializeField] private Vector3 _targetPosition;
-
-    [Header("회전 설정")]
-    [ConditionalField("_movementType", (int)EMOVEMENTTYPE.ROTATE)]
-    [SerializeField] private float _rotationSpeed = 90f;
-    [ConditionalField("_movementType", (int)EMOVEMENTTYPE.ROTATE)]
-    [SerializeField] private float _rotationRadius = 3f;
-    [ConditionalField("_movementType", (int)EMOVEMENTTYPE.ROTATE)]
-    [SerializeField] private Transform _rotationCenter;
-
     // 프라이빗 변수들
     private Vector3 _direction;
     private BaseNPC _homingTarget;
@@ -79,12 +57,6 @@ public class SkillMovementController : MonoBehaviour
             case EMOVEMENTTYPE.HOMING:
                 MoveHoming();
                 break;
-            case EMOVEMENTTYPE.PARABOLA:
-                MoveParabola();
-                break;
-            case EMOVEMENTTYPE.ROTATE:
-                MoveRotate();
-                break;
             case EMOVEMENTTYPE.NOW:
                 NowMove();
                 break;
@@ -102,14 +74,6 @@ public class SkillMovementController : MonoBehaviour
                 _direction = transform.forward;
                 break;
             case EMOVEMENTTYPE.HOMING:
-                break;
-            case EMOVEMENTTYPE.PARABOLA:
-                if (_targetPosition == Vector3.zero)
-                    _targetPosition = transform.position + transform.forward * 10f;
-                break;
-            case EMOVEMENTTYPE.ROTATE:
-                if (_rotationCenter == null)
-                    _rotationCenter = transform.parent;
                 break;
             case EMOVEMENTTYPE.NOW:
                 break;
@@ -184,67 +148,6 @@ public class SkillMovementController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 포물선 움직임
-    /// </summary>
-    private void MoveParabola()
-    {
-        float totalDistance = Vector3.Distance(_startPosition, _targetPosition);
-        float totalTime = totalDistance / _speed;
-        float progress = _elapsedTime / totalTime;
-
-        if (progress >= 1f)
-        {
-            transform.position = _targetPosition;
-            return;
-        }
-
-        // 수평 이동
-        Vector3 horizontalPos = Vector3.Lerp(_startPosition, _targetPosition, progress);
-
-        // 수직 이동 (포물선)
-        float arc = _arcHeight * Mathf.Sin(progress * Mathf.PI);
-
-        transform.position = horizontalPos + Vector3.up * arc;
-    }
-
-    /// <summary>
-    /// 회전 움직임
-    /// </summary>
-    private void MoveRotate()
-    {
-        if (_rotationCenter == null)
-            return;
-
-        // 중심점을 기준으로 회전
-        transform.RotateAround(_rotationCenter.position, Vector3.up, _rotationSpeed * Time.deltaTime);
-
-        // 중심점으로부터 일정 거리 유지
-        Vector3 directionToCenter = (_rotationCenter.position - transform.position).normalized;
-        float currentDistance = Vector3.Distance(transform.position, _rotationCenter.position);
-
-        if (Mathf.Abs(currentDistance - _rotationRadius) > 0.1f)
-        {
-            Vector3 targetPosition = _rotationCenter.position - directionToCenter * _rotationRadius;
-            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 5f);
-        }
-    }
-
-    /// <summary>
-    /// 타겟 위치 설정 (외부에서 호출)
-    /// </summary>
-    public void SetTargetPosition(Vector3 targetPos)
-    {
-        _targetPosition = targetPos;
-    }
-
-    /// <summary>
-    /// 회전 중심점 설정 (외부에서 호출)
-    /// </summary>
-    public void SetRotationCenter(Transform center)
-    {
-        _rotationCenter = center;
-    }
 
     /// <summary>
     /// 유도 타겟 리스트 설정 (외부에서 호출)
@@ -256,46 +159,6 @@ public class SkillMovementController : MonoBehaviour
         if (targets != null)
         {
             _lastTargetPosition = targets.transform.position;
-        }
-    }
-
-    /// <summary>
-    /// 디버그용 기즈모
-    /// </summary>
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.blue;
-
-        switch (_movementType)
-        {
-            case EMOVEMENTTYPE.HOMING:
-                Gizmos.DrawWireSphere(transform.position, _detectionRadius);
-                if (_homingTarget != null && !_isTargetLost)
-                {
-                    Gizmos.color = Color.red;
-                    Gizmos.DrawLine(transform.position, _homingTarget.transform.position);
-                }
-                else if (_isTargetLost)
-                {
-                    Gizmos.color = Color.yellow;
-                    Gizmos.DrawWireSphere(_lastTargetPosition, 0.5f);
-                    Gizmos.DrawLine(transform.position, _lastTargetPosition);
-                }
-                break;
-
-            case EMOVEMENTTYPE.PARABOLA:
-                Gizmos.color = Color.green;
-                Gizmos.DrawWireSphere(_targetPosition, 0.5f);
-                Gizmos.DrawLine(transform.position, _targetPosition);
-                break;
-
-            case EMOVEMENTTYPE.ROTATE:
-                if (_rotationCenter != null)
-                {
-                    Gizmos.color = Color.yellow;
-                    Gizmos.DrawWireSphere(_rotationCenter.position, _rotationRadius);
-                }
-                break;
         }
     }
 }

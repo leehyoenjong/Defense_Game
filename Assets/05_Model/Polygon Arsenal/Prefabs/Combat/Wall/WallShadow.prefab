@@ -9981,9 +9981,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21a81dd55b6c8432ab0ef88f885b7a36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementType: 2
+  _movementType: 5
   _speed: 50
   _lifeTime: 5
+  _destorytime: 1
   _homingStrength: 2
   _detectionRadius: 10
   _targetLayer:

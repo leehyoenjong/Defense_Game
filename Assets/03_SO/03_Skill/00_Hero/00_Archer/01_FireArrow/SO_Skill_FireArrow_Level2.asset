@@ -27,7 +27,7 @@ MonoBehaviour:
   _active_skillEffect: []
   _eusetype: 2
   _enter_hit_object:
-  - {fileID: 1182817581567632008, guid: 85c566d2907bb394db9a688f6b612031, type: 3}
+  - {fileID: 5324340380660117746, guid: 5bd1e272a12231a46ac5a75d591b2c3e, type: 3}
   _etargetkind: 2
   _etargetfiltertype: 9
   _eskillarea: 0
@@ -35,5 +35,5 @@ MonoBehaviour:
   _boxWidth: 1
   _boxHeight: 1
   _target_attackeffect:
-  - {fileID: 3050942199546623091, guid: 46660d7c20f9b264084e19daa4b93b1e, type: 3}
+  - {fileID: 1028723314392306, guid: d61b742e329cf58468e2c16c35be0ce4, type: 3}
   _skilldamagepercent: 2

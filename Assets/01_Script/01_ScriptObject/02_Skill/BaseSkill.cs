@@ -113,24 +113,6 @@ public abstract class BaseSkill : ScriptableObject
                             movementController.SetTargets(filteredTargets[0]);
                         }
                         break;
-
-                    case EMOVEMENTTYPE.PARABOLA:
-                        // 포물선 타입: 타겟 위치 설정
-                        if (targetposition != Vector3.zero)
-                        {
-                            movementController.SetTargetPosition(targetposition);
-                        }
-                        else if (filteredTargets != null && filteredTargets.Count > 0)
-                        {
-                            movementController.SetTargetPosition(filteredTargets[0].transform.position);
-                        }
-                        break;
-
-                    case EMOVEMENTTYPE.ROTATE:
-                        // 회전 타입: 중심점 설정 (caster를 중심으로)
-                        movementController.SetRotationCenter(caster.transform);
-                        break;
-
                     default:
                         // 직진 등 기본 움직임은 별도 설정 불필요
                         break;

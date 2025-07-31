@@ -14,9 +14,6 @@ public class SkillEffectController : MonoBehaviour
     [Header("현재 이 오브젝트 대신 닿았을때 생성되며 데미지가 들어가는 이펙트")]
     [SerializeField] GameObject _boom_effect;
 
-    [Header("디버그")]
-    [SerializeField] private bool _showDebugGizmos = true;
-
     // 스킬 정보
     BaseNPC _caster; // 스킬 사용자
     private Action<BaseNPC, BaseNPC> _action; // 실행할 스킬

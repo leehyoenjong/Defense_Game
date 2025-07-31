@@ -9969,7 +9969,7 @@ GameObject:
   - component: {fileID: 5296116588628538403}
   - component: {fileID: 461605289283535234}
   - component: {fileID: 997495608053291276}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CleaveFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
