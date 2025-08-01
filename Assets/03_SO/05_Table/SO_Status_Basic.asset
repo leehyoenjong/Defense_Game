@@ -10,11 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 351089525ce164fd08feec6f8791bb1e, type: 3}
-  m_Name: Status_Basic
+  m_Name: SO_Status_Basic
   m_EditorClassIdentifier: 
   _statuslist:
-  - _mid: 1
+  - customName: 
+    _mid: 1
     _statuslist:
+    - _grade: 0
+      _hp: 100
+      _damge: 10
+      _armor: 0
+      _critical: 0
+      _critical_damage: 0
     - _grade: 0
       _hp: 100
       _damge: 10
@@ -51,7 +58,8 @@ MonoBehaviour:
       _armor: 0
       _critical: 0.5
       _critical_damage: 0.5
-  - _mid: 2
+  - customName: 
+    _mid: 2
     _statuslist:
     - _grade: 0
       _hp: 100
@@ -89,7 +97,8 @@ MonoBehaviour:
       _armor: 0
       _critical: 0.5
       _critical_damage: 0.5
-  - _mid: 3
+  - customName: 
+    _mid: 3
     _statuslist:
     - _grade: 0
       _hp: 100
@@ -127,11 +136,68 @@ MonoBehaviour:
       _armor: 0
       _critical: 0.5
       _critical_damage: 0.5
-  - _mid: 10000
+  _statuslist_object:
+  - customName: "\uBCF4\uD638\uC624\uBE0C\uC81D\uD2B8"
+    _mid: 10000
     _statuslist:
     - _grade: 1
-      _hp: 10000
+      _hp: 1000
       _damge: 0
+      _armor: 0
+      _critical: 0
+      _critical_damage: 0
+  _statuslist_monster:
+  - customName: Bat
+    _mid: 100000
+    _statuslist:
+    - _grade: 0
+      _hp: 50
+      _damge: 10
+      _armor: 0
+      _critical: 0
+      _critical_damage: 0
+  - customName: Crab
+    _mid: 100002
+    _statuslist:
+    - _grade: 0
+      _hp: 250
+      _damge: 1
+      _armor: 0
+      _critical: 0
+      _critical_damage: 0
+  - customName: Golem
+    _mid: 100001
+    _statuslist:
+    - _grade: 0
+      _hp: 500
+      _damge: 1
+      _armor: 0
+      _critical: 0
+      _critical_damage: 0
+  - customName: Rat
+    _mid: 100004
+    _statuslist:
+    - _grade: 0
+      _hp: 30
+      _damge: 10
+      _armor: 0
+      _critical: 0
+      _critical_damage: 0
+  - customName: Reinforced Golem
+    _mid: 100003
+    _statuslist:
+    - _grade: 0
+      _hp: 700
+      _damge: 1
+      _armor: 0
+      _critical: 0
+      _critical_damage: 0
+  - customName: Spiked Slime
+    _mid: 100005
+    _statuslist:
+    - _grade: 0
+      _hp: 500
+      _damge: 20
       _armor: 0
       _critical: 0
       _critical_damage: 0

@@ -438,7 +438,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Bat_Controller
+  m_Name: 01_NPC_Controller
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: MOVE

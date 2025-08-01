@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24aab73d63be043819766f7b6b42da92, type: 3}
-  m_Name: SO_Monster_Bat
+  m_Name: SO_Monster_Spiked Slime
   m_EditorClassIdentifier: 
-  _mid: 1
-  _statusid: 100000
-  _name: BAT
-  _icon: {fileID: 2129977301182375049, guid: b438465a32eb63243a7889eb1f400d29, type: 3}
+  _mid: 6
+  _statusid: 100005
+  _name: Spliked Slime
+  _icon: {fileID: 2633298041438041989, guid: bbbae09279b66cb48b7d05525773c545, type: 3}
   _basic_attack_skill: {fileID: 11400000, guid: c31bcfa678ffb430a9a89fec888b82c8, type: 2}
   _skill_chose_list: []
-  _mybodyobject: {fileID: 573648577078691005, guid: f6ed06328a87a9d4694e9c54bb7b7baa, type: 3}
+  _mybodyobject: {fileID: 664021799837225038, guid: ef8fe482c07c8c74f954f5e5d5b8b9f4, type: 3}

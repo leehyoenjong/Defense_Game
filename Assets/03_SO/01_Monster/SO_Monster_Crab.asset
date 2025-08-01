@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24aab73d63be043819766f7b6b42da92, type: 3}
-  m_Name: SO_Monster_Bat
+  m_Name: SO_Monster_Crab
   m_EditorClassIdentifier: 
-  _mid: 1
-  _statusid: 100000
-  _name: BAT
-  _icon: {fileID: 2129977301182375049, guid: b438465a32eb63243a7889eb1f400d29, type: 3}
+  _mid: 2
+  _statusid: 100001
+  _name: Crab
+  _icon: {fileID: 6197056623017412966, guid: 25e3c3e2a286eee48bba19e8d339e062, type: 3}
   _basic_attack_skill: {fileID: 11400000, guid: c31bcfa678ffb430a9a89fec888b82c8, type: 2}
   _skill_chose_list: []
-  _mybodyobject: {fileID: 573648577078691005, guid: f6ed06328a87a9d4694e9c54bb7b7baa, type: 3}
+  _mybodyobject: {fileID: 7849997619125906706, guid: 0daa3a9d28b35914785ae14413e4c7dc, type: 3}

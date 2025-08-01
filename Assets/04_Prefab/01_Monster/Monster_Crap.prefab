@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &1819922481003669901
+--- !u!1001 &8234656768269926434
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2213426367315815728, guid: 34de4d1903fa1489a85f10a713a6e3b8, type: 3}
       propertyPath: m_Name
-      value: Monster_Bat
+      value: Monster_Crap
       objectReference: {fileID: 0}
     - target: {fileID: 3198324320792991994, guid: 34de4d1903fa1489a85f10a713a6e3b8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -55,7 +55,15 @@ PrefabInstance:
     - target: {fileID: 3836062053290965738, guid: 34de4d1903fa1489a85f10a713a6e3b8, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: cc21d3591cdfcef45b3c6708370de8b2, type: 2}
+      objectReference: {fileID: 22100000, guid: 9633faae176b9ab439738de5f29b6036, type: 2}
+    - target: {fileID: 6258837614005081487, guid: 34de4d1903fa1489a85f10a713a6e3b8, type: 3}
+      propertyPath: _speed
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6714977860147181140, guid: 34de4d1903fa1489a85f10a713a6e3b8, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -159299079651030013, guid: 7fa445e39c7ef624587e3b7fb23ff552, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
