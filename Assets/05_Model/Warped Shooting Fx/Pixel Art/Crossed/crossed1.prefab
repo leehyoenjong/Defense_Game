@@ -109,7 +109,6 @@ MonoBehaviour:
   _destroyOnHit: 1
   _lifeTime: 0
   _boom_effect: {fileID: 7899531587086920519, guid: 6971f33e6719c4005a24162107955f52, type: 3}
-  _showDebugGizmos: 1
 --- !u!114 &83479945311519512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,17 +124,7 @@ MonoBehaviour:
   _movementType: 2
   _speed: 10
   _lifeTime: 5
-  _destorytime: 1
-  _homingStrength: 2
-  _detectionRadius: 10
-  _targetLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  _arcHeight: 5
-  _targetPosition: {x: 0, y: 0, z: 0}
-  _rotationSpeed: 90
-  _rotationRadius: 3
-  _rotationCenter: {fileID: 0}
+  _destorytime: 0
 --- !u!61 &7624220657920912664
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -13,7 +12,7 @@ public class SkillMovementController : MonoBehaviour
     [SerializeField] private float _lifeTime = 5f;
 
     [Header("도달 후 삭제 시간")]
-    [SerializeField] private float _destorytime = 1f;
+    [SerializeField] private float _destorytime = 0.5f;
 
     // 프라이빗 변수들
     private Vector3 _direction;
@@ -22,15 +21,9 @@ public class SkillMovementController : MonoBehaviour
     private bool _isTargetLost = false;  // 타겟을 잃었는지 여부
     private bool _isarraive;
 
-    private Vector3 _startPosition;
-    private float _elapsedTime = 0f;
-
-
-
 
     private void Start()
     {
-        _startPosition = transform.position;
         InitializeMovement();
 
         // 생존 시간 후 제거
@@ -46,8 +39,6 @@ public class SkillMovementController : MonoBehaviour
         {
             return;
         }
-
-        _elapsedTime += Time.deltaTime;
 
         switch (_movementType)
         {

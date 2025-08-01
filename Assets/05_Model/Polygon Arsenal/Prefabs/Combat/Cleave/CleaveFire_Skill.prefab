@@ -50,7 +50,7 @@ MonoBehaviour:
   _movementType: 5
   _speed: 10
   _lifeTime: 5
-  _destorytime: 1
+  _destorytime: 0.5
 --- !u!114 &7830265096873899292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,6 +68,7 @@ MonoBehaviour:
     m_Bits: 64
   _destroyOnHit: 0
   _lifeTime: 0
+  _boom_effect: {fileID: 0}
 --- !u!61 &8065803044801957053
 BoxCollider2D:
   m_ObjectHideFlags: 0
