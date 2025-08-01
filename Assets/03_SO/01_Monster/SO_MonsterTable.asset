@@ -14,14 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monsterlist:
   - _npc: {fileID: 11400000, guid: 91e024946edb64f488c4fb8037796e94, type: 2}
-    _diegold: 10
+    _drop_itemid: 1
+    _drop_itemvalue: 5
   - _npc: {fileID: 11400000, guid: 61f9215ebe301724e83be49c853dda7b, type: 2}
-    _diegold: 15
+    _drop_itemid: 1
+    _drop_itemvalue: 10
   - _npc: {fileID: 11400000, guid: 1d4c4fbcc429f264eb572c601959e123, type: 2}
-    _diegold: 20
+    _drop_itemid: 1
+    _drop_itemvalue: 20
   - _npc: {fileID: 11400000, guid: f82820e13c0164a4e9d63818ce4621c5, type: 2}
-    _diegold: 5
+    _drop_itemid: 1
+    _drop_itemvalue: 5
   - _npc: {fileID: 11400000, guid: 941cc70c26fece845889c2b8edfdaf42, type: 2}
-    _diegold: 30
+    _drop_itemid: 1
+    _drop_itemvalue: 25
   - _npc: {fileID: 11400000, guid: ddc106d001eb9c2408dd18d10b2a5758, type: 2}
-    _diegold: 15
+    _drop_itemid: 1
+    _drop_itemvalue: 15

@@ -4,9 +4,10 @@ using UnityEngine;
 public class Monster_Base : BaseNPC
 {
     [SerializeField] MoveController _moveController;
-    public static event Action<St_MonsterTable> _monsterdie;
+    public static event Action<Monster_Base> _monsterdie;
     public static Action<Monster_Base> _monster_die_animation_exit;
     St_MonsterTable _monsterinfo;
+    public St_MonsterTable GetMonsterInfo() => _monsterinfo;
 
     public override void IDSetting(int id)
     {
@@ -29,7 +30,7 @@ public class Monster_Base : BaseNPC
     {
         base.NPC_Die();
         _moveController.ReSetting();
-        _monsterdie?.Invoke(_monsterinfo);
+        _monsterdie?.Invoke(this);
     }
 
     public override void OnRelease()

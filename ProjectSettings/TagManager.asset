@@ -44,6 +44,9 @@ TagManager:
   - name: BackGround
     uniqueID: 433898297
     locked: 0
+  - name: DropItem
+    uniqueID: 142165483
+    locked: 0
   - name: PortectObject
     uniqueID: 2318674161
     locked: 0

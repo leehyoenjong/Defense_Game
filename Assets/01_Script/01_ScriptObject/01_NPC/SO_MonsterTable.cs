@@ -19,6 +19,7 @@ public struct St_MonsterTable
 {
     public SO_NPC _npc;
 
-    [Header("사망시 골드")]
-    public int _diegold;
+    [Header("사망시 드랍하는 아이템")]
+    public int _drop_itemid;
+    public int _drop_itemvalue;
 }

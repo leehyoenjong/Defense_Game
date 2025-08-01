@@ -157,7 +157,7 @@ MonoBehaviour:
       _critical: 0
       _critical_damage: 0
   - customName: Crab
-    _mid: 100002
+    _mid: 100001
     _statuslist:
     - _grade: 0
       _hp: 250
@@ -166,7 +166,7 @@ MonoBehaviour:
       _critical: 0
       _critical_damage: 0
   - customName: Golem
-    _mid: 100001
+    _mid: 100002
     _statuslist:
     - _grade: 0
       _hp: 500
@@ -175,7 +175,7 @@ MonoBehaviour:
       _critical: 0
       _critical_damage: 0
   - customName: Rat
-    _mid: 100004
+    _mid: 100003
     _statuslist:
     - _grade: 0
       _hp: 30
@@ -184,7 +184,7 @@ MonoBehaviour:
       _critical: 0
       _critical_damage: 0
   - customName: Reinforced Golem
-    _mid: 100003
+    _mid: 100004
     _statuslist:
     - _grade: 0
       _hp: 700

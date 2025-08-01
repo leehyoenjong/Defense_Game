@@ -15,7 +15,7 @@ public class SO_Status_Table : ScriptableObject
     [Header("몬스터 스테이터스")]
     public List<St_StatusTable> _statuslist_monster;
 
-    List<St_StatusTable> _statuslist_total;
+    List<St_StatusTable> _statuslist_total = new List<St_StatusTable>();
 
     public List<St_Status> GetStatusData(int statusid)
     {
