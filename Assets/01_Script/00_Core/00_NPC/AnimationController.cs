@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class AnimationController : MonoBehaviour
@@ -59,6 +60,8 @@ public class AnimationController : MonoBehaviour
     {
         _eanimation = eanimation;
     }
+
+
 }
 
 public enum EANIMATION
