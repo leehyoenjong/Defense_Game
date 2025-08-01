@@ -62,22 +62,4 @@ public class SkillEffectController : MonoBehaviour
 
         _action(_caster, targetNPC);
     }
-
-    /// <summary>
-    /// 디버그용 기즈모
-    /// </summary>
-    private void OnDrawGizmos()
-    {
-        if (!_showDebugGizmos)
-            return;
-
-        Gizmos.color = Color.yellow;
-
-        // 2D 컬라이더가 있다면 그 영역을 표시
-        var collider2D = GetComponent<Collider2D>();
-        if (collider2D != null)
-        {
-            Gizmos.DrawWireCube(transform.position, collider2D.bounds.size);
-        }
-    }
 }
