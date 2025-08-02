@@ -1506,6 +1506,7 @@ GameObject:
   - component: {fileID: 459241619}
   - component: {fileID: 459241620}
   - component: {fileID: 459241622}
+  - component: {fileID: 459241623}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -1586,6 +1587,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _skillchoseobject: {fileID: 8643077312021546059}
+--- !u!114 &459241623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459241616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ecc96d0229be44f190c99ef14290216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &467098043
 GameObject:
   m_ObjectHideFlags: 0

@@ -40,7 +40,6 @@ public abstract class BaseNPC : MonoBehaviour
 
     }
 
-
     public virtual void IDSetting(int id)
     {
         _myid = id;
@@ -49,6 +48,7 @@ public abstract class BaseNPC : MonoBehaviour
     public virtual void OnSpawn()
     {
         Setting_Status();
+        _isdie = false;
 
         //애니메이션 관련
         if (_animationController)
@@ -73,6 +73,10 @@ public abstract class BaseNPC : MonoBehaviour
 
         //생성 버프 발동 후 hp셋팅하기
         _current_hp = _status._hp;
+        if (_hpbarController)
+        {
+            _hpbarController.Hpbar_Update(_status._hp, _current_hp);
+        }
 
         this.gameObject.SetActive(true);
     }

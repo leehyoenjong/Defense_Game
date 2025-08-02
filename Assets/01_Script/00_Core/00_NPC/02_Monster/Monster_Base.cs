@@ -9,6 +9,21 @@ public class Monster_Base : BaseNPC
     St_MonsterTable _monsterinfo;
     public St_MonsterTable GetMonsterInfo() => _monsterinfo;
 
+    protected override void Start()
+    {
+        _moveController._move_event += () => PlayAnimation(EANIMATION.MOVE, true);
+        _moveController._move_end_check += () => PlayAnimation(EANIMATION.MOVE, false);
+        _moveController._move_check += () => _animationController.CheckRunAnimation();
+        base.Start();
+    }
+
+    void OnDestroy()
+    {
+        _moveController._move_event -= () => PlayAnimation(EANIMATION.MOVE, true);
+        _moveController._move_end_check -= () => PlayAnimation(EANIMATION.MOVE, false);
+        _moveController._move_check -= () => _animationController.CheckRunAnimation();
+    }
+
     public override void IDSetting(int id)
     {
         base.IDSetting(id);
@@ -20,9 +35,6 @@ public class Monster_Base : BaseNPC
         _moveController.ReSetting();
         _moveController.MoveToTarget(target);
         _status = _so_npc.GetStatus();
-        _moveController._move_event += () => PlayAnimation(EANIMATION.MOVE, true);
-        _moveController._move_end_check += () => PlayAnimation(EANIMATION.MOVE, false);
-        _moveController._move_check += () => _animationController.CheckRunAnimation();
         base.OnSpawn();
     }
 

@@ -6,13 +6,9 @@ public class MonsterSpawnManager : MonoBehaviour
 {
     List<BaseNPC> _active_monsterlist = new List<BaseNPC>();
 
-    [SerializeField]
-    Transform[]
-     _createpoint;
+    [SerializeField] Transform[] _createpoint;
 
-    [SerializeField]
-    Transform[]
-     _protectpoint;
+    [SerializeField] Transform[] _protectpoint;
 
     //죽은 몬스터 수와 상관없이 60초마다 몬스터 생성
 
@@ -64,18 +60,18 @@ public class MonsterSpawnManager : MonoBehaviour
                         //딜레이 후 몬스터 생성
                         await UniTask.WaitForSeconds(stagedata._monsterlist[i]._delaytime, cancellationToken: this.GetCancellationTokenOnDestroy());
                     }
-                    var mon = Instantiate<GameObject>(stagedata._monsterlist[i].GetMonsterInfo()._npc._mybodyobject);
+                    var monid = stagedata._monsterlist[i].GetMonsterInfo()._npc._mid;
+                    var mon = PoolSystem_Monster.instance.GetMonsterObject(monid);
                     mon.transform.position = MonsterCreatePoint();
                     if (Application.isEditor)
                     {
                         mon.gameObject.name = $"몬스터_{counts}";
                         counts++;
                     }
-                    var monsterbase = mon.GetComponent<Monster_Base>();
-                    _active_monsterlist.Add(monsterbase);
+                    _active_monsterlist.Add(mon);
 
-                    monsterbase.IDSetting(stagedata._monsterlist[i]._monsterid);
-                    monsterbase.OnSpawn(MonsterMovePoint());
+                    mon.IDSetting(stagedata._monsterlist[i]._monsterid);
+                    mon.OnSpawn(MonsterMovePoint());
                 }
             }
 
