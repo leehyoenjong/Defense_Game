@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
@@ -37,5 +39,10 @@ public class DataManager : MonoBehaviour
     void Awake()
     {
         instance = this;
+    }
+
+    async UniTask LoadTable()
+    {
+        _questtable = await AddressableSystem.LoadAsync<SO_QuestTable>("");
     }
 }

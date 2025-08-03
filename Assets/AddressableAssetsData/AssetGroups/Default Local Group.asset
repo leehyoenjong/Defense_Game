@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_GUID: ae57355c46cc149768a2abc39854943a
+  m_SerializeEntries:
+  - m_GUID: 111ee6e046ad349949cee62623c2dccc
+    m_Address: SO_Hero_Wizard
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d4c4fbcc429f264eb572c601959e123
+    m_Address: SO_Monster_Golem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3bae3343f41714c20aae7f38d4fdb6e3
+    m_Address: SO_Hero_Paladin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 563499bbabff342cab98553d73fd0d6f
+    m_Address: SO_MonsterTable
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 61f9215ebe301724e83be49c853dda7b
+    m_Address: SO_Monster_Crab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 87a5004d563014781beef6e5361f3ba1
+    m_Address: SO_Hero_Archer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91e024946edb64f488c4fb8037796e94
+    m_Address: SO_Monster_Bat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 941cc70c26fece845889c2b8edfdaf42
+    m_Address: SO_Monster_Reinforced Golem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94de3412ac9314490a95256faa5c60c5
+    m_Address: SO_Hero_Table
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98de594c174bd4ce78baf0703ea12b4a
+    m_Address: SO_Hero_DeathKnight
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ae89b2ca395c4a088356a09340a02f1
+    m_Address: SO_Hero_Knight
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ddc106d001eb9c2408dd18d10b2a5758
+    m_Address: SO_Monster_Spiked Slime
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef373e3d5617449029d8272c7adb9806
+    m_Address: SO_Hero_Mage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f82820e13c0164a4e9d63818ce4621c5
+    m_Address: SO_Monster_Rat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 07038bc8021d64634b8c778e586eab47, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 458287c91b207495691a8bd3022086a4, type: 2}
+    - {fileID: 11400000, guid: 8c00fc177a6d74ec9997ed2e704b2b36, type: 2}
