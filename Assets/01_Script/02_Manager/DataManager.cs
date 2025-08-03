@@ -41,8 +41,16 @@ public class DataManager : MonoBehaviour
         instance = this;
     }
 
-    async UniTask LoadTable()
+    public async UniTask LoadTable()
     {
-        _questtable = await AddressableSystem.LoadAsync<SO_QuestTable>("");
+        _questtable = await AddressableSystem.LoadAsync<SO_QuestTable>("SO_QuestTable");
+        _chapterdata = await AddressableSystem.LoadAsync<SO_ChapterData>("SO_ChapterData");
+        _playerprefablist = await AddressableSystem.LoadAsync<SO_HeroTable>("SO_HeroTable");
+        _mosntertable = await AddressableSystem.LoadAsync<SO_MonsterTable>("SO_MonsterTable");
+        _statustable = await AddressableSystem.LoadAsync<SO_Status_Table>("SO_Status_Table");
+        _upgradtable = await AddressableSystem.LoadAsync<SO_Upgrade_Table>("SO_Upgrade_Table");
+        _shoptable = await AddressableSystem.LoadAsync<SO_Shop_Table>("SO_Shop_Table");
+        _gachatable = await AddressableSystem.LoadAsync<SO_Gacha_Table>("SO_Gacha_Table");
+        _itemtable = await AddressableSystem.LoadAsync<SO_Item_Table>("SO_Item_Table");
     }
 }
