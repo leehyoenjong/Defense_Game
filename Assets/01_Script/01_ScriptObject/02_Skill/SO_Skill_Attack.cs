@@ -103,7 +103,8 @@ public class SO_Skill_Attack : BaseSkill
         var maxcount = _target_attackeffect.Length;
         for (int i = 0; i < maxcount; i++)
         {
-            var targettoeffect = Instantiate<GameObject>(_target_attackeffect[i], targetposition, default);
+            var particle = PoolSystem_Particle.instance.GetParticle(_target_attackeffect[i]);
+            particle.transform.position = targetposition;
         }
     }
 }

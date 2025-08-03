@@ -129,6 +129,11 @@ public class MonsterSpawnManager : MonoBehaviour
 
     void OnDisable()
     {
+        for (int i = 0; i < _active_monsterlist.Count; i++)
+        {
+            Destroy(_active_monsterlist[i].gameObject);
+        }
+
         PlayManager._play_event -= CreateMonster().Forget;
         Monster_Base._monster_die_animation_exit -= (diemon) => RemoveMonsterList(diemon);
         BaseSkill._skill_target_dictionary_list.Remove(ETARGETKIND.MONSTER);

@@ -60,7 +60,8 @@ public abstract class BaseSkill : ScriptableObject
         var maxcount = _active_skillEffect.Count;
         for (int i = 0; i < maxcount; i++)
         {
-            var mypositioneffect = Instantiate<GameObject>(_active_skillEffect[i], myposition, default);
+            var particle = PoolSystem_Particle.instance.GetParticle(_active_skillEffect[i]);
+            particle.transform.position = myposition;
         }
     }
 
@@ -88,13 +89,14 @@ public abstract class BaseSkill : ScriptableObject
                 continue;
 
             //TODO: 생성위치는 일단 생성자에게 하고 해당 오브젝트에서 어디로 생성될지 지정하도록 할 예정
-            var skillObject = Instantiate(_enter_hit_object[i], caster.transform.position, Quaternion.identity);
+            var skillObject = PoolSystem_Particle.instance.GetParticle(_enter_hit_object[i]);
+            skillObject.transform.position = caster.transform.position;
 
             // SkillEffectController 설정
             var effectController = skillObject.GetComponent<SkillEffectController>();
             if (effectController == null)
             {
-                effectController = skillObject.AddComponent<SkillEffectController>();
+                effectController = skillObject.gameObject.AddComponent<SkillEffectController>();
             }
             effectController.Initialize(caster, action);
 

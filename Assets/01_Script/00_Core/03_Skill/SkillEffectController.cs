@@ -18,12 +18,19 @@ public class SkillEffectController : MonoBehaviour
     BaseNPC _caster; // 스킬 사용자
     private Action<BaseNPC, BaseNPC> _action; // 실행할 스킬
 
-    private void Start()
+    float _currentlifetime;
+
+    void Update()
     {
-        // 지정된 시간 후 자동 제거
-        if (_lifeTime > 0)
+        if (_lifeTime <= 0)
         {
-            Destroy(gameObject, _lifeTime);
+            return;
+        }
+        _currentlifetime -= Time.deltaTime;
+        // 지정된 시간 후 자동 제거
+        if (_currentlifetime <= 0)
+        {
+            gameObject.SetActive(false);
         }
     }
 
@@ -36,6 +43,7 @@ public class SkillEffectController : MonoBehaviour
     {
         _caster = caster;
         _action = action;
+        _currentlifetime = _lifeTime;
     }
 
     /// <summary>
@@ -51,7 +59,7 @@ public class SkillEffectController : MonoBehaviour
 
         if (_destroyOnHit)
         {
-            Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         }
 
         if (_boom_effect != null)

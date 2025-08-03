@@ -21,22 +21,19 @@ public class SkillMovementController : MonoBehaviour
     private bool _isTargetLost = false;  // 타겟을 잃었는지 여부
     private bool _isarraive;
 
+    float _currentlifetime;
 
-    private void Start()
+    void OnEnable()
     {
         InitializeMovement();
-
-        // 생존 시간 후 제거
-        if (_lifeTime > 0)
-        {
-            Destroy(gameObject, _lifeTime);
-        }
     }
 
     private void Update()
     {
         if (_isarraive)
         {
+            _currentlifetime -= Time.deltaTime;
+            gameObject.SetActive(_currentlifetime > 0);
             return;
         }
 
@@ -69,6 +66,8 @@ public class SkillMovementController : MonoBehaviour
             case EMOVEMENTTYPE.NOW:
                 break;
         }
+        _currentlifetime = _lifeTime;
+        _isarraive = false;
     }
 
     /// <summary>
@@ -115,7 +114,6 @@ public class SkillMovementController : MonoBehaviour
         var newposition = _lastTargetPosition;
         transform.position = new Vector3(newposition.x, newposition.y, transform.position.z);
         _isarraive = true;
-        Destroy(gameObject, _destorytime);
     }
 
     /// <summary>
@@ -134,7 +132,7 @@ public class SkillMovementController : MonoBehaviour
         if (Vector3.Distance(transform.position, _lastTargetPosition) < 0.01f)
         {
             _isarraive = true;
-            Destroy(gameObject, _destorytime);
+            _currentlifetime = _destorytime;
             return;
         }
     }
@@ -150,6 +148,7 @@ public class SkillMovementController : MonoBehaviour
         if (targets != null)
         {
             _lastTargetPosition = targets.transform.position;
+            _currentlifetime = _destorytime;
         }
     }
 }
