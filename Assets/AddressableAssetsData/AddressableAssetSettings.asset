@@ -17,18 +17,18 @@ MonoBehaviour:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
   m_InternalIdNamingMode: 0
   m_InternalBundleIdMode: 1
   m_AssetLoadMode: 0
   m_BundledAssetProviderType:
-    m_AssemblyName: 
-    m_ClassName: 
+    m_AssemblyName: Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_ClassName: UnityEngine.ResourceManagement.ResourceProviders.BundledAssetProvider
   m_AssetBundleProviderType:
-    m_AssemblyName: 
-    m_ClassName: 
+    m_AssemblyName: Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    m_ClassName: UnityEngine.ResourceManagement.ResourceProviders.AssetBundleProvider
   m_IgnoreUnsupportedFilesInBuild: 0
   m_UniqueBundleIds: 0
   m_EnableJsonCatalog: 0
@@ -50,10 +50,10 @@ MonoBehaviour:
   m_CheckForContentUpdateRestrictionsOption: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
-    m_Id: 
+    m_Id: 79eb9c687ffb749b8833f09b55a05cdf
   m_RemoteCatalogLoadPath:
-    m_Id: 
-  m_ContentStateBuildPathProfileVariableName: 
+    m_Id: 4d833cb3c45a44995be9251274dd9f22
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
@@ -73,6 +73,20 @@ MonoBehaviour:
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: 4d833cb3c45a44995be9251274dd9f22
         m_Value: <undefined>
+      - m_Id: 79eb9c687ffb749b8833f09b55a05cdf
+        m_Value: 'ServerData/[BuildTarget]'
+      - m_Id: 7e85d93fb8b584899b1c02ef0e66cd75
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: f3f1a612ecbc544459a03682e13fd713
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+    - m_InheritedParent: 
+      m_Id: c029f2b8da575b14db8e3938251f58a4
+      m_ProfileName: use
+      m_Values:
+      - m_Id: 23a8a8825e57f448694663c9f7c2bec1
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 4d833cb3c45a44995be9251274dd9f22
+        m_Value: 'https://defencegame-fatch-lwpcp.run.goorm.site/DefenceGame_Fatch/CDN/[BuildTarget]'
       - m_Id: 79eb9c687ffb749b8833f09b55a05cdf
         m_Value: 'ServerData/[BuildTarget]'
       - m_Id: 7e85d93fb8b584899b1c02ef0e66cd75
@@ -99,6 +113,7 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - DATA
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: a0d05fa19e3b341feab1bd778e3fc3ee, type: 2}
@@ -111,4 +126,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8e72d13d347464a89b15b018062286a7, type: 2}
   - {fileID: 11400000, guid: 023b221b703b34848bcdb52c95fb7b03, type: 2}
   - {fileID: 11400000, guid: e076fab35d81548af8fcdea5f82a266d, type: 2}
-  m_ActiveProfileId: 644ba166b966c4ad19863cfaf33ca860
+  m_ActiveProfileId: c029f2b8da575b14db8e3938251f58a4

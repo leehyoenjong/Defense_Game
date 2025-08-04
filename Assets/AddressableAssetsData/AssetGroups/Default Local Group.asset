@@ -18,52 +18,62 @@ MonoBehaviour:
   - m_GUID: 0643887603d694029a3a61f729912d8f
     m_Address: SO_Upgrade_Table
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - DATA
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 095452f2a434648a6934f428eb3849ef
     m_Address: SO_Shop_Table
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - DATA
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0a053cce9ee3d4a139d027e1099ce6d9
     m_Address: SO_Status_Table
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - DATA
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4c2bfbfa2887c4dc690745a9d5ba9549
     m_Address: SO_ChapterData
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - DATA
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 563499bbabff342cab98553d73fd0d6f
     m_Address: SO_MonsterTable
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - DATA
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 66622c9e8d54647beb55c96aa6cb1ca0
     m_Address: SO_ProtectObject
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - DATA
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 94de3412ac9314490a95256faa5c60c5
     m_Address: SO_HeroTable
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - DATA
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b61691a52b48949909932f27894a15d0
     m_Address: SO_Item_Table
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - DATA
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: baaccd2d7821742c59be6a4ae0428550
     m_Address: SO_QuestTable
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - DATA
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e266e211cf66641aab89b3edcf3adb98
     m_Address: SO_Gacha_Table
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - DATA
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 07038bc8021d64634b8c778e586eab47, type: 2}

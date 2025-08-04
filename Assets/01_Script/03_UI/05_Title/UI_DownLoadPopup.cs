@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class UI_DownLoadPopup : MonoBehaviour
 {
+    [SerializeField] GameObject _downloadpanel;
     [SerializeField] TextMeshProUGUI _downloadsize;
     [SerializeField] TextMeshProUGUI _downloadper;
     [SerializeField] Image _per;
@@ -15,6 +16,7 @@ public class UI_DownLoadPopup : MonoBehaviour
     public async UniTask<bool> Setting(long downloadsize)
     {
         _downloadsize.text = FormatFileSize(downloadsize);
+        _downloadpanel.SetActive(false);
         await UniTask.WaitUntil(() => _isdownloadcompleted == true);
         return true;
     }
@@ -23,12 +25,18 @@ public class UI_DownLoadPopup : MonoBehaviour
     {
         // 진행률 초기화
         UpdateProgress(0f);
-
+        _downloadsize.gameObject.SetActive(false);
+        _downloadpanel.SetActive(true);
         var result = await AddressableSystem.DownLoadData("DATA", UpdateProgress);
         _isdownloadcompleted = result;
     }
 
-    private void UpdateProgress(float progress)
+    public void Btn_Exit()
+    {
+        Application.Quit();
+    }
+
+    void UpdateProgress(float progress)
     {
         // 퍼센트 텍스트 업데이트 (0% ~ 100%)
         int percentage = Mathf.RoundToInt(progress * 100f);
@@ -38,7 +46,7 @@ public class UI_DownLoadPopup : MonoBehaviour
         _per.fillAmount = progress;
     }
 
-    private string FormatFileSize(long bytes)
+    string FormatFileSize(long bytes)
     {
         if (bytes < 1000)
         {
