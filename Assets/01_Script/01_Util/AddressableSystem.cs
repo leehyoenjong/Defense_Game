@@ -28,22 +28,22 @@ public class AddressableSystem
         }
     }
 
-    public static async UniTask<bool> CheckDownLoadSize(string key, Func<long> downloadsizecheck)
+    public static async UniTask<(bool, long)> CheckDownLoadSize(string key)
     {
         try
         {
             AsyncOperationHandle<long> getdownloadsize = Addressables.GetDownloadSizeAsync(key);
             await getdownloadsize;
-            downloadsizecheck = () => getdownloadsize.Result;
-
+            var size = getdownloadsize.Result;
             //메모리 해제
             Addressables.Release(getdownloadsize);
-            return true;
+            Debug.Log($"다운로드 사이즈 : {size}");
+            return (true, size);
         }
         catch (System.Exception e)
         {
             Debug.LogError($"다운로드 체크에 실패 했습니다. : {e}");
-            return false;
+            return (false, 0);
         }
     }
 
@@ -62,7 +62,7 @@ public class AddressableSystem
 
             // 다운로드 완료 시 100% 전달
             onProgress?.Invoke(1.0f);
-            
+
             await handle;
             await UniTask.WaitForSeconds(0.1f);
 

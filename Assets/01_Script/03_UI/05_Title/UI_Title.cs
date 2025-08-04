@@ -10,21 +10,19 @@ public class UI_Title : MonoBehaviour
 
     async void Start()
     {
-        Func<long> checkdownloadsize = default;
-        var result = await AddressableSystem.CheckDownLoadSize("DATA", checkdownloadsize);
+        var result = await AddressableSystem.CheckDownLoadSize("DATA");
 
         //게임 문제 발생
-        if (result == false)
+        if (result.Item1 == false)
         {
             //TODO:팝업창 띄울 것
             return;
         }
         _loading.UpdateGage(0.3f);
 
-        var downloadsize = checkdownloadsize?.Invoke();
-        if (downloadsize > 0)
+        if (result.Item2 > 0)
         {
-            await CreateDownLoadPopUp((long)downloadsize);
+            await CreateDownLoadPopUp(result.Item2);
         }
 
         await DataManager.instance.LoadTable();
