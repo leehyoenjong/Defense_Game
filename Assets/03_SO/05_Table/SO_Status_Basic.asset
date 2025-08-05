@@ -178,9 +178,9 @@ MonoBehaviour:
     _mid: 100003
     _statuslist:
     - _grade: 0
-      _hp: 30
-      _damge: 10
-      _armor: 0
+      _hp: 50
+      _damge: 100
+      _armor: 1
       _critical: 0
       _critical_damage: 0
   - customName: Reinforced Golem

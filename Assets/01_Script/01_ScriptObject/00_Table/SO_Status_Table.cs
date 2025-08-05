@@ -28,6 +28,30 @@ public class SO_Status_Table : ScriptableObject
 
         return _statuslist_total.Find(x => x._mid == statusid)._statuslist;
     }
+
+    public void UpdateStatusList(int statusId, List<St_Status> newStatusList)
+    {
+        // 각 리스트에서 statusId를 찾아 업데이트
+        if (UpdateList(ref _statuslist, statusId, newStatusList)) return;
+        if (UpdateList(ref _statuslist_object, statusId, newStatusList)) return;
+        if (UpdateList(ref _statuslist_monster, statusId, newStatusList)) return;
+    }
+
+    private bool UpdateList(ref List<St_StatusTable> list, int statusId, List<St_Status> newStatusList)
+    {
+        int index = list.FindIndex(x => x._mid == statusId);
+        if (index != -1)
+        {
+            St_StatusTable temp = list[index];
+            temp._statuslist = newStatusList;
+            list[index] = temp; // 구조체는 다시 할당해야 함
+            
+            // 결합된 리스트를 초기화하여 다음 Get 시 다시 빌드하도록 함
+            _statuslist_total.Clear();
+            return true;
+        }
+        return false;
+    }
 }
 
 

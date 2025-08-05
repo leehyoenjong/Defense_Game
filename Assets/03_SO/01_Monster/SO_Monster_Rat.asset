@@ -17,5 +17,6 @@ MonoBehaviour:
   _name: Rat
   _icon: {fileID: -3286189400204805870, guid: bacb39275657a5c41b462455d80cd045, type: 3}
   _basic_attack_skill: {fileID: 11400000, guid: c31bcfa678ffb430a9a89fec888b82c8, type: 2}
-  _skill_chose_list: []
+  _skill_chose_list:
+  - {fileID: 11400000, guid: e84c077bbf65140c28a16d583df0f799, type: 2}
   _mybodyobject: {fileID: 3476394730205902687, guid: 90908ede149e2f243b907fa1ba868426, type: 3}
