@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mid: 1
   _statusid: 1
-  _name: ARCHER
+  _name: ARCHERKING
   _icon: {fileID: -1552953514, guid: 1e3ab2b7c7630764da1f846d1fb634b4, type: 3}
   _basic_attack_skill: {fileID: 11400000, guid: 643284535e7c3435ebe0e175fa18c0b7, type: 2}
   _skill_chose_list:

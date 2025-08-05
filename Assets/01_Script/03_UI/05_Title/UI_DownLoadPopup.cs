@@ -18,6 +18,7 @@ public class UI_DownLoadPopup : MonoBehaviour
         _downloadsize.text = FormatFileSize(downloadsize);
         _downloadpanel.SetActive(false);
         await UniTask.WaitUntil(() => _isdownloadcompleted == true);
+        Destroy(this.gameObject, 0.1f);
         return true;
     }
 

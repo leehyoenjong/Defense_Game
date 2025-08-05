@@ -86,7 +86,21 @@ MonoBehaviour:
       - m_Id: 23a8a8825e57f448694663c9f7c2bec1
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
       - m_Id: 4d833cb3c45a44995be9251274dd9f22
-        m_Value: 'https://defencegame-fatch-lwpcp.run.goorm.site/DefenceGame_Fatch/CDN/[BuildTarget]'
+        m_Value: 'https://fatch.run.goorm.app/[BuildTarget]'
+      - m_Id: 79eb9c687ffb749b8833f09b55a05cdf
+        m_Value: 'ServerData/[BuildTarget]'
+      - m_Id: 7e85d93fb8b584899b1c02ef0e66cd75
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: f3f1a612ecbc544459a03682e13fd713
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+    - m_InheritedParent: 
+      m_Id: d4929950b610d4d438b55b7e98ca364d
+      m_ProfileName: Android
+      m_Values:
+      - m_Id: 23a8a8825e57f448694663c9f7c2bec1
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 4d833cb3c45a44995be9251274dd9f22
+        m_Value: 'https://fatch.run.goorm.app/[BuildTarget]'
       - m_Id: 79eb9c687ffb749b8833f09b55a05cdf
         m_Value: 'ServerData/[BuildTarget]'
       - m_Id: 7e85d93fb8b584899b1c02ef0e66cd75
@@ -126,4 +140,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8e72d13d347464a89b15b018062286a7, type: 2}
   - {fileID: 11400000, guid: 023b221b703b34848bcdb52c95fb7b03, type: 2}
   - {fileID: 11400000, guid: e076fab35d81548af8fcdea5f82a266d, type: 2}
-  m_ActiveProfileId: c029f2b8da575b14db8e3938251f58a4
+  m_ActiveProfileId: d4929950b610d4d438b55b7e98ca364d
