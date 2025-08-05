@@ -80,22 +80,8 @@ MonoBehaviour:
       - m_Id: f3f1a612ecbc544459a03682e13fd713
         m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
     - m_InheritedParent: 
-      m_Id: c029f2b8da575b14db8e3938251f58a4
-      m_ProfileName: use
-      m_Values:
-      - m_Id: 23a8a8825e57f448694663c9f7c2bec1
-        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
-      - m_Id: 4d833cb3c45a44995be9251274dd9f22
-        m_Value: 'https://fatch.run.goorm.app/[BuildTarget]'
-      - m_Id: 79eb9c687ffb749b8833f09b55a05cdf
-        m_Value: 'ServerData/[BuildTarget]'
-      - m_Id: 7e85d93fb8b584899b1c02ef0e66cd75
-        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
-      - m_Id: f3f1a612ecbc544459a03682e13fd713
-        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
-    - m_InheritedParent: 
       m_Id: d4929950b610d4d438b55b7e98ca364d
-      m_ProfileName: Android
+      m_ProfileName: useprofile
       m_Values:
       - m_Id: 23a8a8825e57f448694663c9f7c2bec1
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
