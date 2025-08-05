@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class PlayManager : MonoBehaviour
 {
-    public static event Action _play_event;
-    public static event Action _play_ready_event;
-    public static Action _play_stage_next; //TODO: 스테이지 클리어 처리 필요 
-    public static Action<int, int> _play_stage_and_chapter_next; //TODO: 스테이지 클리어 처리 필요 
-    public static Action<int, int> _play_stage_and_chapter_start; //TODO: 스테이지 클리어 처리 필요 
-    public static Action _play_chapter_next; //TODO: 모든 챕터 생성 완료 
-    public static Action _play_gameover; //TODO: 스테이지 실패 처리 
+    /// <summary>
+    /// 통합된 게임 상태 변경 이벤트
+    /// </summary>
+    public static event Action<GameStateData> _ongamestatechanged;
+
     public static PlayManager instance;
 
     [SerializeField] GameObject _gameover;
@@ -31,16 +29,12 @@ public class PlayManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _play_stage_next += StageClear;
-        _play_chapter_next += ChapterUpdate;
-        _play_gameover += CreateGameOver;
+        _ongamestatechanged += HandleGameStateChange;
     }
 
     void OnDisable()
     {
-        _play_stage_next -= StageClear;
-        _play_chapter_next -= ChapterUpdate;
-        _play_gameover -= CreateGameOver;
+        _ongamestatechanged -= HandleGameStateChange;
     }
 
     void Start()
@@ -50,26 +44,52 @@ public class PlayManager : MonoBehaviour
         PlayGame().Forget();
     }
 
+    /// <summary>
+    /// 통합된 게임 상태 변경 핸들러
+    /// </summary>
+    void HandleGameStateChange(GameStateData stateData)
+    {
+        switch (stateData._state)
+        {
+            case EPLAYSTATE.STAGE_NEXT:
+                StageClear();
+                break;
+            case EPLAYSTATE.CHAPTER_NEXT:
+                ChapterUpdate();
+                break;
+            case EPLAYSTATE.GAMEOVER:
+                CreateGameOver();
+                break;
+        }
+    }
+
     async UniTaskVoid PlayGame()
     {
         await UniTask.WaitForEndOfFrame(cancellationToken: this.GetCancellationTokenOnDestroy());
-        _play_ready_event?.Invoke();
-        _play_stage_and_chapter_start?.Invoke(_current_stage_id, MAXSTAGECOUNT);
+
+        // 게임 준비 상태
+        _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.READY));
+
+        // 스테이지/챕터 시작
+        _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.STAGE_START, _current_stage_id, MAXSTAGECOUNT, _current_chapter_id));
+
         await UniTask.WaitForSeconds(1f, cancellationToken: this.GetCancellationTokenOnDestroy());
-        _play_event?.Invoke();
+
+        // 게임 플레이 시작
+        _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.PLAY));
     }
 
     void StageClear()
     {
         _current_stage_id++;
-        _play_stage_and_chapter_next?.Invoke(_current_stage_id, MAXSTAGECOUNT);
+        _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.STAGE_NEXT, _current_stage_id, MAXSTAGECOUNT, _current_chapter_id));
     }
 
     void ChapterUpdate()
     {
         _current_chapter_id++;
         _current_stage_id = 0;
-        _play_stage_and_chapter_next?.Invoke(_current_stage_id, MAXSTAGECOUNT);
+        _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.CHAPTER_START, _current_stage_id, MAXSTAGECOUNT, _current_chapter_id));
     }
 
     void CreateGameOver()
@@ -81,4 +101,11 @@ public class PlayManager : MonoBehaviour
         bool isclear = currentchapterdata._stagedata == null || currentchapterdata._stagedata.Count <= 0;
         gameover.GetComponent<UI_GameOver>().Init(_current_chapter_id, _current_stage_id, isclear);
     }
+
+    /// <summary>
+    /// 외부에서 게임 상태 변경을 요청할 때 사용하는 메서드들 (하위 호환성)
+    /// </summary>
+    public static void TriggerStageNext() => _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.STAGE_NEXT));
+    public static void TriggerChapterNext() => _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.CHAPTER_NEXT));
+    public static void TriggerGameOver() => _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.GAMEOVER));
 }

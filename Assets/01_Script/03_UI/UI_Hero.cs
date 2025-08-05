@@ -7,16 +7,21 @@ public class UI_Hero : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        PlayManager._play_ready_event += HeroButtonSetting;
+        PlayManager._ongamestatechanged += HeroButtonSetting;
     }
 
     void OnDisable()
     {
-        PlayManager._play_ready_event -= HeroButtonSetting;
+        PlayManager._ongamestatechanged -= HeroButtonSetting;
     }
 
-    void HeroButtonSetting()
+    void HeroButtonSetting(GameStateData gamestate)
     {
+        if (gamestate._state != EPLAYSTATE.READY)
+        {
+            return;
+        }
+
         var maxcount = _herobtn.Length;
         var userheroidlist = UserData._userdata._userequiphero._equipheroid;
         for (int i = 0; i < maxcount; i++)

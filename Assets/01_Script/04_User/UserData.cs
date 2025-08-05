@@ -52,7 +52,7 @@ public class UserData
 
     void AddAction()
     {
-        PlayManager._play_chapter_next += _userchapterdata.UserChapterUpdate;
+        PlayManager._ongamestatechanged += _userchapterdata.UserChapterUpdate;
         Monster_Base._monsterdie += (monster) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.MONSTERKILL, 0, 1);
         Monster_Base._monsterdie += (monster) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.TARGETMONSTERKILL, monster.GetMonsterInfo()._npc._mid, 1);
         UI_Shop_Slot._shop_buy_complted_event += (shopid) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.GACHA, 0, 1);
@@ -65,7 +65,7 @@ public class UserData
 
     void RemoveAction()
     {
-        PlayManager._play_chapter_next -= _userchapterdata.UserChapterUpdate;
+        PlayManager._ongamestatechanged -= _userchapterdata.UserChapterUpdate;
         Monster_Base._monsterdie -= (monster) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.MONSTERKILL, 0, 1);
         Monster_Base._monsterdie -= (monster) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.TARGETMONSTERKILL, monster.GetMonsterInfo()._npc._mid, 1);
         UI_Shop_Slot._shop_buy_complted_event -= (shopid) => _userquestdata.UpdateQuestValue(EQUESTVALUETYPE.GACHA, 0, 1);

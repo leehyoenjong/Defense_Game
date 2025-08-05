@@ -9,16 +9,21 @@ public class SkillChoseManager : MonoBehaviour
 
     void Start()
     {
-        PlayManager._play_stage_next += CreateSkillChose;
+        PlayManager._ongamestatechanged += CreateSkillChose;
     }
 
     void OnDisable()
     {
-        PlayManager._play_stage_next -= CreateSkillChose;
+        PlayManager._ongamestatechanged -= CreateSkillChose;
     }
 
-    void CreateSkillChose()
+    void CreateSkillChose(GameStateData gamestate)
     {
+        if (gamestate._state != EPLAYSTATE.STAGE_NEXT)
+        {
+            return;
+        }
+
         _currentstageclear++;
         if (_currentstageclear % CREATESKILLCHOSESTAGE != 0)
         {

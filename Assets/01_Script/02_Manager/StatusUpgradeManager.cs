@@ -140,29 +140,26 @@ public class StatusUpgradeManager : MonoBehaviour
 
         var differenceStatus = new St_Status();
 
-        // 이전과 현재 업그레이드 값 가져오기
+        // 공격력 차이 계산
         var beforeAttack = GetStatusBeforeUpgrade(heroid, ESTATUSUPGRADE.ATTACKPER);
         var currentAttack = GetStatusUpgrade(heroid, ESTATUSUPGRADE.ATTACKPER);
 
-        var beforeCritical = GetStatusBeforeUpgrade(heroid, ESTATUSUPGRADE.CRITICALPER);
-        var currentCritical = GetStatusUpgrade(heroid, ESTATUSUPGRADE.CRITICALPER);
-
-        var beforeCriticalDamage = GetStatusBeforeUpgrade(heroid, ESTATUSUPGRADE.CRITICALDAMAGE);
-        var currentCriticalDamage = GetStatusUpgrade(heroid, ESTATUSUPGRADE.CRITICALDAMAGE);
-
-        // 공격력 차이 계산
-        int beforeAttackValue = beforeAttack.values > 0 ?
-            Mathf.FloorToInt(baseStatus._damge * (beforeAttack.values / 100f)) : 0;
-        int currentAttackValue = currentAttack.values > 0 ?
-            Mathf.FloorToInt(baseStatus._damge * (currentAttack.values / 100f)) : 0;
+        int beforeAttackValue = beforeAttack.values > 0 ? Mathf.FloorToInt(baseStatus._damge * (beforeAttack.values / 100f)) : 0;
+        int currentAttackValue = currentAttack.values > 0 ? Mathf.FloorToInt(baseStatus._damge * (currentAttack.values / 100f)) : 0;
         differenceStatus._damge = currentAttackValue - beforeAttackValue;
 
         // 크리티컬 확률 차이 계산
+        var beforeCritical = GetStatusBeforeUpgrade(heroid, ESTATUSUPGRADE.CRITICALPER);
+        var currentCritical = GetStatusUpgrade(heroid, ESTATUSUPGRADE.CRITICALPER);
+
         float beforeCriticalValue = beforeCritical.values > 0 ? (beforeCritical.values / 100f) : 0;
         float currentCriticalValue = currentCritical.values > 0 ? (currentCritical.values / 100f) : 0;
         differenceStatus._critical = currentCriticalValue - beforeCriticalValue;
 
         // 크리티컬 데미지 차이 계산
+        var beforeCriticalDamage = GetStatusBeforeUpgrade(heroid, ESTATUSUPGRADE.CRITICALDAMAGE);
+        var currentCriticalDamage = GetStatusUpgrade(heroid, ESTATUSUPGRADE.CRITICALDAMAGE);
+
         float beforeCriticalDamageValue = beforeCriticalDamage.values > 0 ? (beforeCriticalDamage.values / 100f) : 0;
         float currentCriticalDamageValue = currentCriticalDamage.values > 0 ? (currentCriticalDamage.values / 100f) : 0;
         differenceStatus._critical_damage = currentCriticalDamageValue - beforeCriticalDamageValue;

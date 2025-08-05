@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using BackEnd;
 using UnityEngine;
+using LitJson;
 
 [Serializable]
 public struct St_UserQuestData
@@ -21,103 +22,134 @@ public struct St_UserQuestData
 
     public bool Load_UserData(BackendReturnObject loadresult)
     {
-        if (loadresult.IsSuccess() == false)
+        if (!ValidateLoadResult(loadresult))
+            return false;
+
+        var userData = ExtractUserData(loadresult);
+
+        LoadQuestClearIds(userData);
+        LoadQuestValueList(userData);
+
+        Debug.Log($"퀘스트 데이터 로드 완료 - 클리어 퀘스트: {_questclearid.Count}개, 진행 퀘스트: {_questvaluelist.Count}개");
+        return true;
+    }
+
+    /// <summary>
+    /// 로드 결과 검증
+    /// </summary>
+    bool ValidateLoadResult(BackendReturnObject loadresult)
+    {
+        if (loadresult.IsSuccess())
+            return true;
+
+        Debug.LogError("퀘스트 데이터 로드 실패");
+        return false;
+    }
+
+    /// <summary>
+    /// JSON 데이터 추출
+    /// </summary>
+    JsonData ExtractUserData(BackendReturnObject loadresult)
+    {
+        var userData = loadresult.FlattenRows()[0];
+        Debug.Log($"퀘스트 전체 데이터 로드 시작");
+        return userData;
+    }
+
+    /// <summary>
+    /// 퀘스트 클리어 ID 리스트 로드
+    /// </summary>
+    void LoadQuestClearIds(JsonData userData)
+    {
+        if (!userData.ContainsKey("_questclearid"))
         {
+            Debug.Log("클리어 퀘스트 데이터 없음");
+            return;
+        }
+
+        var questClearIds = userData["_questclearid"];
+        var loadedCount = 0;
+
+        for (int i = 0; i < questClearIds.Count; i++)
+        {
+            if (TryParseQuestClearId(questClearIds[i], i, out var clearId))
+            {
+                _questclearid.Add(clearId);
+                loadedCount++;
+            }
+        }
+
+        Debug.Log($"클리어 퀘스트 로드 완료: {loadedCount}/{questClearIds.Count}개");
+    }
+
+    /// <summary>
+    /// 퀘스트 클리어 ID 파싱
+    /// </summary>
+    bool TryParseQuestClearId(JsonData jsonData, int index, out int clearId)
+    {
+        clearId = 0;
+        if (int.TryParse(jsonData.ToString(), out clearId))
+            return true;
+
+        Debug.LogWarning($"퀘스트 클리어 ID [{index}] 파싱 실패: {jsonData}");
+        return false;
+    }
+
+    /// <summary>
+    /// 퀘스트 값 리스트 로드
+    /// </summary>
+    void LoadQuestValueList(JsonData userData)
+    {
+        if (!userData.ContainsKey("_questvaluelist"))
+        {
+            Debug.Log("진행 퀘스트 데이터 없음");
+            return;
+        }
+
+        var questValueList = userData["_questvaluelist"];
+        var loadedCount = 0;
+
+        for (int i = 0; i < questValueList.Count; i++)
+        {
+            if (TryParseQuestValue(questValueList[i], i, out var questData))
+            {
+                _questvaluelist.Add(questData);
+                loadedCount++;
+            }
+        }
+
+        Debug.Log($"진행 퀘스트 로드 완료: {loadedCount}/{questValueList.Count}개");
+    }
+
+    /// <summary>
+    /// 퀘스트 값 데이터 파싱
+    /// </summary>
+    bool TryParseQuestValue(JsonData jsonData, int index, out St_UserQuestList questData)
+    {
+        questData = new St_UserQuestList();
+
+        try
+        {
+            // 각 필드 파싱
+            if (jsonData.ContainsKey("_questtype"))
+                questData._questtype = (EQUESTTYPE)(int)jsonData["_questtype"];
+
+            if (jsonData.ContainsKey("_questvaluetype"))
+                questData._questvaluetype = (EQUESTVALUETYPE)(int)jsonData["_questvaluetype"];
+
+            if (jsonData.ContainsKey("_targetid"))
+                questData._targetid = (int)jsonData["_targetid"];
+
+            if (jsonData.ContainsKey("_totalvalue"))
+                questData._totalvalue = (int)jsonData["_totalvalue"];
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"퀘스트 값 [{index}] 파싱 실패: {ex.Message}");
             return false;
         }
-
-        var userdatajson = loadresult.FlattenRows()[0];
-        Debug.Log($"퀘스트 전체 데이터: {userdatajson.ToString()}");
-
-        // 퀘스트 클리어 ID 리스트 로드
-        if (userdatajson.ContainsKey("_questclearid"))
-        {
-            var questclearid = userdatajson["_questclearid"];
-            Debug.Log($"퀘스트 클리어 ID 데이터 타입: {questclearid.GetType()}");
-            Debug.Log($"퀘스트 클리어 ID 데이터 내용: {questclearid.ToString()}");
-
-            var maxcount = questclearid.Count;
-            Debug.Log($"클리어 퀘스트 개수: {maxcount}");
-
-            for (int i = 0; i < maxcount; i++)
-            {
-                if (int.TryParse(questclearid[i].ToString(), out var clearid) == false)
-                {
-                    Debug.LogWarning($"퀘스트 클리어 ID [{i}] 파싱 실패: {questclearid[i]}");
-                    continue;
-                }
-                _questclearid.Add(clearid);
-                Debug.Log($"성공적으로 로드된 클리어 퀘스트 ID: {clearid}");
-            }
-        }
-        else
-        {
-            Debug.Log("_questclearid 키가 존재하지 않습니다.");
-        }
-
-        // 퀘스트 값 리스트 로드
-        if (userdatajson.ContainsKey("_questvaluelist"))
-        {
-            var questvaluelist = userdatajson["_questvaluelist"];
-            Debug.Log($"퀘스트 값 리스트 데이터 타입: {questvaluelist.GetType()}");
-            Debug.Log($"퀘스트 값 리스트 데이터 내용: {questvaluelist.ToString()}");
-
-            var maxcount = questvaluelist.Count;
-            Debug.Log($"퀘스트 값 개수: {maxcount}");
-
-            for (int i = 0; i < maxcount; i++)
-            {
-                try
-                {
-                    var questJsonData = questvaluelist[i];
-                    Debug.Log($"퀘스트 값 [{i}] 타입: {questJsonData.GetType()}");
-                    Debug.Log($"퀘스트 값 [{i}] 내용: {questJsonData.ToString()}");
-
-                    // JsonData에서 직접 값을 추출하여 구조체 생성
-                    var questData = new St_UserQuestList();
-
-                    // 각 필드가 존재하는지 확인하고 값 추출
-                    if (questJsonData.ContainsKey("_questtype"))
-                    {
-                        questData._questtype = (EQUESTTYPE)(int)questJsonData["_questtype"];
-                        Debug.Log($"퀘스트 타입: {questData._questtype}");
-                    }
-
-                    if (questJsonData.ContainsKey("_questvaluetype"))
-                    {
-                        questData._questvaluetype = (EQUESTVALUETYPE)(int)questJsonData["_questvaluetype"];
-                        Debug.Log($"퀘스트 값 타입: {questData._questvaluetype}");
-                    }
-
-                    if (questJsonData.ContainsKey("_targetid"))
-                    {
-                        questData._targetid = (int)questJsonData["_targetid"];
-                        Debug.Log($"타겟 ID: {questData._targetid}");
-                    }
-
-                    if (questJsonData.ContainsKey("_totalvalue"))
-                    {
-                        questData._totalvalue = (int)questJsonData["_totalvalue"];
-                        Debug.Log($"총 값: {questData._totalvalue}");
-                    }
-
-                    _questvaluelist.Add(questData);
-                    Debug.Log($"성공적으로 로드된 퀘스트: Type={questData._questtype}, ValueType={questData._questvaluetype}, TargetID={questData._targetid}, TotalValue={questData._totalvalue}");
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError($"퀘스트 값 리스트 [{i}] 데이터 로드 실패: {ex.Message}");
-                    Debug.LogError($"스택 트레이스: {ex.StackTrace}");
-                    return false;
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("_questvaluelist 키가 존재하지 않습니다.");
-        }
-
-        return true;
     }
 
     /// <summary>

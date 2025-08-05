@@ -15,18 +15,23 @@ public class PlayerSpawnManager : MonoBehaviour
 
     void OnEnable()
     {
-        PlayManager._play_ready_event += CreatePlayer;
+        PlayManager._ongamestatechanged += CreatePlayer;
         BaseSkill._skill_target_dictionary_list.Add(ETARGETKIND.HERO, _herolist);
     }
 
     void OnDisable()
     {
-        PlayManager._play_ready_event -= CreatePlayer;
+        PlayManager._ongamestatechanged -= CreatePlayer;
         BaseSkill._skill_target_dictionary_list.Remove(ETARGETKIND.HERO);
     }
 
-    void CreatePlayer()
+    void CreatePlayer(GameStateData stateData)
     {
+        if (stateData._state != EPLAYSTATE.READY)
+        {
+            return;
+        }
+
         var userherodata = UserData._userdata._userequiphero;
         var maxcount = userherodata.GetEquipHeroList().Count;
         for (int i = 0; i < maxcount; i++)

@@ -40,6 +40,6 @@ public class ProtectObject : BaseNPC
     protected override void NPC_Die()
     {
         base.NPC_Die();
-        PlayManager._play_gameover?.Invoke();
+        PlayManager.TriggerGameOver();
     }
 }

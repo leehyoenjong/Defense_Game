@@ -33,8 +33,13 @@ public struct St_UserChapterData
         return true;
     }
 
-    public void UserChapterUpdate()
+    public void UserChapterUpdate(GameStateData gamestate)
     {
+        if (gamestate._state != EPLAYSTATE.CHAPTER_NEXT)
+        {
+            return;
+        }
+
         var beforechapternum = _lastchapternumber;
         _lastchapternumber++;
         BackEndLog.WriteLog(LogType.CHAPTER, $"스테이지 변경 전:{beforechapternum} / 변경 후 :{_lastchapternumber}");
