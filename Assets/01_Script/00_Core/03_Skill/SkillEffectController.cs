@@ -16,7 +16,7 @@ public class SkillEffectController : MonoBehaviour
 
     // 스킬 정보
     BaseNPC _caster; // 스킬 사용자
-    private Action<BaseNPC, BaseNPC> _action; // 실행할 스킬
+    Action<BaseNPC, BaseNPC> _action; // 실행할 스킬
 
     float _currentlifetime;
 

@@ -8,18 +8,18 @@ public class SkillMovementController : MonoBehaviour
 {
     [Header("움직임 설정")]
     public EMOVEMENTTYPE _movementType = EMOVEMENTTYPE.STRAIGHT;
-    [SerializeField] private float _speed = 10f;
-    [SerializeField] private float _lifeTime = 5f;
+    [SerializeField] float _speed = 10f;
+    [SerializeField] float _lifeTime = 5f;
 
     [Header("도달 후 삭제 시간")]
-    [SerializeField] private float _destorytime = 0.5f;
+    [SerializeField] float _destorytime = 0.5f;
 
     // 프라이빗 변수들
-    private Vector3 _direction;
-    private BaseNPC _homingTarget;
-    private Vector3 _lastTargetPosition; // 타겟의 마지막 위치 저장
-    private bool _isTargetLost = false;  // 타겟을 잃었는지 여부
-    private bool _isarraive;
+    Vector3 _direction;
+    BaseNPC _homingTarget;
+    Vector3 _lastTargetPosition; // 타겟의 마지막 위치 저장
+    bool _isTargetLost = false;  // 타겟을 잃었는지 여부
+    bool _isarraive;
 
     float _currentlifetime;
 

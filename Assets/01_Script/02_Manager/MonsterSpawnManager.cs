@@ -5,9 +5,7 @@ using UnityEngine;
 public class MonsterSpawnManager : MonoBehaviour
 {
     List<BaseNPC> _active_monsterlist = new List<BaseNPC>();
-
     [SerializeField] Transform[] _createpoint;
-
     [SerializeField] Transform[] _protectpoint;
 
     //죽은 몬스터 수와 상관없이 60초마다 몬스터 생성

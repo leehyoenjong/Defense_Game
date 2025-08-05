@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class PlayManager : MonoBehaviour
 {
+    public static PlayManager instance;
+
     /// <summary>
     /// 통합된 게임 상태 변경 이벤트
     /// </summary>
     public static event Action<GameStateData> _ongamestatechanged;
-
-    public static PlayManager instance;
-
     [SerializeField] GameObject _gameover;
 
     //챕터 및 스테이지 아이디

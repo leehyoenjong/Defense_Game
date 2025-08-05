@@ -5,8 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    [SerializeField]
-    GameObject _messagepopup;
+    [SerializeField] GameObject _messagepopup;
 
     public void CreatePopup(string message, Action exitaction)
     {

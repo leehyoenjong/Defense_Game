@@ -4,7 +4,6 @@ using UnityEngine;
 public class PoolSystem_Monster : MonoBehaviour
 {
     public static PoolSystem_Monster instance;
-
     Dictionary<int, Queue<Monster_Base>> _mon = new Dictionary<int, Queue<Monster_Base>>();
 
     void Awake()
