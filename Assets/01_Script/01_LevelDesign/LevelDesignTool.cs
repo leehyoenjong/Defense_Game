@@ -8,11 +8,33 @@ public class LevelDesignTool : EditorWindow
     private SO_StageData _selectedStage;
     private Vector2 _scrollPosition;
     private float _totalCombatPower;
+    private Dictionary<int, int> _totalRewards;
+
+    private SO_MonsterTable _monsterTable;
+    private SO_Item_Table _itemTable;
 
     [MenuItem("Tools/Level Design Tool")]
     public static void ShowWindow()
     {
         GetWindow<LevelDesignTool>("Level Design Tool");
+    }
+
+    private void OnEnable()
+    {
+        // 에디터가 활성화될 때 테이블 에셋 로드
+        string[] monsterTableGuid = AssetDatabase.FindAssets("t:SO_MonsterTable");
+        if (monsterTableGuid.Length > 0)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(monsterTableGuid[0]);
+            _monsterTable = AssetDatabase.LoadAssetAtPath<SO_MonsterTable>(path);
+        }
+
+        string[] itemTableGuid = AssetDatabase.FindAssets("t:SO_Item_Table");
+        if (itemTableGuid.Length > 0)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(itemTableGuid[0]);
+            _itemTable = AssetDatabase.LoadAssetAtPath<SO_Item_Table>(path);
+        }
     }
 
     private void OnGUI()
@@ -29,7 +51,6 @@ public class LevelDesignTool : EditorWindow
 
         EditorGUILayout.Space();
 
-        // 저장 버튼 (창 절반 크기)
         if (_selectedStage != null)
         {
             if (GUILayout.Button("Save Stage Data", GUILayout.Width(position.width / 2)))
@@ -42,7 +63,6 @@ public class LevelDesignTool : EditorWindow
 
         EditorGUILayout.Space();
 
-        // 개인적인 사용법이 담긴 필드를 가져옴
         var chapterDataField = typeof(SO_ChapterData).GetField("_chapterdata", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
         if (chapterDataField == null)
         {
@@ -53,7 +73,6 @@ public class LevelDesignTool : EditorWindow
         var chapterList = chapterDataField.GetValue(_chapterData) as List<St_ChapterData>;
         if (chapterList == null) return;
 
-        // 스크롤 뷰 시작
         _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
 
         foreach (var chapter in chapterList)
@@ -68,6 +87,7 @@ public class LevelDesignTool : EditorWindow
                     {
                         _selectedStage = stage;
                         _totalCombatPower = CombatPowerCalculator.Calculate(_selectedStage);
+                        CalculateTotalRewards();
                     }
                 }
             }
@@ -87,11 +107,24 @@ public class LevelDesignTool : EditorWindow
     private void DrawStageDetails()
     {
         EditorGUILayout.LabelField($"선택된 스테이지: {_selectedStage._stageid}", EditorStyles.boldLabel);
+
+        if (_totalRewards != null && _totalRewards.Count > 0)
+        {
+            EditorGUILayout.LabelField("클리어 총 보상", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
+            foreach (var reward in _totalRewards)
+            {
+                string itemName = _itemTable?.SearchItemData(reward.Key)._itemname ?? $"ItemID: {reward.Key}";
+                EditorGUILayout.LabelField(itemName, reward.Value.ToString());
+            }
+            EditorGUI.indentLevel--;
+            EditorGUILayout.Space();
+        }
+
         EditorGUILayout.LabelField("총 전투력:", $"{_totalCombatPower:N0}");
         EditorGUILayout.HelpBox("전투력 = (공격력 * (1 + 치명타확률 * 치명타피해량)) + (체력 * (1 + 방어력/100)) 의 총합", MessageType.None);
         EditorGUILayout.Space();
 
-        // 몬스터 목록 표시
         int removeIndex = -1;
         for (int i = 0; i < _selectedStage._monsterlist.Count; i++)
         {
@@ -105,7 +138,7 @@ public class LevelDesignTool : EditorWindow
 
             if (GUILayout.Button("상세정보", GUILayout.Width(70)))
             {
-                if (wave._monsterid > 0) MonsterEditor.ShowWindow(wave._monsterid);
+                if (wave._monsterid > 0) MonsterDatabaseEditor.ShowDetail(wave._monsterid);
             }
 
             if (GUILayout.Button("-", GUILayout.Width(20)))
@@ -113,7 +146,6 @@ public class LevelDesignTool : EditorWindow
                 removeIndex = i;
             }
 
-            // 변경사항 저장
             _selectedStage._monsterlist[i] = wave;
 
             EditorGUILayout.EndHorizontal();
@@ -133,13 +165,34 @@ public class LevelDesignTool : EditorWindow
 
         EditorGUILayout.Space();
 
-        // 변경사항이 있을 경우 전투력 다시 계산
         if (GUI.changed)
         {
             _totalCombatPower = CombatPowerCalculator.Calculate(_selectedStage);
-            // 변경사항이 있음을 표시하여 사용자가 저장하도록 유도
+            CalculateTotalRewards();
             EditorUtility.SetDirty(_selectedStage);
         }
         EditorGUILayout.Space();
+    }
+
+    private void CalculateTotalRewards()
+    {
+        _totalRewards = new Dictionary<int, int>();
+        if (_selectedStage == null || _monsterTable == null) return;
+
+        foreach (var wave in _selectedStage._monsterlist)
+        {
+            var monsterInfo = _monsterTable.GetMonsterInfo(wave._monsterid);
+            if (monsterInfo._npc != null && monsterInfo._drop_itemid > 0)
+            {
+                if (_totalRewards.ContainsKey(monsterInfo._drop_itemid))
+                {
+                    _totalRewards[monsterInfo._drop_itemid] += monsterInfo._drop_itemvalue * wave._count;
+                }
+                else
+                {
+                    _totalRewards.Add(monsterInfo._drop_itemid, monsterInfo._drop_itemvalue * wave._count);
+                }
+            }
+        }
     }
 }

@@ -17,5 +17,6 @@ MonoBehaviour:
   _name: Crab
   _icon: {fileID: 6197056623017412966, guid: 25e3c3e2a286eee48bba19e8d339e062, type: 3}
   _basic_attack_skill: {fileID: 11400000, guid: c31bcfa678ffb430a9a89fec888b82c8, type: 2}
-  _skill_chose_list: []
+  _skill_chose_list:
+  - {fileID: 11400000, guid: afd5aac1e9933430aa9c33e962a3ae54, type: 2}
   _mybodyobject: {fileID: 7849997619125906706, guid: 0daa3a9d28b35914785ae14413e4c7dc, type: 3}
