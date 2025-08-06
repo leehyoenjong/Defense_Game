@@ -7,6 +7,7 @@ public class MoveController : MonoBehaviour
     public event Action _move_end_check;
     public event Func<bool> _move_check;
     [SerializeField] float _speed;
+    public float GetSpeed() => _speed;
 
     Vector2? _targetPosition = null;
 

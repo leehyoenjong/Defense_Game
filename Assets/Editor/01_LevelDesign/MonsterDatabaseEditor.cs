@@ -27,7 +27,7 @@ public class MonsterDatabaseEditor : EditorWindow
     private bool _showUniqueSkillsFoldout = true;
     private List<bool> _uniqueSkillFoldouts = new List<bool>();
     
-    [MenuItem("Tools/Level Design/Monster Database Editor")]
+    [MenuItem("Tools/Tool List/Monster Database Editor")]
     public static void ShowWindow()
     {
         GetWindow<MonsterDatabaseEditor>("Monster Database");
@@ -49,7 +49,7 @@ public class MonsterDatabaseEditor : EditorWindow
     {
         if (GUILayout.Button("Home", GUILayout.Width(60)))
         {
-            LevelDesignHome.ShowWindow();
+            ToolHome.ShowWindow();
             this.Close();
         }
 
@@ -392,7 +392,7 @@ public class MonsterDatabaseEditor : EditorWindow
         }
     }
     
-    private void SaveChanges()
+    private new void SaveChanges()
     {
         SetAllDirty();
         if (_statusTable != null && _statusList != null)

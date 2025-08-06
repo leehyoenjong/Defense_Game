@@ -4,6 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using CombatSimulator;
+using System;
+
+[Serializable]
+public class HeroPreset
+{
+    public List<HeroPresetData> heroData = new List<HeroPresetData>();
+}
+
+[Serializable]
+public class HeroPresetData
+{
+    public string heroAssetPath;
+    public int grade;
+    public string heroName;
+}
+
 
 // ... (StatusUpgradeManagerSim class remains the same) ...
 public class StatusUpgradeManagerSim
@@ -163,7 +179,14 @@ public class HeroPlacementEditor : EditorWindow
     private List<St_ChapterData> _chapterListCache;
     private int _maxStage = 0;
 
-    [MenuItem("Tools/Level Design/Hero Placement Editor")]
+    // Preset fields
+    private const int NUM_PRESETS = 3;
+    private HeroPreset[] _presets = new HeroPreset[NUM_PRESETS];
+    private bool _presetsFoldout = true;
+    private bool _heroSlotsFoldout = true;
+
+
+    [MenuItem("Tools/Tool List/Hero Placement Editor")]
     public static void ShowWindow()
     {
         GetWindow<HeroPlacementEditor>("Hero Placement");
@@ -179,13 +202,14 @@ public class HeroPlacementEditor : EditorWindow
         _upgradeSim = new StatusUpgradeManagerSim();
         UpdateRewardsAndCurrency(_simulatedStage);
         ResetSimulation();
+        LoadAllPresets();
     }
 
     private void OnGUI()
     {
         if (GUILayout.Button("Home", GUILayout.Width(60)))
         {
-            LevelDesignHome.ShowWindow();
+            ToolHome.ShowWindow();
             this.Close();
         }
 
@@ -201,15 +225,20 @@ public class HeroPlacementEditor : EditorWindow
 
         DrawStageAndCurrencySetup();
         DrawCombatSimulationUI();
+        DrawPresetsUI();
 
-        _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
-        for (int i = 0; i < MAX_SLOTS; i++)
+        _heroSlotsFoldout = EditorGUILayout.Foldout(_heroSlotsFoldout, "영웅 슬롯", true, EditorStyles.foldoutHeader);
+        if (_heroSlotsFoldout)
         {
-            DrawHeroSlot(i);
+            _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
+            for (int i = 0; i < MAX_SLOTS; i++)
+            {
+                DrawHeroSlot(i);
+            }
+            EditorGUILayout.EndScrollView();
         }
-        EditorGUILayout.EndScrollView();
     }
-    
+
     private void DrawCombatSimulationUI()
     {
         EditorGUILayout.Space();
@@ -224,8 +253,15 @@ public class HeroPlacementEditor : EditorWindow
         }
         if (GUILayout.Button("다음 스테이지 진행"))
         {
-            int nextStage = _simulationResult.ClearedStage + 1;
-            RunCombatSimulation(nextStage, nextStage);
+            if (_simulationResult.ClearedStage >= _maxStage)
+            {
+                ShowNotification(new GUIContent("최대 스테이지에 도달했습니다."));
+            }
+            else
+            {
+                int nextStage = _simulationResult.ClearedStage + 1;
+                RunCombatSimulation(nextStage, nextStage);
+            }
         }
         if (GUILayout.Button("리셋"))
         {
@@ -240,7 +276,7 @@ public class HeroPlacementEditor : EditorWindow
         }
         else
         {
-            if(!string.IsNullOrEmpty(_simulationResult.FailureReason))
+            if (!string.IsNullOrEmpty(_simulationResult.FailureReason))
             {
                 EditorGUILayout.HelpBox($"실패: {_simulationResult.FailureReason} @ 스테이지 {_simulationResult.ClearedStage + 1} (남은 몬스터: {_simulationResult.RemainingMonsters})", MessageType.Warning);
             }
@@ -249,7 +285,7 @@ public class HeroPlacementEditor : EditorWindow
                 EditorGUILayout.LabelField("상태:", "대기중");
             }
         }
-         EditorGUILayout.LabelField("보호 오브젝트 HP:", $"{_simulationResult.ProtectObjectHp:N0}");
+        EditorGUILayout.LabelField("보호 오브젝트 HP:", $"{_simulationResult.ProtectObjectHp:N0}");
     }
 
     private void ResetSimulation()
@@ -269,10 +305,10 @@ public class HeroPlacementEditor : EditorWindow
         }
 
         _simulationResult = simulator.RunSimulation(heroDataList, endStage);
-        
-        if(!_simulationResult.Success)
+
+        if (!_simulationResult.Success)
         {
-             ShowNotification(new GUIContent($"스테이지 {endStage} 실패!"));
+            ShowNotification(new GUIContent($"스테이지 {endStage} 실패!"));
         }
         else
         {
@@ -280,7 +316,6 @@ public class HeroPlacementEditor : EditorWindow
         }
     }
 
-    // ... (The rest of the methods remain the same) ...
     private void DrawStageAndCurrencySetup()
     {
         if (GUILayout.Button("스테이지 정보 갱신"))
@@ -290,7 +325,7 @@ public class HeroPlacementEditor : EditorWindow
             ShowNotification(new GUIContent("최신 스테이지 정보로 갱신했습니다."));
         }
         EditorGUILayout.Space();
-        
+
         EditorGUI.BeginChangeCheck();
 
         EditorGUILayout.BeginHorizontal();
@@ -352,6 +387,11 @@ public class HeroPlacementEditor : EditorWindow
         {
             GenericMenu menu = new GenericMenu();
 
+            var currentlySelectedHeroes = _heroSlots
+                .Where((slot, i) => i != index && slot.Npc != null)
+                .Select(slot => slot.Npc)
+                .ToList();
+
             menu.AddItem(new GUIContent("(비우기)"), _heroSlots[index].Npc == null, () =>
             {
                 HandleHeroChange(index, null);
@@ -359,10 +399,17 @@ public class HeroPlacementEditor : EditorWindow
 
             foreach (var hero in _heroTable.GetHeroList())
             {
-                menu.AddItem(new GUIContent(hero._npc.name), _heroSlots[index].Npc == hero._npc, () =>
+                if (currentlySelectedHeroes.Contains(hero._npc))
                 {
-                    HandleHeroChange(index, hero._npc);
-                });
+                    menu.AddDisabledItem(new GUIContent(hero._npc.name));
+                }
+                else
+                {
+                    menu.AddItem(new GUIContent(hero._npc.name), _heroSlots[index].Npc == hero._npc, () =>
+                    {
+                        HandleHeroChange(index, hero._npc);
+                    });
+                }
             }
             menu.ShowAsContext();
         }
@@ -545,4 +592,126 @@ public class HeroPlacementEditor : EditorWindow
 
         if (_maxStage < 0) _maxStage = 0;
     }
+
+    #region Preset Methods
+    private void DrawPresetsUI()
+    {
+        EditorGUILayout.Space();
+        _presetsFoldout = EditorGUILayout.Foldout(_presetsFoldout, "프리셋 관리", true, EditorStyles.foldoutHeader);
+        if (_presetsFoldout)
+        {
+            EditorGUI.indentLevel++;
+            for (int i = 0; i < NUM_PRESETS; i++)
+            {
+                DrawPresetSlot(i);
+            }
+            EditorGUI.indentLevel--;
+        }
+    }
+
+    private void DrawPresetSlot(int index)
+    {
+        EditorGUILayout.BeginHorizontal();
+
+        string presetContent = " (비어있음)";
+        if (_presets[index] != null && _presets[index].heroData.Any())
+        {
+            presetContent = string.Join(", ", _presets[index].heroData.Select(d => d.heroName));
+        }
+        EditorGUILayout.LabelField($"프리셋 {index + 1}", presetContent);
+
+        if (GUILayout.Button("저장", GUILayout.Width(50)))
+        {
+            SavePreset(index);
+        }
+        if (GUILayout.Button("불러오기", GUILayout.Width(60)))
+        {
+            LoadPreset(index);
+        }
+        EditorGUILayout.EndHorizontal();
+    }
+
+    private void SavePreset(int index)
+    {
+        HeroPreset preset = new HeroPreset();
+        for (int i = 0; i < MAX_SLOTS; i++)
+        {
+            if (_heroSlots[i].Npc != null)
+            {
+                preset.heroData.Add(new HeroPresetData
+                {
+                    heroAssetPath = AssetDatabase.GetAssetPath(_heroSlots[i].Npc),
+                    grade = _heroSlots[i].Grade,
+                    heroName = _heroSlots[i].Npc.name
+                });
+            }
+        }
+
+        string json = JsonUtility.ToJson(preset);
+        EditorPrefs.SetString($"HeroPlacementPreset_{index}", json);
+        _presets[index] = preset;
+        ShowNotification(new GUIContent($"프리셋 {index + 1}이 저장되었습니다."));
+    }
+
+    private void LoadPreset(int index)
+    {
+        string json = EditorPrefs.GetString($"HeroPlacementPreset_{index}");
+        if (string.IsNullOrEmpty(json))
+        {
+            ShowNotification(new GUIContent($"프리셋 {index + 1}이 비어있습니다."));
+            return;
+        }
+
+        HeroPreset loadedPreset = JsonUtility.FromJson<HeroPreset>(json);
+        _presets[index] = loadedPreset;
+
+        ClearAndRefundAllSlots();
+
+        for (int i = 0; i < loadedPreset.heroData.Count && i < MAX_SLOTS; i++)
+        {
+            var data = loadedPreset.heroData[i];
+            if (!string.IsNullOrEmpty(data.heroAssetPath))
+            {
+                var heroNpc = AssetDatabase.LoadAssetAtPath<SO_NPC>(data.heroAssetPath);
+                if (heroNpc != null)
+                {
+                    _heroSlots[i].Npc = heroNpc;
+                    _heroSlots[i].Grade = data.grade;
+                }
+            }
+        }
+
+        UpdateAvailableCurrency();
+        ShowNotification(new GUIContent($"프리셋 {index + 1}을 불러왔습니다."));
+    }
+
+    private void ClearAndRefundAllSlots()
+    {
+        for (int i = 0; i < MAX_SLOTS; i++)
+        {
+            if (_heroSlots[i].Npc != null)
+            {
+                RefundUpgrades(_heroSlots[i].Npc._mid);
+                _heroSlots[i].Npc = null;
+                _heroSlots[i].Grade = 1;
+            }
+        }
+    }
+
+    private void LoadAllPresets()
+    {
+        for (int i = 0; i < NUM_PRESETS; i++)
+        {
+            string json = EditorPrefs.GetString($"HeroPlacementPreset_{i}");
+            if (!string.IsNullOrEmpty(json))
+            {
+                _presets[i] = JsonUtility.FromJson<HeroPreset>(json);
+            }
+            else
+            {
+                _presets[i] = new HeroPreset();
+            }
+        }
+    }
+    #endregion
 }

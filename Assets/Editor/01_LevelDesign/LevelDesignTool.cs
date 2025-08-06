@@ -13,7 +13,7 @@ public class LevelDesignTool : EditorWindow
     private SO_MonsterTable _monsterTable;
     private SO_Item_Table _itemTable;
 
-    [MenuItem("Tools/Level Design/Level Design Tool")]
+    [MenuItem("Tools/Tool List/Level Design Tool")]
     public static void ShowWindow()
     {
         GetWindow<LevelDesignTool>("Level Design Tool");
@@ -41,7 +41,7 @@ public class LevelDesignTool : EditorWindow
     {
         if (GUILayout.Button("Home", GUILayout.Width(60)))
         {
-            LevelDesignHome.ShowWindow();
+            ToolHome.ShowWindow();
             this.Close();
         }
 

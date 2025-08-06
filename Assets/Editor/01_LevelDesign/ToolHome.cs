@@ -1,17 +1,17 @@
 using UnityEditor;
 using UnityEngine;
 
-public class LevelDesignHome : EditorWindow
+public class ToolHome : EditorWindow
 {
-    [MenuItem("Tools/Level Design Home")]
+    [MenuItem("Tools/Tool Home")]
     public static void ShowWindow()
     {
-        GetWindow<LevelDesignHome>("Level Design Home");
+        GetWindow<ToolHome>("Tool Home");
     }
 
     private void OnGUI()
     {
-        GUILayout.Label("Level Design Tools", EditorStyles.boldLabel);
+        GUILayout.Label("Tools", EditorStyles.boldLabel);
         GUILayout.Space(20);
 
         if (GUILayout.Button("Hero Database Editor", GUILayout.Height(30)))

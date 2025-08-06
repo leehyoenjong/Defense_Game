@@ -28,7 +28,7 @@ public class HeroDatabaseEditor : EditorWindow
     private bool _showUniqueSkillsFoldout = true;
     private List<bool> _uniqueSkillFoldouts = new List<bool>();
 
-    [MenuItem("Tools/Level Design/Hero Database Editor")]
+    [MenuItem("Tools/Tool List/Hero Database Editor")]
     public static void ShowWindow()
     {
         GetWindow<HeroDatabaseEditor>("Hero Database");
@@ -43,7 +43,7 @@ public class HeroDatabaseEditor : EditorWindow
     {
         if (GUILayout.Button("Home", GUILayout.Width(60)))
         {
-            LevelDesignHome.ShowWindow();
+            ToolHome.ShowWindow();
             this.Close();
         }
 
@@ -342,7 +342,7 @@ public class HeroDatabaseEditor : EditorWindow
         }
     }
 
-    private void SaveChanges()
+    private new void SaveChanges()
     {
         SetAllDirty();
         if (_statusTable != null && _statusList != null)

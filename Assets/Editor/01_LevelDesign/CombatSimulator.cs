@@ -17,6 +17,8 @@ namespace CombatSimulator
 
     public class Simulator
     {
+        private const float MAP_DISTANCE = 4f; // 맵의 총 길이 (가정)
+
         #region Simulation Entities
         private class SimCharacter
         {
@@ -77,7 +79,47 @@ namespace CombatSimulator
 
         private class SimMonster : SimCharacter
         {
-            public SimMonster(SO_NPC monsterData, St_Status status) : base(monsterData, status) { }
+            public float DistanceToTarget;
+            private readonly float _speed;
+
+            public SimMonster(SO_NPC monsterData, St_Status status) : base(monsterData, status)
+            {
+                DistanceToTarget = MAP_DISTANCE;
+                if (monsterData._mybodyobject != null)
+                {
+                    var moveController = monsterData._mybodyobject.GetComponent<MoveController>();
+                    if (moveController != null)
+                    {
+                        _speed = moveController.GetSpeed();
+                        Debug.Log($"[CombatSim] 스폰: '{monsterData.name}', Speed: {_speed}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[CombatSim] '{monsterData.name}' 프리팹에 MoveController가 없습니다. Speed가 0으로 설정됩니다.");
+                        _speed = 0;
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"[CombatSim] '{monsterData.name}'에 Body Object 프리팹이 할당되지 않았습니다. Speed가 0으로 설정됩니다.");
+                    _speed = 0;
+                }
+            }
+
+            public override void Tick(float deltaTime)
+            {
+                base.Tick(deltaTime);
+                if (DistanceToTarget > 0)
+                {
+                    float previousDistance = DistanceToTarget;
+                    DistanceToTarget -= _speed * deltaTime;
+
+                    if (DistanceToTarget <= 0 && previousDistance > 0)
+                    {
+                        Debug.Log($"[CombatSim] 도착: '{this.Name}' (이)가 보호 오브젝트에 도착했습니다.");
+                    }
+                }
+            }
         }
         #endregion
 
@@ -360,6 +402,9 @@ namespace CombatSimulator
         {
             foreach (var monster in _monsters)
             {
+                // 보호 오브젝트에 도달한 몬스터만 공격
+                if (monster.DistanceToTarget > 0) continue;
+
                 foreach (var skill in monster.SkillCooldowns.Keys.ToList())
                 {
                     if (monster.IsReadyToAttack(skill))
