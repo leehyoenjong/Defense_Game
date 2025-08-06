@@ -105,7 +105,7 @@ public class PlayManager : MonoBehaviour
     /// <summary>
     /// 외부에서 게임 상태 변경을 요청할 때 사용하는 메서드들 (하위 호환성)
     /// </summary>
-    public static void TriggerStageNext() => _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.STAGE_NEXT));
-    public static void TriggerChapterNext() => _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.CHAPTER_NEXT));
-    public static void TriggerGameOver() => _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.GAMEOVER));
+    public static void TriggerStageNext() => _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.STAGE_NEXT, instance._current_stage_id, MAXSTAGECOUNT, instance._current_chapter_id));
+    public static void TriggerChapterNext() => _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.CHAPTER_NEXT, instance._current_stage_id, MAXSTAGECOUNT, instance._current_chapter_id));
+    public static void TriggerGameOver() => _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.GAMEOVER, instance._current_stage_id, MAXSTAGECOUNT, instance._current_chapter_id));
 }

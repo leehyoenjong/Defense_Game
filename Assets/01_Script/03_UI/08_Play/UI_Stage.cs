@@ -24,6 +24,8 @@ public class UI_Stage : MonoBehaviour
             case EPLAYSTATE.STAGE_START:
             case EPLAYSTATE.CHAPTER_NEXT:
             case EPLAYSTATE.CHAPTER_START:
+
+                Debug.Log($"gamestate: {gamestate._state} currentstage: {gamestate._currentstage}, maxstagecount: {gamestate._maxstagecount}");
                 _stagenumber.text = string.Format(STAGENUMBER, gamestate._currentstage, gamestate._maxstagecount);
                 break;
         }

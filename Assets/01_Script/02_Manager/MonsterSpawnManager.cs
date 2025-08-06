@@ -49,23 +49,30 @@ public class MonsterSpawnManager : MonoBehaviour
             return;
         }
 
-        while (true)
+        try
         {
-            // 게임 종료 체크
-            if (!await TryValidateChapter())
-                return;
+            while (true)
+            {
+                // 게임 종료 체크
+                if (!await TryValidateChapter())
+                    return;
 
-            // 챕터 완료 체크
-            if (!await TryValidateStage())
-                continue;
+                // 챕터 완료 체크
+                if (!await TryValidateStage())
+                    continue;
 
-            // 몬스터 스폰
-            await SpawnCurrentStageMonsters();
+                // 몬스터 스폰
+                await SpawnCurrentStageMonsters();
 
-            // 다음 스테이지 대기
-            await WaitForNextStage();
+                // 다음 스테이지 대기
+                await WaitForNextStage();
 
-            PlayManager.TriggerStageNext();
+                PlayManager.TriggerStageNext();
+            }
+        }
+        catch (System.OperationCanceledException)
+        {
+            //오브젝트 파괴시 정상적으로 발생하는 예외이므로 무시.
         }
     }
 
