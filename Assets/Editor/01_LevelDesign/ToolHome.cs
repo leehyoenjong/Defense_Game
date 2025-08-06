@@ -37,6 +37,30 @@ public class ToolHome : EditorWindow
             HeroPlacementEditor.ShowWindow();
             this.Close();
         }
+
+        if (GUILayout.Button("Item Database Editor", GUILayout.Height(30)))
+        {
+            ItemDatabaseEditor.ShowWindow();
+            this.Close();
+        }
+
+        if (GUILayout.Button("Shop Database Editor", GUILayout.Height(30)))
+        {
+            ShopDatabaseEditor.ShowWindow();
+            this.Close();
+        }
+
+        if (GUILayout.Button("Gacha Database Editor", GUILayout.Height(30)))
+        {
+            GachaDatabaseEditor.ShowWindow();
+            this.Close();
+        }
+
+        if (GUILayout.Button("Quest Database Editor", GUILayout.Height(30)))
+        {
+            QuestDatabaseEditor.ShowWindow();
+            this.Close();
+        }
     }
 }
 

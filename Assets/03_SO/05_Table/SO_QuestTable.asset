@@ -92,6 +92,19 @@ MonoBehaviour:
     _questclearvalue: 1
     _rewarditemid: 1
     _rewarditemvalue: 100
+  - _mid: 100005
+    _questtype: 1
+    _title: New DAY Quest
+    _explain: 
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 0
+    _questcleartarget: 0
+    _questclearvalue: 0
+    _rewarditemid: 0
+    _rewarditemvalue: 0
   _weekquestlist:
   - _mid: 10000
     _questtype: 2
