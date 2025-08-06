@@ -3,13 +3,14 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CombatSimulator;
 
-// 에디터용 강화 시뮬레이션 클래스
+// ... (StatusUpgradeManagerSim class remains the same) ...
 public class StatusUpgradeManagerSim
 {
     // Key: Hero ID, Value: { Key: Upgrade Type, Value: Level }
     private Dictionary<int, Dictionary<ESTATUSUPGRADE, int>> _statusupgrade = new Dictionary<int, Dictionary<ESTATUSUPGRADE, int>>();
-    
+
     // StatusUpgradeManager의 상수값들을 그대로 가져옴
     private readonly List<float> _maxlevelvalue = new List<float>() { 0, 1000, 1, 1, 1000, 100 };
     private const int MAXCOINVALUE = 100000;
@@ -23,12 +24,12 @@ public class StatusUpgradeManagerSim
         }
         return 0;
     }
-    
+
     public void ResetAllUpgrades()
     {
         _statusupgrade.Clear();
     }
-    
+
     public void ResetHeroUpgrades(int heroid)
     {
         if (_statusupgrade.ContainsKey(heroid))
@@ -65,12 +66,12 @@ public class StatusUpgradeManagerSim
         }
         _statusupgrade[heroid][type]++;
     }
-    
+
     public int GetNextUpgradeCost(int currentLevel)
     {
         int nextLevel = currentLevel + 1;
         if (nextLevel > MAXLEVEL) return int.MaxValue;
-        
+
         return (MAXCOINVALUE / MAXLEVEL) * nextLevel;
     }
 
@@ -105,22 +106,23 @@ public class StatusUpgradeManagerSim
     }
 }
 
+
 public class HeroPlacementEditor : EditorWindow
 {
-    private class HeroSimulationData
+    public class HeroSimulationData
     {
         public SO_NPC Npc;
         public int Grade = 1;
-        
+
         public St_Status GetBaseStatus(SO_Status_Table statusTable)
         {
             if (Npc == null || statusTable == null) return default;
-            
+
             var statusData = statusTable.GetStatusData(Npc._statusid);
             if (statusData == null || statusData.Count == 0) return default;
-            
+
             var gradeStatus = statusData.Find(s => s._grade == Grade);
-            if(gradeStatus._grade == 0)
+            if (gradeStatus._grade == 0)
             {
                 gradeStatus = statusData.OrderBy(s => s._grade).LastOrDefault(s => s._grade <= Grade);
             }
@@ -130,20 +132,23 @@ public class HeroPlacementEditor : EditorWindow
         public St_Status GetUpgradedStatus(SO_Status_Table statusTable, StatusUpgradeManagerSim sim)
         {
             St_Status currentStatus = GetBaseStatus(statusTable);
-            if(Npc == null) return currentStatus;
+            if (Npc == null) return currentStatus;
 
             St_Status upgradeValue = sim.GetTotalUpgradeValue(Npc._mid, currentStatus);
             currentStatus._damge += upgradeValue._damge;
             currentStatus._critical += upgradeValue._critical;
             currentStatus._critical_damage += upgradeValue._critical_damage;
-            
+
             return currentStatus;
         }
     }
 
     private const int MAX_SLOTS = 5;
     private HeroSimulationData[] _heroSlots = new HeroSimulationData[MAX_SLOTS];
-    private int _simulatedStage = 1;
+    private int _simulatedStage = 0;
+    private int _simulationTargetStage = 0;
+    private SimulationResult _simulationResult;
+
     private Dictionary<int, int> _totalRewards = new Dictionary<int, int>();
     private Dictionary<int, int> _availableCurrency = new Dictionary<int, int>();
 
@@ -156,8 +161,9 @@ public class HeroPlacementEditor : EditorWindow
     private StatusUpgradeManagerSim _upgradeSim;
     private Vector2 _scrollPosition;
     private List<St_ChapterData> _chapterListCache;
+    private int _maxStage = 0;
 
-    [MenuItem("Tools/Hero Placement Editor")]
+    [MenuItem("Tools/Level Design/Hero Placement Editor")]
     public static void ShowWindow()
     {
         GetWindow<HeroPlacementEditor>("Hero Placement");
@@ -172,10 +178,17 @@ public class HeroPlacementEditor : EditorWindow
         LoadAllTables();
         _upgradeSim = new StatusUpgradeManagerSim();
         UpdateRewardsAndCurrency(_simulatedStage);
+        ResetSimulation();
     }
 
     private void OnGUI()
     {
+        if (GUILayout.Button("Home", GUILayout.Width(60)))
+        {
+            LevelDesignHome.ShowWindow();
+            this.Close();
+        }
+
         if (_heroTable == null)
         {
             EditorGUILayout.HelpBox("필요한 테이블 에셋들을 찾을 수 없습니다.", MessageType.Error);
@@ -187,33 +200,137 @@ public class HeroPlacementEditor : EditorWindow
         EditorGUILayout.Space();
 
         DrawStageAndCurrencySetup();
+        DrawCombatSimulationUI();
 
         _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
-        
-        for(int i = 0; i < MAX_SLOTS; i++)
+        for (int i = 0; i < MAX_SLOTS; i++)
         {
             DrawHeroSlot(i);
         }
-
         EditorGUILayout.EndScrollView();
+    }
+    
+    private void DrawCombatSimulationUI()
+    {
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("전투 시뮬레이션", EditorStyles.boldLabel);
 
-        DrawTotalCombatPower();
+        _simulationTargetStage = EditorGUILayout.IntField("목표 스테이지", _simulationTargetStage);
+
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("전체 시뮬레이션"))
+        {
+            RunCombatSimulation(0, _simulationTargetStage);
+        }
+        if (GUILayout.Button("다음 스테이지 진행"))
+        {
+            int nextStage = _simulationResult.ClearedStage + 1;
+            RunCombatSimulation(nextStage, nextStage);
+        }
+        if (GUILayout.Button("리셋"))
+        {
+            ResetSimulation();
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.LabelField("최종 클리어 스테이지:", $"{_simulationResult.ClearedStage}");
+        if (_simulationResult.Success)
+        {
+            EditorGUILayout.LabelField("총 클리어 시간:", $"{_simulationResult.ClearTime:F1} 초");
+        }
+        else
+        {
+            if(!string.IsNullOrEmpty(_simulationResult.FailureReason))
+            {
+                EditorGUILayout.HelpBox($"실패: {_simulationResult.FailureReason} @ 스테이지 {_simulationResult.ClearedStage + 1} (남은 몬스터: {_simulationResult.RemainingMonsters})", MessageType.Warning);
+            }
+            else
+            {
+                EditorGUILayout.LabelField("상태:", "대기중");
+            }
+        }
+         EditorGUILayout.LabelField("보호 오브젝트 HP:", $"{_simulationResult.ProtectObjectHp:N0}");
     }
 
+    private void ResetSimulation()
+    {
+        _simulationResult = new SimulationResult { ClearedStage = -1, Success = false, ProtectObjectHp = 0 };
+        ShowNotification(new GUIContent("시뮬레이션이 리셋되었습니다."));
+    }
+
+    private void RunCombatSimulation(int startStage, int endStage)
+    {
+        Simulator simulator = new Simulator();
+        List<HeroSimulationData> heroDataList = new List<HeroSimulationData>(_heroSlots.Where(s => s.Npc != null).ToList());
+        if (!heroDataList.Any())
+        {
+            ShowNotification(new GUIContent("시뮬레이션을 실행할 영웅을 배치해주세요."));
+            return;
+        }
+
+        _simulationResult = simulator.RunSimulation(heroDataList, endStage);
+        
+        if(!_simulationResult.Success)
+        {
+             ShowNotification(new GUIContent($"스테이지 {endStage} 실패!"));
+        }
+        else
+        {
+            ShowNotification(new GUIContent($"스테이지 {endStage}까지 시뮬레이션 완료!"));
+        }
+    }
+
+    // ... (The rest of the methods remain the same) ...
     private void DrawStageAndCurrencySetup()
     {
-        EditorGUI.BeginChangeCheck();
-        _simulatedStage = EditorGUILayout.IntField("현재 클리어한 스테이지", _simulatedStage);
-        if (EditorGUI.EndChangeCheck())
+        if (GUILayout.Button("스테이지 정보 갱신"))
         {
-            if (_simulatedStage < 1) _simulatedStage = 1;
+            LoadAllTables();
             UpdateRewardsAndCurrency(_simulatedStage);
+            ShowNotification(new GUIContent("최신 스테이지 정보로 갱신했습니다."));
         }
+        EditorGUILayout.Space();
         
+        EditorGUI.BeginChangeCheck();
+
+        EditorGUILayout.BeginHorizontal();
+        var newStage = EditorGUILayout.IntField("현재 클리어한 스테이지", _simulatedStage);
+        if (GUILayout.Button("-", GUILayout.Width(25)))
+        {
+            newStage--;
+        }
+        if (GUILayout.Button("+", GUILayout.Width(25)))
+        {
+            newStage++;
+        }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.LabelField(" ", $"최대 스테이지: {_maxStage}");
+
+        float totalPower = 0;
+        foreach (var heroData in _heroSlots)
+        {
+            if (heroData.Npc != null)
+            {
+                St_Status finalStatus = heroData.GetUpgradedStatus(_statusTable, _upgradeSim);
+                totalPower += CalculateCombatPower(finalStatus);
+            }
+        }
+        EditorGUILayout.LabelField("팀 총 전투력", $"{totalPower:N0}", EditorStyles.boldLabel);
+
+        if (EditorGUI.EndChangeCheck() || newStage != _simulatedStage)
+        {
+            _simulatedStage = Mathf.Clamp(newStage, 0, _maxStage);
+            UpdateRewardsAndCurrency(_simulatedStage);
+            GUI.FocusControl(null);
+        }
+
+        EditorGUILayout.Space();
+
         EditorGUILayout.LabelField("보유 재화:", EditorStyles.boldLabel);
         if (_availableCurrency.Count > 0)
         {
-            foreach(var currency in _availableCurrency)
+            foreach (var currency in _availableCurrency)
             {
                 string itemName = _itemTable.SearchItemData(currency.Key)._itemname ?? $"ItemID: {currency.Key}";
                 EditorGUILayout.LabelField($"    {itemName}", currency.Value.ToString());
@@ -224,47 +341,47 @@ public class HeroPlacementEditor : EditorWindow
             EditorGUILayout.LabelField("    (재화 없음)");
         }
     }
-    
     private void DrawHeroSlot(int index)
     {
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         EditorGUILayout.LabelField($"영웅 슬롯 #{index + 1}", EditorStyles.boldLabel);
 
         string heroName = _heroSlots[index].Npc != null ? _heroSlots[index].Npc.name : "(영웅 없음)";
-        
+
         if (EditorGUILayout.DropdownButton(new GUIContent(heroName), FocusType.Passive))
         {
             GenericMenu menu = new GenericMenu();
-            
-            menu.AddItem(new GUIContent("(비우기)"), _heroSlots[index].Npc == null, () => {
+
+            menu.AddItem(new GUIContent("(비우기)"), _heroSlots[index].Npc == null, () =>
+            {
                 HandleHeroChange(index, null);
             });
-            
-            foreach(var hero in _heroTable.GetHeroList())
+
+            foreach (var hero in _heroTable.GetHeroList())
             {
-                menu.AddItem(new GUIContent(hero._npc.name), _heroSlots[index].Npc == hero._npc, () => {
+                menu.AddItem(new GUIContent(hero._npc.name), _heroSlots[index].Npc == hero._npc, () =>
+                {
                     HandleHeroChange(index, hero._npc);
                 });
             }
             menu.ShowAsContext();
         }
-        
-        if(_heroSlots[index].Npc != null)
+
+        if (_heroSlots[index].Npc != null)
         {
             _heroSlots[index].Grade = EditorGUILayout.IntSlider("등급", _heroSlots[index].Grade, 1, 5);
             DrawUpgradeButtons(index);
         }
-        
+
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space();
     }
-    
     private void HandleHeroChange(int slotIndex, SO_NPC newNpc)
     {
         SO_NPC oldNpc = _heroSlots[slotIndex].Npc;
-        if(oldNpc == newNpc) return;
+        if (oldNpc == newNpc) return;
 
-        if(oldNpc != null)
+        if (oldNpc != null)
         {
             RefundUpgrades(oldNpc._mid);
         }
@@ -272,24 +389,21 @@ public class HeroPlacementEditor : EditorWindow
         _heroSlots[slotIndex].Npc = newNpc;
         UpdateAvailableCurrency();
     }
-    
     private void RefundUpgrades(int heroId)
     {
         int totalCost = _upgradeSim.GetTotalCostForHero(heroId);
         int currencyId = 1;
         if (totalCost > 0)
         {
-             if(!_availableCurrency.ContainsKey(currencyId)) _availableCurrency[currencyId] = 0;
+            if (!_availableCurrency.ContainsKey(currencyId)) _availableCurrency[currencyId] = 0;
             _availableCurrency[currencyId] += totalCost;
         }
         _upgradeSim.ResetHeroUpgrades(heroId);
     }
-
-
     private void DrawUpgradeButtons(int index)
     {
         EditorGUILayout.LabelField("인게임 강화", EditorStyles.miniBoldLabel);
-        
+
         var heroData = _heroSlots[index];
         if (heroData.Npc == null) return;
 
@@ -300,8 +414,8 @@ public class HeroPlacementEditor : EditorWindow
 
             int currentLevel = _upgradeSim.GetUpgradeLevel(heroData.Npc._mid, upgradeType);
             int cost = _upgradeSim.GetNextUpgradeCost(currentLevel);
-            
-            int currencyId = 1; 
+
+            int currencyId = 1;
             bool canAfford = _availableCurrency.ContainsKey(currencyId) && _availableCurrency[currencyId] >= cost;
 
             string buttonText = $"{upgradeType.ToString()}\n(Lv.{currentLevel}) Cost: {cost}";
@@ -316,34 +430,16 @@ public class HeroPlacementEditor : EditorWindow
         }
         EditorGUILayout.EndHorizontal();
     }
-
-    private void DrawTotalCombatPower()
-    {
-        float totalPower = 0;
-        foreach(var heroData in _heroSlots)
-        {
-            if(heroData.Npc != null)
-            {
-                St_Status finalStatus = heroData.GetUpgradedStatus(_statusTable, _upgradeSim);
-                totalPower += CalculateCombatPower(finalStatus);
-            }
-        }
-
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("팀 총 전투력", $"{totalPower:N0}", EditorStyles.boldLabel);
-    }
-    
     private float CalculateCombatPower(St_Status status)
     {
         float attackPower = status._damge * (1 + status._critical * status._critical_damage);
         float defensePower = status._hp * (1 + status._armor / 100f);
         return attackPower + defensePower;
     }
-    
     private void UpdateRewardsAndCurrency(int targetStage)
     {
         CalculateTotalRewardsUpTo(targetStage);
-        
+
         int spentCurrency = 0;
         foreach (var slot in _heroSlots)
         {
@@ -359,10 +455,9 @@ public class HeroPlacementEditor : EditorWindow
             _upgradeSim.ResetAllUpgrades();
             ShowNotification(new GUIContent($"예산 초과! ({spentCurrency} > {totalObtained}) 모든 강화가 초기화됩니다."));
         }
-        
+
         UpdateAvailableCurrency();
     }
-
     private void UpdateAvailableCurrency()
     {
         _availableCurrency.Clear();
@@ -379,19 +474,18 @@ public class HeroPlacementEditor : EditorWindow
                 spentCurrency += _upgradeSim.GetTotalCostForHero(slot.Npc._mid);
             }
         }
-        
+
         if (_availableCurrency.ContainsKey(1))
         {
             _availableCurrency[1] -= spentCurrency;
         }
     }
-
     private void CalculateTotalRewardsUpTo(int targetStage)
     {
         _totalRewards.Clear();
         if (_chapterData == null || _monsterTable == null || _chapterListCache == null) return;
 
-        for (int i = 1; i <= targetStage; i++)
+        for (int i = 0; i <= targetStage; i++)
         {
             SO_StageData stageData = null;
             foreach (var chapter in _chapterListCache)
@@ -418,7 +512,6 @@ public class HeroPlacementEditor : EditorWindow
             }
         }
     }
-
     private void LoadAllTables()
     {
         _heroTable = AssetDatabase.FindAssets("t:SO_HeroTable").Select(guid => AssetDatabase.LoadAssetAtPath<SO_HeroTable>(AssetDatabase.GUIDToAssetPath(guid))).FirstOrDefault();
@@ -433,7 +526,23 @@ public class HeroPlacementEditor : EditorWindow
             if (field != null)
             {
                 _chapterListCache = (List<St_ChapterData>)field.GetValue(_chapterData);
+                CalculateMaxStage();
             }
         }
+    }
+    private void CalculateMaxStage()
+    {
+        if (_chapterListCache == null || !_chapterListCache.Any())
+        {
+            _maxStage = 0;
+            return;
+        }
+
+        _maxStage = _chapterListCache
+            .Where(c => c._stagedata != null && c._stagedata.Any())
+            .SelectMany(c => c._stagedata)
+            .Max(s => s._stageid);
+
+        if (_maxStage < 0) _maxStage = 0;
     }
 }

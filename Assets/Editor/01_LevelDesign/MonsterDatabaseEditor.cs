@@ -25,8 +25,9 @@ public class MonsterDatabaseEditor : EditorWindow
     private bool _showSkillsFoldout = true;
     private bool _showBasicAttackFoldout = true;
     private bool _showUniqueSkillsFoldout = true;
+    private List<bool> _uniqueSkillFoldouts = new List<bool>();
     
-    [MenuItem("Tools/Monster Database Editor")]
+    [MenuItem("Tools/Level Design/Monster Database Editor")]
     public static void ShowWindow()
     {
         GetWindow<MonsterDatabaseEditor>("Monster Database");
@@ -46,6 +47,12 @@ public class MonsterDatabaseEditor : EditorWindow
 
     private void OnGUI()
     {
+        if (GUILayout.Button("Home", GUILayout.Width(60)))
+        {
+            LevelDesignHome.ShowWindow();
+            this.Close();
+        }
+
         if (_monsterTable == null)
         {
             EditorGUILayout.HelpBox("SO_MonsterTable을 찾을 수 없습니다. 프로젝트에 해당 에셋이 있는지 확인해주세요.", MessageType.Error);
@@ -292,9 +299,32 @@ public class MonsterDatabaseEditor : EditorWindow
 
                 if (_selectedMonster._skill_chose_list != null)
                 {
-                    for(int i = 0; i < _selectedMonster._skill_chose_list.Length; i++)
+                    while (_uniqueSkillFoldouts.Count < _selectedMonster._skill_chose_list.Length)
                     {
-                        DrawSkillDetails(_selectedMonster._skill_chose_list[i], $"고유 스킬 {i+1} 상세");
+                        _uniqueSkillFoldouts.Add(false);
+                    }
+                    while (_uniqueSkillFoldouts.Count > _selectedMonster._skill_chose_list.Length)
+                    {
+                        _uniqueSkillFoldouts.RemoveAt(_uniqueSkillFoldouts.Count - 1);
+                    }
+
+                    for (int i = 0; i < _selectedMonster._skill_chose_list.Length; i++)
+                    {
+                        BaseSkill skill = _selectedMonster._skill_chose_list[i];
+                        if (skill != null)
+                        {
+                            _uniqueSkillFoldouts[i] = EditorGUILayout.Foldout(_uniqueSkillFoldouts[i], $"고유 스킬 {i + 1}: {skill._skillInfo._name ?? "이름 없음"}", true);
+                            if (_uniqueSkillFoldouts[i])
+                            {
+                                EditorGUI.indentLevel++;
+                                DrawSkillDetails(skill);
+                                EditorGUI.indentLevel--;
+                            }
+                        }
+                        else
+                        {
+                            EditorGUILayout.LabelField($"고유 스킬 {i + 1}: (비어있음)");
+                        }
                     }
                 }
                 EditorGUI.indentLevel--;
@@ -404,14 +434,9 @@ public class MonsterDatabaseEditor : EditorWindow
         }
     }
 
-    private void DrawSkillDetails(BaseSkill skill, string label = "")
+    private void DrawSkillDetails(BaseSkill skill)
     {
         if (skill == null) return;
-        
-        if (!string.IsNullOrEmpty(label))
-        {
-            EditorGUILayout.LabelField(label, EditorStyles.miniBoldLabel);
-        }
         
         SerializedObject skillSO = new SerializedObject(skill);
         

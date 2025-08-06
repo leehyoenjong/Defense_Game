@@ -28,8 +28,13 @@ public class MonsterSpawnManager : MonoBehaviour
     {
         for (int i = 0; i < _active_monsterlist.Count; i++)
         {
+            if (_active_monsterlist[i] == null)
+            {
+                continue;
+            }
             Destroy(_active_monsterlist[i].gameObject);
         }
+        _active_monsterlist.Clear();
 
         PlayManager._ongamestatechanged -= CreateMonster;
         Monster_Base._monster_die_animation_exit -= (diemon) => RemoveMonsterList(diemon);
@@ -60,7 +65,7 @@ public class MonsterSpawnManager : MonoBehaviour
             // 다음 스테이지 대기
             await WaitForNextStage();
 
-            PlayManager.TriggerChapterNext();
+            PlayManager.TriggerStageNext();
         }
     }
 
@@ -100,7 +105,6 @@ public class MonsterSpawnManager : MonoBehaviour
             PlayManager.TriggerChapterNext();
             return false;
         }
-
         return true;
     }
 
@@ -151,6 +155,7 @@ public class MonsterSpawnManager : MonoBehaviour
 
     Vector3 MonsterCreatePoint()
     {
+        Debug.Log($"{this.gameObject.name}");
         var randomindex = UnityEngine.Random.Range(0, _createpoint.Length);
         var createpoint = _createpoint[randomindex].position;
         createpoint.x += UnityEngine.Random.Range(-1f, 1f);

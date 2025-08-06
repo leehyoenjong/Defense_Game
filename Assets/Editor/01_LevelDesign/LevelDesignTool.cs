@@ -13,7 +13,7 @@ public class LevelDesignTool : EditorWindow
     private SO_MonsterTable _monsterTable;
     private SO_Item_Table _itemTable;
 
-    [MenuItem("Tools/Level Design Tool")]
+    [MenuItem("Tools/Level Design/Level Design Tool")]
     public static void ShowWindow()
     {
         GetWindow<LevelDesignTool>("Level Design Tool");
@@ -39,6 +39,12 @@ public class LevelDesignTool : EditorWindow
 
     private void OnGUI()
     {
+        if (GUILayout.Button("Home", GUILayout.Width(60)))
+        {
+            LevelDesignHome.ShowWindow();
+            this.Close();
+        }
+
         GUILayout.Label("레벨 디자인 툴", EditorStyles.boldLabel);
 
         _chapterData = (SO_ChapterData)EditorGUILayout.ObjectField("챕터 데이터", _chapterData, typeof(SO_ChapterData), false);

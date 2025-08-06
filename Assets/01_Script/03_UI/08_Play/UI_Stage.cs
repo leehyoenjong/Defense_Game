@@ -10,21 +10,22 @@ public class UI_Stage : MonoBehaviour
     void Start()
     {
         PlayManager._ongamestatechanged += StageNumberSetting;
-        PlayManager._ongamestatechanged += StageNumberSetting;
     }
     void OnDisable()
     {
-        PlayManager._ongamestatechanged -= StageNumberSetting;
         PlayManager._ongamestatechanged -= StageNumberSetting;
     }
 
     void StageNumberSetting(GameStateData gamestate)
     {
-        if (gamestate._state != EPLAYSTATE.CHAPTER_NEXT && gamestate._state != EPLAYSTATE.CHAPTER_START)
+        switch (gamestate._state)
         {
-            return;
+            case EPLAYSTATE.STAGE_NEXT:
+            case EPLAYSTATE.STAGE_START:
+            case EPLAYSTATE.CHAPTER_NEXT:
+            case EPLAYSTATE.CHAPTER_START:
+                _stagenumber.text = string.Format(STAGENUMBER, gamestate._currentstage, gamestate._maxstagecount);
+                break;
         }
-
-        _stagenumber.text = string.Format(STAGENUMBER, gamestate._currentstage, gamestate._maxstagecount);
     }
 }

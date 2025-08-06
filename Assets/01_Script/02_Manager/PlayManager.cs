@@ -38,7 +38,8 @@ public class PlayManager : MonoBehaviour
 
     void Start()
     {
-        _current_chapter_id = UserData._userdata._userchapterdata._lastchapternumber;
+        //_current_chapter_id = UserData._userdata._userchapterdata._lastchapternumber;
+        _current_chapter_id = 0;
         _current_stage_id = 0;
         PlayGame().Forget();
     }
@@ -69,6 +70,8 @@ public class PlayManager : MonoBehaviour
         // 게임 준비 상태
         _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.READY));
 
+        await UniTask.WaitForEndOfFrame(cancellationToken: this.GetCancellationTokenOnDestroy());
+
         // 스테이지/챕터 시작
         _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.STAGE_START, _current_stage_id, MAXSTAGECOUNT, _current_chapter_id));
 
@@ -81,14 +84,12 @@ public class PlayManager : MonoBehaviour
     void StageClear()
     {
         _current_stage_id++;
-        _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.STAGE_NEXT, _current_stage_id, MAXSTAGECOUNT, _current_chapter_id));
     }
 
     void ChapterUpdate()
     {
         _current_chapter_id++;
         _current_stage_id = 0;
-        _ongamestatechanged?.Invoke(new GameStateData(EPLAYSTATE.CHAPTER_START, _current_stage_id, MAXSTAGECOUNT, _current_chapter_id));
     }
 
     void CreateGameOver()

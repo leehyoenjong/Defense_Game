@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     void OnApplicationQuit()
     {
+        BaseSkill._skill_target_dictionary_list.Clear();
         if (BackEnd.Backend.IsInitialized == false)
         {
             return;
