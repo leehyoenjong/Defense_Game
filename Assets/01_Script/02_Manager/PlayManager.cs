@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -17,9 +18,8 @@ public class PlayManager : MonoBehaviour
     public int GetCurrentChapterID() => _current_chapter_id;
     protected int _current_stage_id;
     public int GetCurrentStageID() => _current_stage_id;
-
     const int MAXSTAGECOUNT = 10;//하나의 챕터에 총 10개의 스테이지가 존재 
-
+    List<(EQUESTVALUETYPE, int)> _questvaluelist = new List<(EQUESTVALUETYPE, int)>();
 
     void Awake()
     {
@@ -101,6 +101,17 @@ public class PlayManager : MonoBehaviour
         bool isclear = currentchapterdata._stagedata == null || currentchapterdata._stagedata.Count <= 0;
         gameover.GetComponent<UI_GameOver>().Init(_current_chapter_id, _current_stage_id, isclear);
     }
+
+    public void AddQuestValueList(EQUESTVALUETYPE tpyes, int questid)
+    {
+        if (_questvaluelist.Contains((tpyes, questid)))
+        {
+            return;
+        }
+        _questvaluelist.Add((tpyes, questid));
+    }
+    public void ClearQuestValueList() => _questvaluelist.Clear();
+    public List<(EQUESTVALUETYPE, int)> GetQuestValueList() => _questvaluelist;
 
     /// <summary>
     /// 외부에서 게임 상태 변경을 요청할 때 사용하는 메서드들 (하위 호환성)

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using BackEnd;
 using UnityEngine;
 using LitJson;
@@ -275,6 +274,8 @@ public struct St_UserQuestData
                 return;
         }
 
+        PlayManager.instance.AddQuestValueList(questvaluetype, targetid);
+
         //동일한 _questvaluetype의 모든  _questtype에 업데이트 해주어야하기 때문에 반복문을 통해 업데이트 값 추가 해주기
         var maxcount = (int)EQUESTTYPE.MAX;
         for (int i = 0; i < maxcount; i++)
@@ -290,15 +291,31 @@ public struct St_UserQuestData
                 userquest._targetid = targetid;
                 userquest._totalvalue = targetvalue;
                 _questvaluelist.Add(userquest);
-                BackEndLog.WriteLog(LogType.QUEST, $"퀘스트 타입:{targetquesttype.ToString()} / 퀘스트 아이템 아이디: {targetid} / 획득 후:{userquest._totalvalue}");
                 continue;
             }
             userquest = _questvaluelist[questindex];
             var beforevalue = userquest._totalvalue;
             userquest._totalvalue += targetvalue;
             _questvaluelist[questindex] = userquest;
-            BackEndLog.WriteLog(LogType.QUEST, $"퀘스트 타입:{targetquesttype.ToString()} / 퀘스트 아이템 아이디: {targetid} / 획득 전:{beforevalue} / 획득 후:{userquest._totalvalue}");
         }
+    }
+
+    public void QuestLog(EQUESTVALUETYPE questvaluetype, int targetid)
+    {
+        var maxcount = (int)EQUESTTYPE.MAX;
+        for (int i = 0; i < maxcount; i++)
+        {
+            St_UserQuestList userquest = default;
+            var targetquesttype = (EQUESTTYPE)i;
+            var questindex = _questvaluelist.FindIndex(x => x._questvaluetype == questvaluetype && x._questtype == targetquesttype && x._targetid == targetid);
+
+            if (questindex == -1)
+            {
+                continue;
+            }
+            BackEndLog.WriteLog(LogType.QUEST, $"퀘스트 타입:{targetquesttype.ToString()} / 퀘스트 아이템 아이디: {targetid} / 값:{userquest._totalvalue}");
+        }
+
     }
 }
 
