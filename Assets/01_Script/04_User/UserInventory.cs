@@ -39,7 +39,7 @@ public struct St_UserInventory
 
             for (int i = 0; i < maxcount; i++)
             {
-                try
+                
                 {
                     var itemJsonData = userinvendata[i];
                     Debug.Log($"아이템 [{i}] 타입: {itemJsonData.GetType()}");

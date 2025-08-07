@@ -61,6 +61,24 @@ public class ToolHome : EditorWindow
             QuestDatabaseEditor.ShowWindow();
             this.Close();
         }
+
+        if (GUILayout.Button("Upgrade Database Editor", GUILayout.Height(30)))
+        {
+            UpgradeDatabaseEditor.ShowWindow();
+            this.Close();
+        }
+
+        if (GUILayout.Button("Status Database Editor", GUILayout.Height(30)))
+        {
+            StatusDatabaseEditor.ShowWindow();
+            this.Close();
+        }
+
+        if (GUILayout.Button("Protect Object Database Editor", GUILayout.Height(30)))
+        {
+            ProtectObjectDatabaseEditor.ShowWindow();
+            this.Close();
+        }
     }
 }
 

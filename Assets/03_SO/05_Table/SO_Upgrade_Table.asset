@@ -15,16 +15,16 @@ MonoBehaviour:
   _upgradetable:
   - _grade: 1
     _priceitemid: 1
-    _price: 0
+    _price: 10000
   - _grade: 2
     _priceitemid: 1
-    _price: 0
+    _price: 20000
   - _grade: 3
     _priceitemid: 1
-    _price: 0
+    _price: 30000
   - _grade: 4
     _priceitemid: 1
-    _price: 0
+    _price: 40000
   - _grade: 5
     _priceitemid: 1
-    _price: 0
+    _price: 50000

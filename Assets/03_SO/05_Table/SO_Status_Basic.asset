@@ -22,12 +22,6 @@ MonoBehaviour:
       _armor: 0
       _critical: 0
       _critical_damage: 0
-    - _grade: 0
-      _hp: 100
-      _damge: 10
-      _armor: 0
-      _critical: 0
-      _critical_damage: 0
     - _grade: 1
       _hp: 100
       _damge: 20

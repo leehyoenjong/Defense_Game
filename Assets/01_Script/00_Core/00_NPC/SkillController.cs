@@ -148,11 +148,7 @@ public class SkillController : MonoBehaviour
             _skilldurationtoken.Add(skillinfo._mid, null);
         }
 
-        if (_skilldurationtoken[skillinfo._mid] != null)
-        {
-            _skilldurationtoken[skillinfo._mid].Cancel();
-            _skilldurationtoken[skillinfo._mid].Dispose();
-        }
+        _skilldurationtoken[skillinfo._mid]?.Cancel();
         _skilldurationtoken[skillinfo._mid] = new CancellationTokenSource();
 
         await UniTask.WaitForSeconds(skillinfo._duration, cancellationToken: _skilldurationtoken[skillinfo._mid].Token);
@@ -171,11 +167,8 @@ public class SkillController : MonoBehaviour
             _skillcooltimetoken.Add(skillinfo._mid, null);
         }
 
-        if (_skillcooltimetoken[skillinfo._mid] != null)
-        {
-            _skillcooltimetoken[skillinfo._mid].Cancel();
-            _skillcooltimetoken[skillinfo._mid].Dispose();
-        }
+        _skillcooltimetoken[skillinfo._mid]?.Cancel();
+
         _skillcooltimetoken[skillinfo._mid] = new CancellationTokenSource();
 
         _skillcoolTime[skillinfo._mid] = true;
@@ -204,8 +197,8 @@ public class SkillController : MonoBehaviour
                 continue;
             }
 
-            item.Value.Cancel();
-            item.Value.Dispose();
+            item.Value?.Cancel();
+            item.Value?.Dispose();
         }
 
         foreach (var item in _skilldurationtoken)
@@ -215,8 +208,8 @@ public class SkillController : MonoBehaviour
                 continue;
             }
 
-            item.Value.Cancel();
-            item.Value.Dispose();
+            item.Value?.Cancel();
+            item.Value?.Dispose();
         }
     }
 }
