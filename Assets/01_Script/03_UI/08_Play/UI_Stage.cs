@@ -3,9 +3,11 @@ using UnityEngine;
 
 public class UI_Stage : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI _chapternumber;
     [SerializeField] TextMeshProUGUI _stagenumber;
 
     string STAGENUMBER = "STAGE {0}/{1}";
+    string CHAPTERNUMBER = "CHAPTER {0}";
 
     void Start()
     {
@@ -20,14 +22,13 @@ public class UI_Stage : MonoBehaviour
     {
         switch (gamestate._state)
         {
-            case EPLAYSTATE.STAGE_NEXT:
             case EPLAYSTATE.STAGE_START:
+            case EPLAYSTATE.STAGE_NEXT:
             case EPLAYSTATE.CHAPTER_NEXT:
             case EPLAYSTATE.CHAPTER_START:
-
-                Debug.Log($"gamestate: {gamestate._state} currentstage: {gamestate._currentstage}, maxstagecount: {gamestate._maxstagecount}");
-                var currentstagenum = gamestate._currentstage + 1;
-                _stagenumber.text = string.Format(STAGENUMBER, currentstagenum, gamestate._maxstagecount);
+                _chapternumber.text = string.Format(CHAPTERNUMBER, PlayManager.instance.GetCurrentChapterID());
+                var stageid = PlayManager.instance.GetCurrentStageID() + 1;
+                _stagenumber.text = string.Format(STAGENUMBER, stageid, gamestate._maxstagecount);
                 break;
         }
     }

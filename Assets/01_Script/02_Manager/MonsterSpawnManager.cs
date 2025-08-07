@@ -150,6 +150,8 @@ public class MonsterSpawnManager : MonoBehaviour
                 mon.OnSpawn(MonsterMovePoint());
             }
         }
+
+        Debug.Log($"생성된 모든 몬스터 : {_active_monsterlist.Count}");
     }
 
     /// <summary>

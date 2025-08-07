@@ -36,6 +36,11 @@ public class PoolSystem_Monster : MonoBehaviour
 
     void ReleseMonster(Monster_Base mon)
     {
+        if (mon.gameObject.activeSelf == false)
+        {
+            return;
+        }
+
         if (_mon.ContainsKey(mon.GetID()) == false)
         {
             _mon.Add(mon.GetID(), new Queue<Monster_Base>());

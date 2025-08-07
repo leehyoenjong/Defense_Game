@@ -337,7 +337,7 @@ public class ProtectObjectDatabaseEditor : EditorWindow
         }
     }
 
-    private void SaveChanges()
+    private new void SaveChanges()
     {
         SetAllDirty();
         if (_statusTable != null && _statusList != null)

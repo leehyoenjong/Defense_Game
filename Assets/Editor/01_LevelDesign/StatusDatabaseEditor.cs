@@ -59,7 +59,7 @@ public class StatusDatabaseEditor : EditorWindow
                 DrawDetailView();
                 break;
         }
-        
+
         if (GUI.changed)
         {
             EditorUtility.SetDirty(_statusTable);
@@ -75,7 +75,7 @@ public class StatusDatabaseEditor : EditorWindow
         }
     }
 
-    private bool SaveChanges()
+    private new bool SaveChanges()
     {
         var allStatusEntries = _statusTable._statuslist
             .Concat(_statusTable._statuslist_object)
@@ -166,7 +166,7 @@ public class StatusDatabaseEditor : EditorWindow
         var allMids = _statusTable._statuslist.Select(s => s._mid)
             .Concat(_statusTable._statuslist_object.Select(s => s._mid))
             .Concat(_statusTable._statuslist_monster.Select(s => s._mid));
-        
+
         int newId = allMids.Any() ? allMids.Max() + 1 : 1;
 
         St_StatusTable newStatus = new St_StatusTable
@@ -201,10 +201,10 @@ public class StatusDatabaseEditor : EditorWindow
         if (_editableStatus._statuslist == null) _editableStatus._statuslist = new List<St_Status>();
 
         int removeGradeIndex = -1;
-        for(int i = 0; i < _editableStatus._statuslist.Count; i++)
+        for (int i = 0; i < _editableStatus._statuslist.Count; i++)
         {
             St_Status status = _editableStatus._statuslist[i];
-            
+
             if (!_gradeFoldouts.ContainsKey(status._grade))
             {
                 _gradeFoldouts[status._grade] = true;

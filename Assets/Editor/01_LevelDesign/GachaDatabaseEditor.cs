@@ -79,7 +79,7 @@ public class GachaDatabaseEditor : EditorWindow
         {
             _gachaTable._gachatable[_selectedGachaIndex] = _editableGachaItem;
         }
-        
+
         var duplicateGroups = _gachaTable._gachatable
             .GroupBy(item => item._gachaid)
             .Where(group => group.Count() > 1)
@@ -257,7 +257,7 @@ public class GachaDatabaseEditor : EditorWindow
 
         if (GUILayout.Button("적용하고 목록으로"))
         {
-            if(SaveTable())
+            if (SaveTable())
             {
                 _currentView = View.List;
                 _selectedGachaIndex = -1;

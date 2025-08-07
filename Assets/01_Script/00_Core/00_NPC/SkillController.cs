@@ -192,24 +192,30 @@ public class SkillController : MonoBehaviour
     {
         foreach (var item in _skillcooltimetoken)
         {
-            if (item.Value == null)
+            try
             {
-                continue;
+                item.Value?.Cancel();
+                item.Value?.Dispose();
             }
-
-            item.Value?.Cancel();
-            item.Value?.Dispose();
+            catch (ObjectDisposedException)
+            {
+                // CancellationTokenSource가 이미 삭제된 경우 예외를 무시합니다.
+            }
         }
+        _skillcooltimetoken.Clear();
 
         foreach (var item in _skilldurationtoken)
         {
-            if (item.Value == null)
+            try
             {
-                continue;
+                item.Value?.Cancel();
+                item.Value?.Dispose();
             }
-
-            item.Value?.Cancel();
-            item.Value?.Dispose();
+            catch (ObjectDisposedException)
+            {
+                // CancellationTokenSource가 이미 삭제된 경우 예외를 무시합니다.
+            }
         }
+        _skilldurationtoken.Clear();
     }
 }

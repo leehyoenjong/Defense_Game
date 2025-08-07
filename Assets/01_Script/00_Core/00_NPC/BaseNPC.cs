@@ -94,8 +94,7 @@ public abstract class BaseNPC : MonoBehaviour
 
     public virtual void OnRelease()
     {
-        //사망 애니메이션 끝나면 꺼버리기
-        this.gameObject.SetActive(false);
+        
     }
 
     public virtual void Target_To_Attack(BaseNPC target_npc, int totaldamage)
