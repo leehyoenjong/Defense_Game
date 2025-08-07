@@ -1,6 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 public class LevelDesignTool : EditorWindow
 {
@@ -9,6 +11,8 @@ public class LevelDesignTool : EditorWindow
     private Vector2 _scrollPosition;
     private float _totalCombatPower;
     private Dictionary<int, int> _totalRewards;
+    private Dictionary<int, bool> _chapterFoldouts = new Dictionary<int, bool>();
+    private Dictionary<int, float> _chapterCopyMultipliers = new Dictionary<int, float>();
 
     private SO_MonsterTable _monsterTable;
     private SO_Item_Table _itemTable;
@@ -55,6 +59,11 @@ public class LevelDesignTool : EditorWindow
             return;
         }
 
+        if (GUILayout.Button("Add New Chapter"))
+        {
+            AddChapter();
+        }
+
         EditorGUILayout.Space();
 
         if (_selectedStage != null)
@@ -81,19 +90,70 @@ public class LevelDesignTool : EditorWindow
 
         _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
 
-        foreach (var chapter in chapterList)
+        for (int i = chapterList.Count - 1; i >= 0; i--)
         {
-            EditorGUILayout.LabelField($"챕터 ID: {chapter._chapterid}", EditorStyles.boldLabel);
-
-            if (chapter._stagedata != null)
+            var chapter = chapterList[i];
+            if (!_chapterFoldouts.ContainsKey(chapter._chapterid))
             {
-                foreach (var stage in chapter._stagedata)
+                _chapterFoldouts[chapter._chapterid] = false;
+            }
+            if (!_chapterCopyMultipliers.ContainsKey(chapter._chapterid))
+            {
+                _chapterCopyMultipliers[chapter._chapterid] = 1f;
+            }
+
+            EditorGUILayout.BeginHorizontal();
+            _chapterFoldouts[chapter._chapterid] = EditorGUILayout.Foldout(_chapterFoldouts[chapter._chapterid], $"챕터 ID: {chapter._chapterid}", true, EditorStyles.foldoutHeader);
+
+            if (GUILayout.Button("챕터 삭제", GUILayout.Width(80)))
+            {
+                if (EditorUtility.DisplayDialog("챕터 삭제 확인", $"챕터 {chapter._chapterid}와 모든 하위 스테이지를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.", "삭제", "취소"))
                 {
-                    if (GUILayout.Button($"스테이지 {stage._stageid}"))
+                    DeleteChapter(chapter);
+                    continue;
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+
+            if (_chapterFoldouts[chapter._chapterid])
+            {
+                EditorGUILayout.BeginHorizontal();
+
+                if (GUILayout.Button("스테이지 추가", GUILayout.Width(100)))
+                {
+                    AddStage(chapter);
+                }
+
+                if (GUILayout.Button("챕터 복사", GUILayout.Width(100)))
+                {
+                    CopyChapter(chapter, _chapterCopyMultipliers[chapter._chapterid]);
+                }
+                _chapterCopyMultipliers[chapter._chapterid] = EditorGUILayout.FloatField("배율", _chapterCopyMultipliers[chapter._chapterid]);
+
+                EditorGUILayout.EndHorizontal();
+
+                if (chapter._stagedata != null)
+                {
+                    for (int j = 0; j < chapter._stagedata.Count; j++)
                     {
-                        _selectedStage = stage;
-                        _totalCombatPower = CombatPowerCalculator.Calculate(_selectedStage);
-                        CalculateTotalRewards();
+                        var stage = chapter._stagedata[j];
+                        EditorGUILayout.BeginHorizontal();
+                        GUILayout.Space(30);
+                        if (GUILayout.Button($"스테이지 {j} (ID: {stage._stageid})"))
+                        {
+                            _selectedStage = stage;
+                            _totalCombatPower = CombatPowerCalculator.Calculate(_selectedStage);
+                            CalculateTotalRewards();
+                        }
+                        if (GUILayout.Button("삭제", GUILayout.Width(50)))
+                        {
+                            if (EditorUtility.DisplayDialog("스테이지 삭제 확인", $"스테이지 {j} (ID: {stage._stageid})를 삭제하시겠습니까?", "삭제", "취소"))
+                            {
+                                DeleteStage(chapter, stage);
+                                continue;
+                            }
+                        }
+                        EditorGUILayout.EndHorizontal();
                     }
                 }
             }
@@ -138,7 +198,37 @@ public class LevelDesignTool : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
 
-            wave._monsterid = EditorGUILayout.IntField("몬스터 ID", wave._monsterid);
+            string monsterName = "몬스터 선택";
+            if (wave._monsterid > 0)
+            {
+                var monsterInfo = _monsterTable.GetMonsterInfo(wave._monsterid);
+                if (monsterInfo._npc != null)
+                {
+                    monsterName = monsterInfo._npc.name;
+                }
+                else
+                {
+                    monsterName = $"ID Not Found: {wave._monsterid}";
+                }
+            }
+
+            if (EditorGUILayout.DropdownButton(new GUIContent(monsterName), FocusType.Passive, GUILayout.Width(150)))
+            {
+                GenericMenu menu = new GenericMenu();
+                foreach (var monsterEntry in _monsterTable.GetMonsterList())
+                {
+                    int currentId = i;
+                    menu.AddItem(new GUIContent(monsterEntry._npc.name), wave._monsterid == monsterEntry._npc._mid, () =>
+                    {
+                        var changedWave = _selectedStage._monsterlist[currentId];
+                        changedWave._monsterid = monsterEntry._npc._mid;
+                        _selectedStage._monsterlist[currentId] = changedWave;
+                        GUI.changed = true;
+                    });
+                }
+                menu.ShowAsContext();
+            }
+
             wave._count = EditorGUILayout.IntField("수량", wave._count);
             wave._delaytime = EditorGUILayout.FloatField("딜레이", wave._delaytime);
 
@@ -200,5 +290,144 @@ public class LevelDesignTool : EditorWindow
                 }
             }
         }
+    }
+
+    private void AddChapter()
+    {
+        var chapterDataField = typeof(SO_ChapterData).GetField("_chapterdata", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var chapterList = chapterDataField.GetValue(_chapterData) as List<St_ChapterData>;
+
+        St_ChapterData newChapter = new St_ChapterData
+        {
+            _chapterid = chapterList.Any() ? chapterList.Max(c => c._chapterid) + 1 : 1,
+            _stagedata = new List<SO_StageData>()
+        };
+
+        chapterList.Add(newChapter);
+        EditorUtility.SetDirty(_chapterData);
+        ShowNotification(new GUIContent($"Chapter {newChapter._chapterid} has been added."));
+    }
+
+    private void AddStage(St_ChapterData chapter)
+    {
+        SO_StageData newStage = CreateInstance<SO_StageData>();
+
+        if (chapter._stagedata == null)
+        {
+            chapter._stagedata = new List<SO_StageData>();
+        }
+
+        int localStageIndex = chapter._stagedata.Count;
+        newStage._stageid = localStageIndex;
+        newStage._monsterlist = new List<St_Stage>();
+
+        string chapterFolderPath = $"Assets/03_SO/04_Chapter/Chapter_{chapter._chapterid}";
+        if (!Directory.Exists(chapterFolderPath))
+        {
+            Directory.CreateDirectory(chapterFolderPath);
+        }
+
+        string assetPath = AssetDatabase.GenerateUniqueAssetPath($"{chapterFolderPath}/SO_Stage_{localStageIndex}.asset");
+        AssetDatabase.CreateAsset(newStage, assetPath);
+
+        chapter._stagedata.Add(newStage);
+
+        EditorUtility.SetDirty(_chapterData);
+        EditorUtility.SetDirty(newStage);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+        ShowNotification(new GUIContent($"Stage {newStage._stageid} has been added to Chapter {chapter._chapterid}."));
+    }
+    private void CopyChapter(St_ChapterData sourceChapter, float multiplier)
+    {
+        var chapterDataField = typeof(SO_ChapterData).GetField("_chapterdata", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var chapterList = chapterDataField.GetValue(_chapterData) as List<St_ChapterData>;
+
+        St_ChapterData newChapter = new St_ChapterData
+        {
+            _chapterid = chapterList.Any() ? chapterList.Max(c => c._chapterid) + 1 : 1,
+            _stagedata = new List<SO_StageData>()
+        };
+
+        string newChapterFolderPath = $"Assets/03_SO/04_Chapter/Chapter_{newChapter._chapterid}";
+        Directory.CreateDirectory(newChapterFolderPath);
+
+        foreach (var sourceStage in sourceChapter._stagedata)
+        {
+            SO_StageData newStage = Instantiate(sourceStage);
+            newStage._stageid = sourceStage._stageid;
+
+            for (int i = 0; i < newStage._monsterlist.Count; i++)
+            {
+                var wave = newStage._monsterlist[i];
+                wave._count = (int)(wave._count * multiplier);
+                newStage._monsterlist[i] = wave;
+            }
+
+            string newAssetPath = AssetDatabase.GenerateUniqueAssetPath($"{newChapterFolderPath}/SO_Stage_{newStage._stageid}.asset");
+            AssetDatabase.CreateAsset(newStage, newAssetPath);
+            newChapter._stagedata.Add(newStage);
+            EditorUtility.SetDirty(newStage);
+        }
+
+        chapterList.Add(newChapter);
+        EditorUtility.SetDirty(_chapterData);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        ShowNotification(new GUIContent($"Chapter {sourceChapter._chapterid} has been copied to Chapter {newChapter._chapterid} with a {multiplier}x multiplier."));
+    }
+
+    private void DeleteChapter(St_ChapterData chapter)
+    {
+        if (chapter._stagedata != null)
+        {
+            // Delete all stage assets within this chapter
+            foreach (var stage in chapter._stagedata)
+            {
+                if (stage != null)
+                {
+                    string assetPath = AssetDatabase.GetAssetPath(stage);
+                    AssetDatabase.DeleteAsset(assetPath);
+                }
+            }
+        }
+
+        // Delete the chapter folder
+        string chapterFolderPath = $"Assets/03_SO/04_Chapter/Chapter_{chapter._chapterid}";
+        if (Directory.Exists(chapterFolderPath))
+        {
+            FileUtil.DeleteFileOrDirectory(chapterFolderPath);
+            FileUtil.DeleteFileOrDirectory(chapterFolderPath + ".meta");
+            AssetDatabase.Refresh();
+        }
+
+        // Remove the chapter from the list in SO_ChapterData
+        var chapterDataField = typeof(SO_ChapterData).GetField("_chapterdata", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        var chapterList = chapterDataField.GetValue(_chapterData) as List<St_ChapterData>;
+        chapterList.Remove(chapter);
+
+        _chapterFoldouts.Remove(chapter._chapterid);
+        _chapterCopyMultipliers.Remove(chapter._chapterid);
+
+
+        EditorUtility.SetDirty(_chapterData);
+        ShowNotification(new GUIContent($"Chapter {chapter._chapterid} has been deleted."));
+    }
+
+    private void DeleteStage(St_ChapterData chapter, SO_StageData stage)
+    {
+        if (_selectedStage == stage)
+        {
+            _selectedStage = null;
+        }
+
+        string assetPath = AssetDatabase.GetAssetPath(stage);
+        AssetDatabase.DeleteAsset(assetPath);
+
+        chapter._stagedata.Remove(stage);
+
+        EditorUtility.SetDirty(_chapterData);
+        ShowNotification(new GUIContent($"Stage {stage._stageid} has been deleted."));
     }
 }
