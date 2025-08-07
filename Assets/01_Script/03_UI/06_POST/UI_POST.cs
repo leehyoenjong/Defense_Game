@@ -74,7 +74,7 @@ public class UI_POST : MonoBehaviour
         // 모든 보상을 한번에 처리
         if (allRewardList.Count > 0)
         {
-            RewardManager.instance.CraeteReward(allRewardList);
+            RewardManager.instance.CreateReward(allRewardList);
         }
 
         // 모든 슬롯 비활성화

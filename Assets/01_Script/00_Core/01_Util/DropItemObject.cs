@@ -11,14 +11,12 @@ public class DropItemObject : MonoBehaviour
     public static event Action<int, int> _drop_item_event;
 
     int _dropitemid, _totalvalue;
-    Vector3 _start_pos;
 
     public void Setting(int itemid, int totalvalue)
     {
         _sprite.sprite = DataManager.instance.GetItemTable().SearchItemData(itemid)._itemicon;
         _dropitemid = itemid;
         _totalvalue = totalvalue;
-        _start_pos = transform.position; // 시작 위치 저장
         Destroy(this.gameObject, 1f);
     }
 
@@ -26,7 +24,7 @@ public class DropItemObject : MonoBehaviour
     {
         // 목표 위치로 이동
         transform.position = Vector3.MoveTowards(transform.position, _target_pos, _speed * Time.deltaTime);
-        
+
         // Y축 회전
         transform.Rotate(0, _rotation_speed * Time.deltaTime, 0);
     }

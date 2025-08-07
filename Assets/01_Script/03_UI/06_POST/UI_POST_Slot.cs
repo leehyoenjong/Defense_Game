@@ -43,7 +43,7 @@ public class UI_POST_Slot : MonoBehaviour
 
         if (rewardList.Count > 0)
         {
-            RewardManager.instance.CraeteReward(rewardList);
+            RewardManager.instance.CreateReward(rewardList);
         }
 
         this.gameObject.SetActive(false);

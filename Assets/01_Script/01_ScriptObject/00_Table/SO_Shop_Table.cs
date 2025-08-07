@@ -86,7 +86,7 @@ public class SO_Shop_Table : ScriptableObject
             totalresult.AddRange(GetItemOpen(shopdata._sellitemlist[i]));
         }
 
-        RewardManager.instance.CraeteReward(totalresult);
+        RewardManager.instance.CreateReward(totalresult);
         return true;
     }
 }

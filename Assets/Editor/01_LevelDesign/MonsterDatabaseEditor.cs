@@ -213,15 +213,34 @@ public class MonsterDatabaseEditor : EditorWindow
             {
                 St_MonsterTable monsterEntry = monsterList[monsterIndex];
 
-                monsterEntry._drop_itemid = EditorGUILayout.IntField("드랍 아이템 ID", monsterEntry._drop_itemid);
-                if (_itemTable != null && monsterEntry._drop_itemid > 0)
+                string currentItemName = "없음";
+                if (monsterEntry._drop_itemid > 0)
                 {
-                    string itemName = _itemTable.SearchItemData(monsterEntry._drop_itemid)._itemname;
-                    if (!string.IsNullOrEmpty(itemName))
-                    {
-                        EditorGUILayout.LabelField(" ", $"아이템 이름: {itemName}");
-                    }
+                    currentItemName = _itemTable.SearchItemData(monsterEntry._drop_itemid)._itemname ?? "ID 없음";
                 }
+
+                if (EditorGUILayout.DropdownButton(new GUIContent(currentItemName), FocusType.Passive))
+                {
+                    GenericMenu menu = new GenericMenu();
+                    menu.AddItem(new GUIContent("없음"), monsterEntry._drop_itemid == 0, () => 
+                    {
+                        var entry = monsterList[monsterIndex];
+                        entry._drop_itemid = 0;
+                        monsterList[monsterIndex] = entry;
+                    });
+
+                    foreach (var itemEntry in _itemTable._itemlist)
+                    {
+                        menu.AddItem(new GUIContent($"{itemEntry._itemname} (ID: {itemEntry._itemid})"), itemEntry._itemid == monsterEntry._drop_itemid, () => 
+                        {
+                            var entry = monsterList[monsterIndex];
+                            entry._drop_itemid = itemEntry._itemid;
+                            monsterList[monsterIndex] = entry;
+                        });
+                    }
+                    menu.ShowAsContext();
+                }
+
                 monsterEntry._drop_itemvalue = EditorGUILayout.IntField("드랍 아이템 수량", monsterEntry._drop_itemvalue);
                 
                 monsterList[monsterIndex] = monsterEntry;

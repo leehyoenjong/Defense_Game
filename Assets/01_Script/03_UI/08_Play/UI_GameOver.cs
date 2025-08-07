@@ -14,8 +14,15 @@ public class UI_GameOver : MonoBehaviour
         _stage.text = string.Format(STAGEINFOTEXT, lastchapter, laststage);
         _title.text = isclaer ? "CLEAR!" : "GAME OVER";
         UserQuestLog();
+        RewardItem(lastchapter, laststage);
         Time.timeScale = 0;
 
+    }
+
+    void RewardItem(int lastchapter, int laststage)
+    {
+        var totalgold = lastchapter * 1000 + laststage * 100;
+        RewardManager.instance.CreateReward(1, totalgold);
     }
 
     void UserQuestLog()

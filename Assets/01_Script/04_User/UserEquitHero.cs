@@ -45,7 +45,6 @@ public struct St_UserEquitHero
     {
         UnequipHero(heroitemid);
         _equipheroid[idx] = heroitemid;
-        BackEndLog.WriteLog(LogType.EQUIP, $"{idx} 번호에 {heroitemid}번 영웅 장착");
     }
 
     public void UnequipHero(int heroitemid)

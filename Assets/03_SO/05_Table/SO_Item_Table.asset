@@ -67,3 +67,9 @@ MonoBehaviour:
     _itemicon: {fileID: 1572034964, guid: fdf56bf2c0b633940b834f68fddfc571, type: 3}
     _itemkind: 2
     _connecttableid: 6
+  - _itemid: 3
+    _itemname: InGameEmerald
+    _itemexplain: InGameCoin
+    _itemicon: {fileID: -5824462498409732277, guid: 9bd194037597248b98344fbdc91104c8, type: 3}
+    _itemkind: 1
+    _connecttableid: 0

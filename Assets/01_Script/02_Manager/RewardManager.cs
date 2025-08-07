@@ -12,7 +12,7 @@ public class RewardManager : MonoBehaviour
         instance = this;
     }
 
-    public void CraeteReward(St_RewardItemList itemList)
+    public void CreateReward(St_RewardItemList itemList)
     {
         UserData._userdata._userinventory.UpdateItemData(itemList._itemid, itemList._itemvalue);
 
@@ -20,7 +20,7 @@ public class RewardManager : MonoBehaviour
         createpopup.GetComponent<UI_RewardPopup>().Setting(itemList);
     }
 
-    public void CraeteReward(List<St_RewardItemList> itemList)
+    public void CreateReward(List<St_RewardItemList> itemList)
     {
         var maxcount = itemList.Count;
         for (int i = 0; i < maxcount; i++)

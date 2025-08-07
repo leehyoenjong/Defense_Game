@@ -8,16 +8,18 @@ public class UI_DropItem : MonoBehaviour
 
     void Start()
     {
-        DropItemObject._drop_item_event += GoldSetting;
+        DropItemObject._drop_item_event += ItemSetting;
+        DropItemManager._ingameitem_event += ItemSetting;
     }
 
     void OnDisable()
     {
-        DropItemObject._drop_item_event -= GoldSetting;
+        DropItemObject._drop_item_event -= ItemSetting;
+        DropItemManager._ingameitem_event -= ItemSetting;
     }
 
 
-    void GoldSetting(int dropitemid, int dropvalue)
+    void ItemSetting(int dropitemid, int dropvalue)
     {
         if (_itemid != dropitemid)
         {

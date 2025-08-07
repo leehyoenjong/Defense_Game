@@ -1,20 +1,36 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DropItemManager : MonoBehaviour
 {
     Dictionary<int, int> _current_item_value = new Dictionary<int, int>();
-
+    public static Action<int, int> _ingameitem_event;
     [SerializeField] GameObject _dropitemobject;
 
     void Start()
     {
         Monster_Base._monsterdie += DropItem;
+        StatusUpgradeManager._upgrade_sell_money_event += GetInGameItemValue;
     }
 
     void OnDisable()
     {
         Monster_Base._monsterdie -= DropItem;
+        StatusUpgradeManager._upgrade_sell_money_event -= GetInGameItemValue;
+    }
+
+    bool GetInGameItemValue(int itemid, int sellvalue)
+    {
+        _current_item_value.TryGetValue(itemid, out var values);
+        if (values < sellvalue)
+        {
+            return false;
+        }
+
+        _current_item_value[itemid] -= values;
+        _ingameitem_event?.Invoke(itemid, _current_item_value[itemid]);
+        return true;
     }
 
     void DropItem(Monster_Base monster)

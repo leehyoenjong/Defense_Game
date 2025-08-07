@@ -8,6 +8,7 @@ public class StatusUpgradeManager : MonoBehaviour
 
     Dictionary<int, Dictionary<ESTATUSUPGRADE, int>> _statusupgrade = new Dictionary<int, Dictionary<ESTATUSUPGRADE, int>>();
     public static event Action<int> _statusupgrade_event;
+    public static event Func<int, int, bool> _upgrade_sell_money_event;
 
     [SerializeField]
     List<float> _maxlevelvalue = new List<float>()
@@ -23,6 +24,7 @@ public class StatusUpgradeManager : MonoBehaviour
 
     const int MAXCOINVALUE = 10000;//최대 강화 총 비용
     const int MAXLEVEL = 100;       //최대 레벨 
+    const int INGAMEUSERCOINID = 3; //강화시 필요한 아이템 번호
 
     void Awake()
     {
@@ -106,7 +108,7 @@ public class StatusUpgradeManager : MonoBehaviour
         var nextlevel = _statusupgrade[heroid][estatusupgrade] + 1;
         if (UpgradeCointSetting(heroid, estatusupgrade) == false)
         {
-            //TODO: 돈 없다는 팝업 띄우기
+            SystemMessageManager.instance.CreateSystemMessage("NO COST");
             return;
         }
         _statusupgrade[heroid][estatusupgrade]++;
@@ -117,16 +119,8 @@ public class StatusUpgradeManager : MonoBehaviour
     bool UpgradeCointSetting(int heroid, ESTATUSUPGRADE estatusupgrade)
     {
         var currentupgradecoinvalue = GetSellValue(heroid, estatusupgrade);
-
-        //TODO: 유저 돈 가져와서 처리할 것 
-        var usercoin = 0;
-        if (currentupgradecoinvalue > usercoin)
-        {
-            return false;
-        }
-
-        usercoin -= currentupgradecoinvalue;
-        return true;
+        bool result = (bool)_upgrade_sell_money_event?.Invoke(INGAMEUSERCOINID, currentupgradecoinvalue);
+        return result;
     }
 
     public int GetSellValue(int heroid, ESTATUSUPGRADE estatusupgrade)
