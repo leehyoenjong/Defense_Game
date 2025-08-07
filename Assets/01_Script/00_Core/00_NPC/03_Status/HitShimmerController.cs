@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -33,14 +34,21 @@ public class HitShimmerController : MonoBehaviour
             _mysprite[i].color = Color.red;
         }
 
-        await UniTask.WaitForSeconds(0.1f, cancellationToken: this.GetCancellationTokenOnDestroy());
-
-        _ishitshimmer = false;
-        for (int i = 0; i < _mysprite.Length; i++)
+        try
         {
-            _mysprite[i].color = Color.white;
-        }
+            await UniTask.WaitForSeconds(0.1f, cancellationToken: this.GetCancellationTokenOnDestroy());
 
-        await UniTask.WaitForSeconds(0.1f, cancellationToken: this.GetCancellationTokenOnDestroy());
+            _ishitshimmer = false;
+            for (int i = 0; i < _mysprite.Length; i++)
+            {
+                _mysprite[i].color = Color.white;
+            }
+
+            await UniTask.WaitForSeconds(0.1f, cancellationToken: this.GetCancellationTokenOnDestroy());
+        }
+        catch (ObjectDisposedException)
+        {
+
+        }
     }
 }

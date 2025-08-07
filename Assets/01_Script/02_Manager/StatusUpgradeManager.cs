@@ -21,7 +21,7 @@ public class StatusUpgradeManager : MonoBehaviour
     };
 
 
-    const int MAXCOINVALUE = 100000;//최대 강화 총 비용
+    const int MAXCOINVALUE = 10000;//최대 강화 총 비용
     const int MAXLEVEL = 100;       //최대 레벨 
 
     void Awake()
@@ -104,7 +104,7 @@ public class StatusUpgradeManager : MonoBehaviour
         }
 
         var nextlevel = _statusupgrade[heroid][estatusupgrade] + 1;
-        if (UpgradeCointSetting(nextlevel) == false)
+        if (UpgradeCointSetting(heroid, estatusupgrade) == false)
         {
             //TODO: 돈 없다는 팝업 띄우기
             return;
@@ -114,10 +114,9 @@ public class StatusUpgradeManager : MonoBehaviour
     }
 
     //TODO: 추후 데이터 테이블을 이용해서 비용 할 수 있도록 개선 필요
-    bool UpgradeCointSetting(int nextlevel)
+    bool UpgradeCointSetting(int heroid, ESTATUSUPGRADE estatusupgrade)
     {
-        var nextlevelcoinvalue = MAXCOINVALUE / MAXLEVEL;
-        var currentupgradecoinvalue = nextlevelcoinvalue * nextlevel;
+        var currentupgradecoinvalue = GetSellValue(heroid, estatusupgrade);
 
         //TODO: 유저 돈 가져와서 처리할 것 
         var usercoin = 0;
@@ -128,6 +127,22 @@ public class StatusUpgradeManager : MonoBehaviour
 
         usercoin -= currentupgradecoinvalue;
         return true;
+    }
+
+    public int GetSellValue(int heroid, ESTATUSUPGRADE estatusupgrade)
+    {
+        if (_statusupgrade.ContainsKey(heroid) == false)
+        {
+            _statusupgrade.Add(heroid, new Dictionary<ESTATUSUPGRADE, int>());
+        }
+        if (_statusupgrade[heroid].ContainsKey(estatusupgrade) == false)
+        {
+            _statusupgrade[heroid].Add(estatusupgrade, 0);
+        }
+
+        var nextlevel = _statusupgrade[heroid][estatusupgrade] + 1;
+        var nextlevelcoinvalue = MAXCOINVALUE / MAXLEVEL;
+        return nextlevelcoinvalue * nextlevel;
     }
 
     /// <summary>

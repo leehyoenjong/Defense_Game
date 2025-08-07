@@ -74,6 +74,7 @@ public class UI_Btn_Status_Upgrade : MonoBehaviour
                 break;
         }
 
+        statusText += $"\nCOST {StatusUpgradeManager.instance.GetSellValue(_heroclass.GetID(), _estatusupgradekind)}";
         _statusvalue.text = statusText;
         _level.text = "Lv. " + upgradeLevel.level.ToString();
     }
