@@ -10,13 +10,12 @@ public class DropItemObject : MonoBehaviour
 
     public static event Action<int, int> _drop_item_event;
 
-    int _dropitemid, _totalvalue;
+    int _dropitemid;
 
-    public void Setting(int itemid, int totalvalue)
+    public void Setting(int itemid)
     {
         _sprite.sprite = DataManager.instance.GetItemTable().SearchItemData(itemid)._itemicon;
         _dropitemid = itemid;
-        _totalvalue = totalvalue;
         Destroy(this.gameObject, 1f);
     }
 
@@ -31,6 +30,6 @@ public class DropItemObject : MonoBehaviour
 
     void OnDestroy()
     {
-        _drop_item_event?.Invoke(_dropitemid, _totalvalue);
+        _drop_item_event?.Invoke(_dropitemid, DropItemManager._ingameitem_get_event.Invoke(_dropitemid));
     }
 }

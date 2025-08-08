@@ -32,10 +32,14 @@ public class RewardManager : MonoBehaviour
         createpopup.GetComponent<UI_RewardPopup>().Setting(itemList);
     }
 
-    public void CreateReward(int itemid, int itemvalue)
+    public void CreateReward(int itemid, int itemvalue, bool _nowindow = true)
     {
         UserData._userdata._userinventory.UpdateItemData(itemid, itemvalue);
 
+        if (_nowindow == false)
+        {
+            return;
+        }
         var createpopup = Instantiate(_rewardpopup, null);
         createpopup.GetComponent<UI_RewardPopup>().Setting(itemid, itemvalue);
     }

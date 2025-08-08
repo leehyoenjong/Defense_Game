@@ -18,6 +18,7 @@ public class ParticleObject : MonoBehaviour
         foreach (var item in _particlesystemlist)
         {
             item.Play();
+            item.gameObject.SetActive(true);
         }
     }
 

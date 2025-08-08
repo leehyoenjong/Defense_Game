@@ -22,7 +22,7 @@ public class UI_GameOver : MonoBehaviour
     void RewardItem(int lastchapter, int laststage)
     {
         var totalgold = lastchapter * 1000 + laststage * 100;
-        RewardManager.instance.CreateReward(1, totalgold);
+        RewardManager.instance.CreateReward(1, totalgold, false);
     }
 
     void UserQuestLog()

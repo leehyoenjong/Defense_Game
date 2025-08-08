@@ -16,12 +16,12 @@ public class UI_Hero_Btn : MonoBehaviour
 
     void OnDisable()
     {
-        StatusUpgradeManager._statusupgrade_event -= Init;
+        StatusUpgradeManager._statusupgrade_event -= SettingStatus;
     }
 
     void OnEnable()
     {
-        StatusUpgradeManager._statusupgrade_event += Init;
+        StatusUpgradeManager._statusupgrade_event += SettingStatus;
     }
 
     public void Init(int heroid)
@@ -42,7 +42,17 @@ public class UI_Hero_Btn : MonoBehaviour
         }
 
         _heroclass = heroclass;
+
         this.gameObject.SetActive(true);
+        SettingStatus(heroid);
+    }
+
+    void SettingStatus(int heroid)
+    {
+        if (_heroclass._so_npc._mid != heroid)
+        {
+            return;
+        }
 
         //영웅의 기본 데이터를 가져와 이름, 아이콘을 매칭하고 스테이터스는 필드에 있는 거에서 매칭하기
         var hero_origindata = DataManager.instance.GetHeroData(_heroclass.GetID());

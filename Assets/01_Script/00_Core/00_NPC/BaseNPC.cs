@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(AnimationController), typeof(SkillController), typeof(AttackAreaController))]
@@ -17,8 +16,8 @@ public abstract class BaseNPC : MonoBehaviour
     //기본 맴버변수 
     protected int _myid;
     public int GetID() => _myid;
-    [SerializeField] protected int _current_hp;
-    [SerializeField] protected bool _isdie;
+    protected int _current_hp;
+    protected bool _isdie;
     protected St_Status _status;
     public St_Status GetStatus() => _status;
 

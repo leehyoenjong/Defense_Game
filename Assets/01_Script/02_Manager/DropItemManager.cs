@@ -6,21 +6,24 @@ public class DropItemManager : MonoBehaviour
 {
     Dictionary<int, int> _current_item_value = new Dictionary<int, int>();
     public static Action<int, int> _ingameitem_event;
+    public static Func<int, int> _ingameitem_get_event;
     [SerializeField] GameObject _dropitemobject;
 
     void Start()
     {
         Monster_Base._monsterdie += DropItem;
-        StatusUpgradeManager._upgrade_sell_money_event += GetInGameItemValue;
+        StatusUpgradeManager._upgrade_sell_money_event += SetInGameItemValue;
+        _ingameitem_get_event += GetInGaemItemValue;
     }
 
     void OnDisable()
     {
         Monster_Base._monsterdie -= DropItem;
-        StatusUpgradeManager._upgrade_sell_money_event -= GetInGameItemValue;
+        StatusUpgradeManager._upgrade_sell_money_event -= SetInGameItemValue;
+        _ingameitem_get_event -= GetInGaemItemValue;
     }
 
-    bool GetInGameItemValue(int itemid, int sellvalue)
+    bool SetInGameItemValue(int itemid, int sellvalue)
     {
         _current_item_value.TryGetValue(itemid, out var values);
         if (values < sellvalue)
@@ -28,9 +31,15 @@ public class DropItemManager : MonoBehaviour
             return false;
         }
 
-        _current_item_value[itemid] -= values;
+        _current_item_value[itemid] -= sellvalue;
         _ingameitem_event?.Invoke(itemid, _current_item_value[itemid]);
         return true;
+    }
+
+    int GetInGaemItemValue(int itemid)
+    {
+        _current_item_value.TryGetValue(itemid, out var values);
+        return values;
     }
 
     void DropItem(Monster_Base monster)
@@ -49,6 +58,6 @@ public class DropItemManager : MonoBehaviour
         _current_item_value[dropitemid] += dropitemvalue;
 
         //바닥에 떨어뜨릴 오브젝트 생성
-        Instantiate(_dropitemobject, monster.transform.position, default).GetComponent<DropItemObject>().Setting(dropitemid, _current_item_value[dropitemid]);
+        Instantiate(_dropitemobject, monster.transform.position, default).GetComponent<DropItemObject>().Setting(dropitemid);
     }
 }
