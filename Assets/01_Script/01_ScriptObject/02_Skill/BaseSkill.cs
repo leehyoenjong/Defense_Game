@@ -159,53 +159,32 @@ public abstract class BaseSkill : ScriptableObject
             case ETARGETFILTERTYPE.POS_NEAR_HERO:
             case ETARGETFILTERTYPE.POS_NEAR_MONSTER:
                 // 가장 가까운 대상
-                return alivelist
-                    .OrderBy(x => Vector3.Distance(me.transform.position, x.transform.position))
-                    .Take(1)
-                    .ToList();
+                return alivelist.OrderBy(x => Vector3.Distance(me.transform.position, x.transform.position)).ToList();
 
             case ETARGETFILTERTYPE.POS_FAR_HERO:
             case ETARGETFILTERTYPE.POS_FAR_MONSTER:
                 // 가장 먼 대상
-                return alivelist
-                    .OrderByDescending(x => Vector3.Distance(me.transform.position, x.transform.position))
-                    .Take(1)
-                    .ToList();
+                return alivelist.OrderByDescending(x => Vector3.Distance(me.transform.position, x.transform.position)).ToList();
 
             case ETARGETFILTERTYPE.MOST_CURRENT_HP_HERO:
             case ETARGETFILTERTYPE.MOST_CURRENT_HP_MONSTER:
-                return alivelist
-                    .OrderByDescending(x => x.GetCurrentHP())
-                    .Take(1)
-                    .ToList();
+                return alivelist.OrderByDescending(x => x.GetCurrentHP()).ToList();
 
             case ETARGETFILTERTYPE.MOST_SMALL_CURRENT_HP_HERO:
             case ETARGETFILTERTYPE.MOST_SMALL_CURRENT_HP_MONSTER:
-                return alivelist
-                    .OrderBy(x => x.GetCurrentHP())
-                    .Take(1)
-                    .ToList();
+                return alivelist.OrderBy(x => x.GetCurrentHP()).ToList();
 
             case ETARGETFILTERTYPE.MOST_MAXHP_HERO:
             case ETARGETFILTERTYPE.MOST_MAXHP_MONSTER:
-                return alivelist
-                    .OrderByDescending(x => x.GetMaxHP())
-                    .Take(1)
-                    .ToList();
+                return alivelist.OrderByDescending(x => x.GetMaxHP()).ToList();
 
             case ETARGETFILTERTYPE.MOST_SMALL_MAXHP_HERO:
             case ETARGETFILTERTYPE.MOST_SMALL_MAXHP_MONSTER:
-                return alivelist
-                    .OrderBy(x => x.GetMaxHP())
-                    .Take(1)
-                    .ToList();
+                return alivelist.OrderBy(x => x.GetMaxHP()).ToList();
 
             case ETARGETFILTERTYPE.MOST_POWER_HERO:
             case ETARGETFILTERTYPE.MOST_POWER_MONSTER:
-                return alivelist
-                    .OrderByDescending(x => x.TotalDamage())
-                    .Take(1)
-                    .ToList();
+                return alivelist.OrderByDescending(x => x.TotalDamage()).ToList();
 
         }
         return null;
@@ -235,9 +214,7 @@ public abstract class BaseSkill : ScriptableObject
                 return targetList;
 
             case ESKILLAREA.CIRCLE:
-                return targetList.Where(target =>
-                    Vector3.Distance(me.transform.position, target.transform.position) <= _circleRadius
-                ).ToList();
+                return targetList.Where(target => Vector3.Distance(me.transform.position, target.transform.position) <= _circleRadius).ToList();
 
             case ESKILLAREA.BOX:
                 return targetList.Where(target =>
