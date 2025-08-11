@@ -30,6 +30,11 @@ public class AddressableSystem
 
     public static async UniTask<(bool, long)> CheckDownLoadSize(string key)
     {
+        if (GameManager.instance._is_local_mode)
+        {
+            return (true, 0);
+        }
+
         try
         {
             AsyncOperationHandle<long> getdownloadsize = Addressables.GetDownloadSizeAsync(key);

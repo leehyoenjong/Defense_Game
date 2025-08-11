@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [SerializeField] GameObject _messagepopup;
+    public bool _is_local_mode;
 
     public void CreatePopup(string message, Action exitaction)
     {

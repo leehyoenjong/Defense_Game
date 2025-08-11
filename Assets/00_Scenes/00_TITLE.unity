@@ -442,7 +442,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &456545350
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1921,6 +1921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _messagepopup: {fileID: 7152675738389829509, guid: e7a8f39be15414fed9755c89f26c3e38, type: 3}
+  _is_local_mode: 1
 --- !u!4 &2031749324
 Transform:
   m_ObjectHideFlags: 0

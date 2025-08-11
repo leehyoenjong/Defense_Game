@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30e67a65e166b46298e21f269745b81e, type: 3}
+  m_Name: SO_Gacha_Table
+  m_EditorClassIdentifier: 
+  _gachatable:
+  - _gachaid: 1
+    _equaldistribution: 1
+    _rewardlist:
+    - _itemid: 10000
+      _itemvalue: 1
+      _percent: 0
+    - _itemid: 10001
+      _itemvalue: 1
+      _percent: 0
+    - _itemid: 10002
+      _itemvalue: 1
+      _percent: 0
+    - _itemid: 10003
+      _itemvalue: 1
+      _percent: 0
+    - _itemid: 10004
+      _itemvalue: 1
+      _percent: 0
+    - _itemid: 10005
+      _itemvalue: 1
+      _percent: 0

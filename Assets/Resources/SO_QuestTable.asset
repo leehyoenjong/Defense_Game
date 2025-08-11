@@ -1,0 +1,252 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ae3bc38cc52c4d5e83ea7826cf28278, type: 3}
+  m_Name: SO_QuestTable
+  m_EditorClassIdentifier: 
+  _repeatquestlist:
+  - _mid: 1
+    _questtype: 0
+    _title: MONSTER KILL
+    _explain: MONSTER KILL PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 2
+    _questcleartarget: 0
+    _questclearvalue: 10
+    _rewarditemid: 1
+    _rewarditemvalue: 100
+  - _mid: 2
+    _questtype: 0
+    _title: HERO UPGRADE
+    _explain: HERO UPGRADE PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 6
+    _questcleartarget: 0
+    _questclearvalue: 1
+    _rewarditemid: 1
+    _rewarditemvalue: 10
+  - _mid: 3
+    _questtype: 0
+    _title: DAY QUEST CLEAR
+    _explain: DAY QUEST CLEAR COUNT
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 9
+    _questcleartarget: 1
+    _questclearvalue: 1
+    _rewarditemid: 1
+    _rewarditemvalue: 10
+  _dayquestlist:
+  - _mid: 1000
+    _questtype: 1
+    _title: MONTSER KILL
+    _explain: MONTSER KILL PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 2
+    _questcleartarget: 0
+    _questclearvalue: 5
+    _rewarditemid: 1
+    _rewarditemvalue: 100
+  - _mid: 1001
+    _questtype: 1
+    _title: HERO UPGRADE
+    _explain: HERO UPGRADE PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 6
+    _questcleartarget: 0
+    _questclearvalue: 1
+    _rewarditemid: 1
+    _rewarditemvalue: 100
+  - _mid: 1002
+    _questtype: 1
+    _title: GACHA COUNT
+    _explain: GACHA COUNT PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 4
+    _questcleartarget: 0
+    _questclearvalue: 1
+    _rewarditemid: 1
+    _rewarditemvalue: 100
+  - _mid: 100005
+    _questtype: 1
+    _title: New DAY Quest
+    _explain: 
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 0
+    _questcleartarget: 0
+    _questclearvalue: 0
+    _rewarditemid: 0
+    _rewarditemvalue: 0
+  _weekquestlist:
+  - _mid: 10000
+    _questtype: 2
+    _title: 'MONSTER KILL '
+    _explain: MONSTER KILL PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 2
+    _questcleartarget: 0
+    _questclearvalue: 100
+    _rewarditemid: 1
+    _rewarditemvalue: 10000
+  - _mid: 10001
+    _questtype: 2
+    _title: HERO UPGRADE
+    _explain: HERO UPGRADE PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 6
+    _questcleartarget: 0
+    _questclearvalue: 100
+    _rewarditemid: 1
+    _rewarditemvalue: 10000
+  - _mid: 10002
+    _questtype: 2
+    _title: DAY QUEST CLEAR
+    _explain: DAY QUEST CLEAR PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 9
+    _questcleartarget: 1
+    _questclearvalue: 12
+    _rewarditemid: 1
+    _rewarditemvalue: 10000
+  - _mid: 10003
+    _questtype: 2
+    _title: GACHA
+    _explain: GACHA  PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 4
+    _questcleartarget: 1
+    _questclearvalue: 20
+    _rewarditemid: 1
+    _rewarditemvalue: 10000
+  _achievementsquestlist:
+  - _mid: 100000
+    _questtype: 3
+    _title: MONSTER KILL
+    _explain: MONSTER KILL PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 2
+    _questcleartarget: 0
+    _questclearvalue: 1000
+    _rewarditemid: 1
+    _rewarditemvalue: 1000000
+  - _mid: 100001
+    _questtype: 3
+    _title: BAT MONSTER KILL
+    _explain: BAT MONSTER KILL PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 3
+    _questcleartarget: 1
+    _questclearvalue: 1000
+    _rewarditemid: 1
+    _rewarditemvalue: 1000000
+  - _mid: 100002
+    _questtype: 3
+    _title: BAT MONSTER KILL
+    _explain: BAT MONSTER KILL PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 3
+    _questcleartarget: 1
+    _questclearvalue: 1000
+    _rewarditemid: 1
+    _rewarditemvalue: 1000000
+  - _mid: 100003
+    _questtype: 3
+    _title: HERO UPGRADE
+    _explain: HERO UPGRADE PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 6
+    _questcleartarget: 0
+    _questclearvalue: 1000
+    _rewarditemid: 1
+    _rewarditemvalue: 1000000
+  - _mid: 100004
+    _questtype: 3
+    _title: ARCHER HERO UPGRADE
+    _explain: ARCHER HERO UPGRADE PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 7
+    _questcleartarget: 10000
+    _questclearvalue: 100
+    _rewarditemid: 1
+    _rewarditemvalue: 1000000
+  - _mid: 100005
+    _questtype: 3
+    _title: QUEST CLEAR
+    _explain: QUEST CLEAR PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 8
+    _questcleartarget: 0
+    _questclearvalue: 100
+    _rewarditemid: 1
+    _rewarditemvalue: 1000000
+  - _mid: 100006
+    _questtype: 3
+    _title: DAY QUEST CLEAR
+    _explain: DAY QUEST CLEAR PLZ
+    _isclearactiveoff: 0
+    _questopentype: 0
+    _questopentarget: 0
+    _questopenvalue: 0
+    _questcleartype: 9
+    _questcleartarget: 1
+    _questclearvalue: 100
+    _rewarditemid: 1
+    _rewarditemvalue: 1000000

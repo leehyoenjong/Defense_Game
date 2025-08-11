@@ -9,6 +9,11 @@ public class BackEndUserData : MonoBehaviour
     /// </summary>
     public void NewUserDataInit()
     {
+        if (GameManager.instance._is_local_mode)
+        {
+            return;
+        }
+
         Backend.PlayerData.InsertData("USERQUEST", UserData._userdata._userquestdata.Get_UserData());
         Backend.PlayerData.InsertData("USERINVENTORY", UserData._userdata._userinventory.Get_UserData());
         Backend.PlayerData.InsertData("USEREQUIP", UserData._userdata._userequiphero.Get_UserData());
@@ -61,6 +66,11 @@ public class BackEndUserData : MonoBehaviour
 
     public static void UpdateUserData()
     {
+        if (GameManager.instance._is_local_mode)
+        {
+            return;
+        }
+
         Backend.PlayerData.UpdateMyLatestData("USERQUEST", UserData._userdata._userquestdata.Get_UserData());
         Backend.PlayerData.UpdateMyLatestData("USERINVENTORY", UserData._userdata._userinventory.Get_UserData());
         Backend.PlayerData.UpdateMyLatestData("USEREQUIP", UserData._userdata._userequiphero.Get_UserData());

@@ -24,6 +24,13 @@ public class UI_Login : MonoBehaviour
 
     async void LoginResult(BackendReturnObject loginresult)
     {
+        if (GameManager.instance._is_local_mode)
+        {
+            UserData.Create();
+            _ = SceneManager.LoadSceneAsync("01_LOBBY");
+            return;
+        }
+
         var loginstage = (BackEndLoginState)loginresult.StatusCode;
         UserData.Create();
 

@@ -5,6 +5,11 @@ public class BackEndLog : MonoBehaviour
 {
     public static void WriteLog(LogType logtype, string message)
     {
+        if (GameManager.instance._is_local_mode)
+        {
+            return;
+        }
+
         Param param = new Param();
         param.Add(logtype.ToString(), message);
         Debug.Log($"로그 실행");

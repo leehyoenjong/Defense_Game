@@ -23,9 +23,9 @@ public class DataManager : MonoBehaviour
     [SerializeField] SO_MonsterTable _mosntertable;
     public St_MonsterTable GetMonsterInfo(int monsterid) => _mosntertable.GetMonsterInfo(monsterid);
 
-    [SerializeField] SO_HeroTable _playerprefablist;
-    public St_HeroTable GetHeroData(int heroid) => _playerprefablist.GetHeroList(heroid);
-    public SO_HeroTable GetHeroData() => _playerprefablist;
+    [SerializeField] SO_HeroTable _herotable;
+    public St_HeroTable GetHeroData(int heroid) => _herotable.GetHeroList(heroid);
+    public SO_HeroTable GetHeroData() => _herotable;
 
     [SerializeField] SO_ChapterData _chapterdata;
     public St_ChapterData GetChapterData(int chapterid) => _chapterdata.GetChapterData(chapterid);
@@ -43,9 +43,23 @@ public class DataManager : MonoBehaviour
 
     public async UniTask LoadTable()
     {
+        if (GameManager.instance._is_local_mode)
+        {
+            _questtable = Resources.Load<SO_QuestTable>("SO_QuestTable");
+            _chapterdata = Resources.Load<SO_ChapterData>("Chapter");
+            _herotable =Resources.Load<SO_HeroTable>("SO_Hero_Table");
+            _mosntertable = Resources.Load<SO_MonsterTable>("SO_MonsterTable");
+            _statustable = Resources.Load<SO_Status_Table>("SO_Status_Table");
+            _upgradtable = Resources.Load<SO_Upgrade_Table>("SO_Upgrade_Table");
+            _shoptable = Resources.Load<SO_Shop_Table>("SO_Shop_Table");
+            _gachatable = Resources.Load<SO_Gacha_Table>("SO_Gacha_Table");
+            _itemtable = Resources.Load<SO_Item_Table>("SO_Item_Table");
+            return;
+        }
+
         _questtable = await AddressableSystem.LoadAsync<SO_QuestTable>("SO_QuestTable");
         _chapterdata = await AddressableSystem.LoadAsync<SO_ChapterData>("SO_ChapterData");
-        _playerprefablist = await AddressableSystem.LoadAsync<SO_HeroTable>("SO_HeroTable");
+        _herotable = await AddressableSystem.LoadAsync<SO_HeroTable>("SO_HeroTable");
         _mosntertable = await AddressableSystem.LoadAsync<SO_MonsterTable>("SO_MonsterTable");
         _statustable = await AddressableSystem.LoadAsync<SO_Status_Table>("SO_Status_Table");
         _upgradtable = await AddressableSystem.LoadAsync<SO_Upgrade_Table>("SO_Upgrade_Table");
