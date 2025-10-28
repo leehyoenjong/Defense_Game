@@ -4,6 +4,11 @@ public class Hero_Base : BaseNPC
 {
     [SerializeField] AttackAreaController _attackareacontroller;
 
+    protected override void Start()
+    {
+
+    }
+
     public virtual void OnSpawn(Vector2 spawnpoint)
     {
         transform.position = spawnpoint;

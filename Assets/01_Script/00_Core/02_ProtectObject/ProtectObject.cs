@@ -17,7 +17,6 @@ public class ProtectObject : BaseNPC
 
     protected override void Start()
     {
-        base.Start();
         OnSpawn();
     }
 

@@ -14,7 +14,6 @@ public class Monster_Base : BaseNPC
         _moveController._move_event += () => PlayAnimation(EANIMATION.MOVE, true);
         _moveController._move_end_check += () => PlayAnimation(EANIMATION.MOVE, false);
         _moveController._move_check += () => _animationController.CheckRunAnimation();
-        base.Start();
     }
 
     void OnDestroy()

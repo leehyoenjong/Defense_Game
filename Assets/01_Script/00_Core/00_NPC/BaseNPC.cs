@@ -34,10 +34,7 @@ public abstract class BaseNPC : MonoBehaviour
     public event Action _hit_event;
 
     //함수
-    protected virtual void Start()
-    {
-
-    }
+    protected abstract void Start();
 
     public virtual void IDSetting(int id)
     {
